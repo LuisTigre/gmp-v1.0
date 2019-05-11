@@ -43310,9 +43310,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7018d2f3", Component.options)
+    hotAPI.createRecord("data-v-db8b8022", Component.options)
   } else {
-    hotAPI.reload("data-v-7018d2f3", Component.options)
+    hotAPI.reload("data-v-db8b8022", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43333,13 +43333,13 @@ var content = __webpack_require__(42);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("444ed428", content, false);
+var update = __webpack_require__(2)("e8e61a7a", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7018d2f3\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Painel.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7018d2f3\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Painel.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-db8b8022\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Painel.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-db8b8022\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Painel.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -43467,7 +43467,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7018d2f3", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-db8b8022", module.exports)
   }
 }
 
@@ -43505,9 +43505,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0990b8a0", Component.options)
+    hotAPI.createRecord("data-v-20efc0a8", Component.options)
   } else {
-    hotAPI.reload("data-v-0990b8a0", Component.options)
+    hotAPI.reload("data-v-20efc0a8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43652,7 +43652,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0990b8a0", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-20efc0a8", module.exports)
   }
 }
 
@@ -43694,9 +43694,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f6c21024", Component.options)
+    hotAPI.createRecord("data-v-1a5dfb72", Component.options)
   } else {
-    hotAPI.reload("data-v-f6c21024", Component.options)
+    hotAPI.reload("data-v-1a5dfb72", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43717,13 +43717,13 @@ var content = __webpack_require__(51);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("35238280", content, false);
+var update = __webpack_require__(2)("7b2b6cd4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f6c21024\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Caixa.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f6c21024\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Caixa.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a5dfb72\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Caixa.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a5dfb72\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Caixa.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -43891,7 +43891,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-f6c21024", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-1a5dfb72", module.exports)
   }
 }
 
@@ -43929,9 +43929,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b2d02808", Component.options)
+    hotAPI.createRecord("data-v-6e8d4e10", Component.options)
   } else {
-    hotAPI.reload("data-v-b2d02808", Component.options)
+    hotAPI.reload("data-v-6e8d4e10", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43998,7 +43998,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-b2d02808", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6e8d4e10", module.exports)
   }
 }
 
@@ -44036,9 +44036,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-547361d0", Component.options)
+    hotAPI.createRecord("data-v-4ca4c0c8", Component.options)
   } else {
-    hotAPI.reload("data-v-547361d0", Component.options)
+    hotAPI.reload("data-v-4ca4c0c8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -44565,7 +44565,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-547361d0", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-4ca4c0c8", module.exports)
   }
 }
 
@@ -44603,9 +44603,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3db4e4fa", Component.options)
+    hotAPI.createRecord("data-v-5d2f02f6", Component.options)
   } else {
-    hotAPI.reload("data-v-3db4e4fa", Component.options)
+    hotAPI.reload("data-v-5d2f02f6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -44670,7 +44670,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3db4e4fa", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-5d2f02f6", module.exports)
   }
 }
 
@@ -44708,9 +44708,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6f0df076", Component.options)
+    hotAPI.createRecord("data-v-673f4f6e", Component.options)
   } else {
-    hotAPI.reload("data-v-6f0df076", Component.options)
+    hotAPI.reload("data-v-673f4f6e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -44826,7 +44826,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6f0df076", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-673f4f6e", module.exports)
   }
 }
 
@@ -44864,9 +44864,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7abd9f42", Component.options)
+    hotAPI.createRecord("data-v-2cb6c23a", Component.options)
   } else {
-    hotAPI.reload("data-v-7abd9f42", Component.options)
+    hotAPI.reload("data-v-2cb6c23a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45060,7 +45060,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7abd9f42", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-2cb6c23a", module.exports)
   }
 }
 
@@ -45098,9 +45098,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-389e4568", Component.options)
+    hotAPI.createRecord("data-v-6208d464", Component.options)
   } else {
-    hotAPI.reload("data-v-389e4568", Component.options)
+    hotAPI.reload("data-v-6208d464", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45196,7 +45196,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-389e4568", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6208d464", module.exports)
   }
 }
 
@@ -45234,9 +45234,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4e5e3f34", Component.options)
+    hotAPI.createRecord("data-v-77c8ce30", Component.options)
   } else {
-    hotAPI.reload("data-v-4e5e3f34", Component.options)
+    hotAPI.reload("data-v-77c8ce30", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45331,7 +45331,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4e5e3f34", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-77c8ce30", module.exports)
   }
 }
 
@@ -45369,9 +45369,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-011d67e0", Component.options)
+    hotAPI.createRecord("data-v-28dbdb0c", Component.options)
   } else {
-    hotAPI.reload("data-v-011d67e0", Component.options)
+    hotAPI.reload("data-v-28dbdb0c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45477,7 +45477,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-011d67e0", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-28dbdb0c", module.exports)
   }
 }
 
@@ -45519,9 +45519,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-519b1aa6", Component.options)
+    hotAPI.createRecord("data-v-55826b2a", Component.options)
   } else {
-    hotAPI.reload("data-v-519b1aa6", Component.options)
+    hotAPI.reload("data-v-55826b2a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45542,13 +45542,13 @@ var content = __webpack_require__(80);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("1b317cd2", content, false);
+var update = __webpack_require__(2)("639f7bc6", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-519b1aa6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPauta.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-519b1aa6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPauta.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-55826b2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPauta.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-55826b2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPauta.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -45561,7 +45561,7 @@ if(false) {
 /* 80 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
 
 /***/ }),
 /* 81 */
@@ -45995,7 +45995,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-519b1aa6", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-55826b2a", module.exports)
   }
 }
 
@@ -46037,9 +46037,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1618f473", Component.options)
+    hotAPI.createRecord("data-v-1e72c76f", Component.options)
   } else {
-    hotAPI.reload("data-v-1618f473", Component.options)
+    hotAPI.reload("data-v-1e72c76f", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -46060,13 +46060,13 @@ var content = __webpack_require__(85);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("545602ed", content, false);
+var update = __webpack_require__(2)("3b82b120", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1618f473\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPautaRecurso.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1618f473\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPautaRecurso.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1e72c76f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPautaRecurso.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1e72c76f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPautaRecurso.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -46079,7 +46079,7 @@ if(false) {
 /* 85 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\backup\\gestorminipautas\\blog\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
 
 /***/ }),
 /* 86 */
@@ -46513,7 +46513,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1618f473", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-1e72c76f", module.exports)
   }
 }
 
@@ -46555,9 +46555,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-06d0818f", Component.options)
+    hotAPI.createRecord("data-v-2dd3f013", Component.options)
   } else {
-    hotAPI.reload("data-v-06d0818f", Component.options)
+    hotAPI.reload("data-v-2dd3f013", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -46578,13 +46578,13 @@ var content = __webpack_require__(90);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("de359ad0", content, false);
+var update = __webpack_require__(2)("ba072268", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-06d0818f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaMiniPauta.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-06d0818f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaMiniPauta.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2dd3f013\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaMiniPauta.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2dd3f013\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaMiniPauta.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -47374,7 +47374,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-06d0818f", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-2dd3f013", module.exports)
   }
 }
 
@@ -47416,9 +47416,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fde17e92", Component.options)
+    hotAPI.createRecord("data-v-2864803b", Component.options)
   } else {
-    hotAPI.reload("data-v-fde17e92", Component.options)
+    hotAPI.reload("data-v-2864803b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -47439,13 +47439,13 @@ var content = __webpack_require__(95);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("2116db48", content, false);
+var update = __webpack_require__(2)("57b4bc82", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fde17e92\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaHorario.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fde17e92\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaHorario.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2864803b\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaHorario.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2864803b\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaHorario.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -48430,7 +48430,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-fde17e92", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-2864803b", module.exports)
   }
 }
 
@@ -48468,9 +48468,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7f6cc4c2", Component.options)
+    hotAPI.createRecord("data-v-ae515884", Component.options)
   } else {
-    hotAPI.reload("data-v-7f6cc4c2", Component.options)
+    hotAPI.reload("data-v-ae515884", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -48653,7 +48653,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7f6cc4c2", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-ae515884", module.exports)
   }
 }
 
@@ -48661,7 +48661,7 @@ if (false) {
 /* 101 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: \r\nundefined\r\n^\r\n      File to import not found or unreadable: node_modules/font-awesome/scss/font-awesome.scss.\nParent style sheet: stdin\r\n      in C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\sass\\app.scss (line 6, column 1)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:195:19)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:230:18\n    at context.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\sass-loader\\lib\\loader.js:55:13)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:2244:31)\n    at Object.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:906:16)\n    at options.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\index.js:294:32)");
 
 /***/ })
 /******/ ]);

@@ -70,18 +70,20 @@ class Aluno extends Model
            
    }
 
-  public function migrarNotasAnteriores(){
+  public function migrarNotasAnteriores(){    
       $user = auth()->user();      
       $turmas = $this->turmas()->get();     
       $turma_actual = $this->turmas()->get()->last(); 
       $turma_anterior_da_classe_actual = $turmas->where('ano_lectivo','<',$turma_actual->ano_lectivo)->where('modulo_id',
       $turma_actual->modulo_id);
             
-      
+      /*SE O ALUNO FOR REPETENTE*/
       if($turma_anterior_da_classe_actual->isNotEmpty()){
+
           $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
 
           foreach ($avaliacaoAnual as $avaliacao) {
+            /*SE AS NOTAS REALMENTE APROVOU*/
             if(isset($avaliacao['result']) 
             && ($avaliacao['result'] == 'Tran.' 
             || $avaliacao['result'] == 'Continua')){
@@ -89,6 +91,7 @@ class Aluno extends Model
               $modulos = ['10ª','11ª','12ª','13ª'];
 
                 foreach ($modulos as $mn) {
+
                  if($avaliacao['avaliacao_id_' . $mn] != ''){
                       $avaliacaoNew = Avaliacao::find($avaliacao['avaliacao_id_' . $mn]);
                       if(!is_null($avaliacaoNew)){                                
@@ -107,43 +110,38 @@ class Aluno extends Model
                           'mac3' => $avaliacaoNew['mac3'],
                           'p31' => $avaliacaoNew['p31'],
                           'p32' => $avaliacaoNew['p32']                                    
-                      ]);                          
+                       ]);                          
                           $newAvaliacao->save();                         
-                  }     
-              }     
+                     }     
+                 }     
             }     
-          }else{
-                  // $avaliacao = $avaliacao;                                    
-                  // if(!is_null($avaliacao) 
-                  //   && isset($avaliacao['disciplina_id'])){                                      
-                  //   $this->disciplinas()->firstOrCreate([                    
-                  //   'turma_id' => $turma_actual->id,
-                  //   'aluno_id' => $this->id,
-                  //   'disciplina_id' => $avaliacao['disciplina_id']                   
-                  // ]);     
-                  // }
-                    
-                          
-
+          
           }
         }
             $this->anularNotasAnteriores($turma_anterior_da_classe_actual);
+
+       /*SE O ALUNO NAO FOR REPETENTE*/
       }else{
 
           $mn = explode(' ', $turma_actual->nome);
           $mn_arr = explode('ª', $mn[1]);         
           $classe_ant = $mn_arr[0]-1 . 'ª';
+
+          /*SE A CLASSE FOR DIFERENTE DA 10 CLASSE*/
+          if($mn_arr[0] > 10){
+              $modulo_da_classe_anterior = Modulo::where('nome',  $mn[0] . ' ' . $classe_ant)->get()->last();
+                        
+              $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
+              $recursos = $avaliacaoAnual->where('result','exame2');
+              
+              foreach ($recursos as $recurso){    
+                $avaliacao = Avaliacao::where('disciplina_id',$recurso['disciplina_id'])->get()->where('aluno_id',
+                $this->id)->last();            
+                $avaliacao->update(['exame1'=>null]);                      
+              } 
+          }
           
-          $modulo_da_classe_anterior = Modulo::where('nome',  $mn[0] . ' ' . $classe_ant)->get()->last();
-          // $turma_da_classe_anterior = $turmas->where('modulo_id',$modulo_da_classe_anterior->id)->last(); 
-          $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
-          $recursos = $avaliacaoAnual->where('result','exame2');
-          
-          foreach ($recursos as $recurso){    
-            $avaliacao = Avaliacao::where('disciplina_id',$recurso['disciplina_id'])->get()->where('aluno_id',
-            $this->id)->last();            
-            $avaliacao->update(['exame1'=>null]);                      
-          }      
+               
              
       }
             
