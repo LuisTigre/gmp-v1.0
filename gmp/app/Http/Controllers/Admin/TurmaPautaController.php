@@ -122,8 +122,7 @@ class TurmaPautaController extends Controller
       // $listaModelo = Turma::listaModelo(14);
        // dd($listaModelo);
        // $listaModelo = Turma::cotacaoTrimestral(1,1,1,"I");
-       $listaModelo = Turma::classificaoTrimestrais2($turma_id,$epoca->nome);
-       // dd($listaModelo);          
+       $listaModelo = Turma::classificaoTrimestrais2($turma_id,$epoca->trimestre);         
         
        $listaCabecalho = ['Nº','Nº Mat','Nome','Idade'];
        $listaCabecalho2 = $turma->listaDisciplinas($turma->id,100);
@@ -493,8 +492,8 @@ class TurmaPautaController extends Controller
       // $listaModelo = Turma::listaModelo(14);
        // dd($listaModelo);
        // $listaModelo = Turma::cotacaoTrimestral(1,1,1,"I");
-       $listaModelo = Turma::classificaoAnual($turma_id,'III');
-       // dd($listaModelo);          
+      
+       $listaModelo = Turma::classificaoAnual($turma_id,'III');               
         
        $listaCabecalho = ['Nº','Nº Mat','Nome','Idade'];
        $listaCabecalho2 = $turma->listaDisciplinasCurriculares($turma->modulo_id,30);

@@ -35,15 +35,14 @@ class TurmaAvaliacaoController extends Controller
        $disciplina = Disciplina::find($disciplina_id);
        $modulo = $turma->modulo()->get();
        $epoca = Epoca::where('activo','S')->first();
-       // dd($epoca);
+       // dd($epoca); 
        // $disciplinas = $modulo->withPivot()->get();       
        $listaMigalhas = json_encode([
         ["titulo"=>"Turmas","url"=>route('turmas.index')],       
         ["titulo"=>"Disciplinas","url"=>route('turmas.disciplinas.index',[$turma->id])],       
         ["titulo"=>"Professores","url"=>""]
-    ]);
-       
-       $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);
+    ]);             
+       $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);        
        $listaCabecalho2 = $turma->disciplinas()->get();           
        $avaliacoes = $turma->avaliacaos()->where('disciplina_id',$disciplina->id)->get();
        $alunos_da_turma = $turma->alunos()->get();
@@ -236,13 +235,35 @@ class TurmaAvaliacaoController extends Controller
        $classe = Classe::find($modulo->classe_id);
        $epoca = Epoca::where('activo','S')->first();          
        $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);
-       $total_alunos = $listaModelo->count();                
-       $aptos = round(($listaModelo->where('notafinal','>=',10)->count() * 100)/$total_alunos,1);  
-       $naptos = round(($listaModelo->where('notafinal','<',10)->count() * 100)/$total_alunos,1);       
-       $notas = $listaModelo->where('notafinal','!=',null);
-       $notas = $notas->sortBy('notafinal');      
-       $min = $notas->first()->notafinal; 
-       $max = $notas->last()->notafinal; 
+       $total_alunos = $listaModelo->count(); 
+
+
+       if($epoca->trimestre == 'I'){               
+         $aptos = round(($listaModelo->where('ct1','>=',10)->count() * 100)/$total_alunos,1);  
+         $naptos = round(($listaModelo->where('ct1','<',10)->count() * 100)/$total_alunos,1);       
+         $notas = $listaModelo->where('ct1','!=',null);
+         $notas = $notas->sortBy('ct1');      
+         $min = $notas->first()->ct1; 
+         $max = $notas->last()->ct1;
+
+       }else if($epoca->trimestre == 'II'){ 
+         $aptos = round(($listaModelo->where('ct2','>=',10)->count() * 100)/$total_alunos,1);  
+         $naptos = round(($listaModelo->where('ct2','<',10)->count() * 100)/$total_alunos,1);       
+         $notas = $listaModelo->where('ct2','!=',null);
+         $notas = $notas->sortBy('ct2');      
+         $min = $notas->first()->ct2; 
+         $max = $notas->last()->ct2;
+
+       }else{
+         $aptos = round(($listaModelo->where('ct3','>=',10)->count() * 100)/$total_alunos,1);  
+         $naptos = round(($listaModelo->where('ct3','<',10)->count() * 100)/$total_alunos,1);       
+         $notas = $listaModelo->where('ct3','!=',null);
+         $notas = $notas->sortBy('ct3');      
+         $min = $notas->first()->ct3; 
+         $max = $notas->last()->ct3;
+
+       } 
+
 
        $avaliacoes = $turma->avaliacaos()->where('disciplina_id',$disciplina->id)->get();
        $alunos_da_turma = $turma->alunos()->get();

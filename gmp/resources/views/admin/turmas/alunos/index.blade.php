@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <pagina tamanho="9">
+  <pagina tamanho="8">
     @if($errors->all())
       <div class="alert alert-danger alert-dismissible text-center" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -118,4 +118,6 @@
         .labeled{
           font-weight: bold;
         }
+
+        
    </style>

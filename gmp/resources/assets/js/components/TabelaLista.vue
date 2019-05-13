@@ -8,7 +8,7 @@
         <input type="search" class="form-control" placeholder="buscar" v-model="buscar">
       </div>      
     </div>
-      <table class="table table-striped table-hover table-sm ">
+      <table class="table table-striped table-hover table-xs ">
         <thead>
           <tr>
             <th style="cursor:pointer" v-on:click="ordenaColuna(index)" v-for="(titulo,index) in titulos">{{ titulo }}</th>
@@ -70,6 +70,13 @@
    
    
 </template>
+
+<style style media="screen">
+    td {
+      padding: -20px; 
+
+    }
+</style>
 
 <script>
   export default {
