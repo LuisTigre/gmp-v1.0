@@ -18,9 +18,9 @@ class CreateCursosTable extends Migration
             $table->String('nome');
             $table->String('acronimo');                  
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('professor_id')->unsigned()->default(1);
-            $table->foreign('professor_id')->references('id')->on('professors')->onDelete('cascade');
+            $table->foreign('professor_id')->references('id')->on('professors');
             $table->integer('area_id')->unsigned()->default(1);
             $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');  
             $table->String('nome_instituto_mae')->nullable();

@@ -360,7 +360,7 @@ class TurmaAvaliacaoController extends Controller
       </style>
       </head>
       <body onload='atribueCor()'>
-  <div tamanho='12'>
+  <div tamanho='11'>
    <div id='cabecalho' align='center' style='font-size: 11px;font-weight: bold;' class='table-responsive text-uppercase'>
       <p>COLÉGIO PADRE BUILU</p>                           
       <p>FÉ E CIÊNCIA</p>                                       
@@ -381,7 +381,7 @@ class TurmaAvaliacaoController extends Controller
        <p><span style='font-weight: bold;'>DISCIPLINA:</span> <span style='color:red;'>$disciplina->acronimo</span> ($disciplina->nome)</p>     
     </div>
     <div id='seccao_3' align='center' class='col-md-6'>
-       <p style='font-size: 9px;;'>
+       <p style='font-size: 11px;;'>
         <span style='font-weight: bold;'>Aptos:</span> <span style='font-weight:bold;color:red;'>$aptos%  
         </span>
         <span style='font-weight: bold;'>N/Aptos:</span> <span style='font-weight:bold;color:red;'>$naptos%
@@ -474,7 +474,7 @@ class TurmaAvaliacaoController extends Controller
           //   $fundo = '#fff';
           // }
         $output .="
-        <tr style='font-size: 12px;background:$fundo;'>";
+        <tr style='font-size: 9px;background:$fundo;'>";
         foreach ($aluno as $key => $value){
 
          if($value != null && $value !=''){
@@ -515,7 +515,7 @@ class TurmaAvaliacaoController extends Controller
 
 <div id='rodape' align='center'>
       <div class='col-md-6 text-uppercase'>
-       <p>O(A) PROFESSOR(A) DE TURMA                  
+       <p>O(A) PROFESSOR(A)                 
        <p>_________________________________</p> 
        <p>$professor->nome</p> 
       </div>      

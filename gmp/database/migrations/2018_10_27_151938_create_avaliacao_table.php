@@ -18,7 +18,7 @@ class CreateAvaliacaoTable extends Migration
             $table->integer('professor_id')->unsigned()->default(1);
             $table->foreign('professor_id')->references('id')->on('professors')->onDelete('cascade'); 
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('disciplina_id')->unsigned()->default(1);
             $table->foreign('disciplina_id')->references('id')->on('disciplinas')->onDelete('cascade');
             $table->foreign('turma_id')->references('id')->on('turmas')->onDelete('cascade');

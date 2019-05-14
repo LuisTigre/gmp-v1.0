@@ -379,7 +379,7 @@ class TurmaPautaController extends Controller
       }
       $ct = 7;
 
-      $output .="<tr style='font-size:12px;background:$fundo;'>";
+      $output .="<tr style='font-size:10px;background:$fundo;'>";
        foreach($aluno as $value){    
         $count++;
         $cor = 'black';        
@@ -398,7 +398,7 @@ class TurmaPautaController extends Controller
                    </td>";          
         $ct +=3; 
         }else if($count==sizeof($aluno)-1){
-           floatval($value) < 10 ? $cor = 'red':$cor = 'black';
+           floatval($value) < 11 ? $cor = 'red':$cor = 'black';
 
           $output .="<td style='text-align:center;font-weight:bold;'>
                     <span style='color:$cor;'>$value</span>

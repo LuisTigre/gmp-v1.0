@@ -115,7 +115,7 @@ public function index()
        if(isset($data['password']) && $data['password'] != ""){
             $validacao = \Validator::make($data,[
             'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required','string','email','max:255',Rule::unique('users')->ignore($id)]
             'password' => 'required|string|min:6',
             ]);
             $data['password'] = bcrypt($data['password']);       

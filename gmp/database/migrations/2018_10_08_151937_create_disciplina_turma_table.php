@@ -21,7 +21,7 @@ class CreateDisciplinaTurmaTable extends Migration
             $table->integer('professor_id')->unsigned()->index()->nullable();
             $table->foreign('professor_id')->references('id')->on('professors')->onDelete('cascade');
             $table->integer('user_id')->unsigned()->index()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');            
+            $table->foreign('user_id')->references('id')->on('users');            
             $table->enum('director',['N','S'])->default('N');
             $table->timestamps();
         });

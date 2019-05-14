@@ -29,7 +29,7 @@ class CreateInstituicaosTable extends Migration
             $table->String('director_pedagogico');
             $table->enum('director_pedagogico_sexo',['M','F'])->default('M');      
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();            
         });
     }

@@ -18,12 +18,12 @@ class CreateTurmasTable extends Migration
             $table->integer('modulo_id')->unsigned()->default(1);
             $table->foreign('modulo_id')->references('id')->on('modulos')->onDelete('cascade');      
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->String('nome');
             $table->integer('ano_lectivo');
             $table->enum('periodo',['Matinal','Vespertino','Noturno']);
             $table->integer('sala_id')->unsigned()->default(1);
-            $table->foreign('sala_id')->references('id')->on('salas')->onDelete('cascade');
+            $table->foreign('sala_id')->references('id')->on('salas');
             $table->timestamps();            
         });
     }

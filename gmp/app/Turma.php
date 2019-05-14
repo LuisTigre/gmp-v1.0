@@ -1478,8 +1478,7 @@ class Turma extends Model
     /*BUSCA TODAS AS AVALIACOES DO ALUNO EM APENAS UMA TURMA E DISCIPLINA*/
    public static function listaAvaliacoes($turma_id,$disciplina_id,$paginate)
    {          
-             dd($disciplina_id)
-            
+                         
           $turma = Turma::find($turma_id);
           
           if($turma->ano_lectivo < 2019){

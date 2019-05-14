@@ -17,7 +17,7 @@ class CreateClassesTable extends Migration
             $table->increments('id');
             $table->String('nome');      
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->String('por_extenso');      
             $table->timestamps();           
         });

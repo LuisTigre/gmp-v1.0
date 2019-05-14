@@ -20,7 +20,7 @@ class CreateDisciplinaModuloTable extends Migration
             $table->integer('disciplina_id')->unsigned()->index()->default(1);
             $table->foreign('disciplina_id')->references('id')->on('disciplinas')->onDelete('cascade'); 
             $table->integer('user_id')->unsigned()->index()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('carga');            
             $table->enum('terminal',['N','S'])->default('N');
             $table->enum('do_curso',['N','S'])->default('N');

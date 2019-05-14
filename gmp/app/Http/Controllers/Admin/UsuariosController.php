@@ -20,7 +20,7 @@ class UsuariosController extends Controller
         ["titulo"=>"Admin","url"=>route('admin')],
         ["titulo"=>"Lista de Usuários","url"=>""]
         ]);
-       $listaModelo = User::select('id','name','email')->paginate(30);
+       $listaModelo = User::select('id','name','email')->paginate(200);
 
        return view('admin.usuarios.index',compact('listaMigalhas','listaModelo'));
     }
@@ -90,10 +90,10 @@ class UsuariosController extends Controller
     {
         $data = $request->all();
 
-        if(isset($data['password']) && $data('password') != ""){
+        if(isset($data['password']) && $data['password'] != ""){
             $validacao = \Validator::make($data,[
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required','string','email','max:255',Rule::unique('users')->ignore($id)],
             'password' => 'required|string|min:6',
             ]);
             $data['password'] = bcrypt($data['password']);

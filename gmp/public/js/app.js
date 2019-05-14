@@ -1173,7 +1173,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(101);
+module.exports = __webpack_require__(103);
 
 
 /***/ }),
@@ -1217,17 +1217,17 @@ Vue.component('topo', __webpack_require__(46));
 Vue.component('caixa', __webpack_require__(49));
 Vue.component('pagina', __webpack_require__(54));
 Vue.component('tabela-lista', __webpack_require__(57));
-Vue.component('migalhas', __webpack_require__(60));
-Vue.component('modal', __webpack_require__(63));
-Vue.component('modallink', __webpack_require__(66));
-Vue.component('formulario', __webpack_require__(69));
-Vue.component('artigocard', __webpack_require__(72));
-Vue.component('grupo-lista', __webpack_require__(75));
-Vue.component('tabela-pauta', __webpack_require__(78));
-Vue.component('tabela-pauta-recurso', __webpack_require__(83));
-Vue.component('tabela-mini-pauta', __webpack_require__(88));
-Vue.component('tabela-horario', __webpack_require__(93));
-Vue.component('buttonlink', __webpack_require__(98));
+Vue.component('migalhas', __webpack_require__(62));
+Vue.component('modal', __webpack_require__(65));
+Vue.component('modallink', __webpack_require__(68));
+Vue.component('formulario', __webpack_require__(71));
+Vue.component('artigocard', __webpack_require__(74));
+Vue.component('grupo-lista', __webpack_require__(77));
+Vue.component('tabela-pauta', __webpack_require__(80));
+Vue.component('tabela-pauta-recurso', __webpack_require__(85));
+Vue.component('tabela-mini-pauta', __webpack_require__(90));
+Vue.component('tabela-horario', __webpack_require__(95));
+Vue.component('buttonlink', __webpack_require__(100));
 
 var app = new Vue({
   el: '#app',
@@ -44007,13 +44007,17 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(58)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(60)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(61)
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -44050,10 +44054,57 @@ module.exports = Component.exports
 
 /***/ }),
 /* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(59);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("09cb760c", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ca4c0c8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaLista.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ca4c0c8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaLista.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\ntd {\n  padding: -20px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -44219,7 +44270,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44276,7 +44327,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "table",
-        { staticClass: "table table-striped table-hover table-sm " },
+        { staticClass: "table table-striped table-hover table-xs " },
         [
           _c("thead", [
             _c(
@@ -44570,15 +44621,15 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(61)
+var __vue_script__ = __webpack_require__(63)
 /* template */
-var __vue_template__ = __webpack_require__(62)
+var __vue_template__ = __webpack_require__(64)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -44616,7 +44667,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44642,7 +44693,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44675,15 +44726,15 @@ if (false) {
 }
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(64)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(65)
+var __vue_template__ = __webpack_require__(67)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -44721,7 +44772,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44754,7 +44805,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44831,15 +44882,15 @@ if (false) {
 }
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(67)
+var __vue_script__ = __webpack_require__(69)
 /* template */
-var __vue_template__ = __webpack_require__(68)
+var __vue_template__ = __webpack_require__(70)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -44877,7 +44928,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44932,7 +44983,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45065,15 +45116,15 @@ if (false) {
 }
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(70)
+var __vue_script__ = __webpack_require__(72)
 /* template */
-var __vue_template__ = __webpack_require__(71)
+var __vue_template__ = __webpack_require__(73)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -45111,7 +45162,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45153,7 +45204,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45201,15 +45252,15 @@ if (false) {
 }
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(73)
+var __vue_script__ = __webpack_require__(75)
 /* template */
-var __vue_template__ = __webpack_require__(74)
+var __vue_template__ = __webpack_require__(76)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -45247,7 +45298,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45283,7 +45334,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45336,15 +45387,15 @@ if (false) {
 }
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(76)
+var __vue_script__ = __webpack_require__(78)
 /* template */
-var __vue_template__ = __webpack_require__(77)
+var __vue_template__ = __webpack_require__(79)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -45382,7 +45433,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45422,7 +45473,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45482,19 +45533,19 @@ if (false) {
 }
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(79)
+  __webpack_require__(81)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(81)
+var __vue_script__ = __webpack_require__(83)
 /* template */
-var __vue_template__ = __webpack_require__(82)
+var __vue_template__ = __webpack_require__(84)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -45532,13 +45583,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(80);
+var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -45558,13 +45609,13 @@ if(false) {
 }
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45777,7 +45828,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46000,19 +46051,19 @@ if (false) {
 }
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(84)
+  __webpack_require__(86)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(86)
+var __vue_script__ = __webpack_require__(88)
 /* template */
-var __vue_template__ = __webpack_require__(87)
+var __vue_template__ = __webpack_require__(89)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -46050,13 +46101,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(87);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -46076,13 +46127,13 @@ if(false) {
 }
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46295,7 +46346,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46518,19 +46569,19 @@ if (false) {
 }
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(89)
+  __webpack_require__(91)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(91)
+var __vue_script__ = __webpack_require__(93)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(94)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -46568,13 +46619,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(90);
+var content = __webpack_require__(92);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -46594,7 +46645,7 @@ if(false) {
 }
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -46608,7 +46659,7 @@ exports.push([module.i, "\ntable{\n  padding:0px;\n  margin:0px;\n}\nth{\n  text
 
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46900,7 +46951,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47379,19 +47430,19 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(94)
+  __webpack_require__(96)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(96)
+var __vue_script__ = __webpack_require__(98)
 /* template */
-var __vue_template__ = __webpack_require__(97)
+var __vue_template__ = __webpack_require__(99)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -47429,13 +47480,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(95);
+var content = __webpack_require__(97);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -47455,7 +47506,7 @@ if(false) {
 }
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -47469,7 +47520,7 @@ exports.push([module.i, "\nbody,html,table{\n    width: 100%;\n    height: 100%;
 
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47758,7 +47809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48435,15 +48486,15 @@ if (false) {
 }
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(99)
+var __vue_script__ = __webpack_require__(101)
 /* template */
-var __vue_template__ = __webpack_require__(100)
+var __vue_template__ = __webpack_require__(102)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -48481,7 +48532,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48525,7 +48576,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48658,7 +48709,7 @@ if (false) {
 }
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports) {
 
 throw new Error("Module build failed: ModuleBuildError: Module build failed: \r\nundefined\r\n^\r\n      File to import not found or unreadable: node_modules/font-awesome/scss/font-awesome.scss.\nParent style sheet: stdin\r\n      in C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\sass\\app.scss (line 6, column 1)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:195:19)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:230:18\n    at context.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\sass-loader\\lib\\loader.js:55:13)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:2244:31)\n    at Object.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:906:16)\n    at options.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\index.js:294:32)");

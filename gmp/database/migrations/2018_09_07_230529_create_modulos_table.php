@@ -21,7 +21,7 @@ class CreateModulosTable extends Migration
             $table->integer('classe_id')->unsigned()->default(1);
             $table->foreign('classe_id')->references('id')->on('classes')->onDelete('cascade');      
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');           
+            $table->foreign('user_id')->references('id')->on('users');           
             $table->String('ano');           
             $table->timestamps();                    
         });

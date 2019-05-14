@@ -19,7 +19,7 @@ class CreateAulasTable extends Migration
             $table->enum('laboratorio',['S','N'])->default('N');
             $table->String('descricao')->nullable();             
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('turma_id')->unsigned()->default(1);
             $table->foreign('turma_id')->references('id')->on('turmas')->onDelete('cascade');
             $table->integer('disciplina_id')->unsigned()->default(1);

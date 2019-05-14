@@ -20,7 +20,7 @@ class CreateProfessoresTable extends Migration
             $table->String('email');            
             // $table->String('photo');
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->enum('sexo',['M','F'])->default('M');
             $table->timestamps();
             $table->softDeletes();

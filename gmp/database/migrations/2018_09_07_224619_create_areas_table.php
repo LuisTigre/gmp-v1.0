@@ -18,7 +18,7 @@ class CreateAreasTable extends Migration
             $table->String('nome');
             $table->String('acronimo');                  
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');           
+            $table->foreign('user_id')->references('id')->on('users');           
             $table->timestamps();            
         });
     }

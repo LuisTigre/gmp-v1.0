@@ -20,7 +20,7 @@ class CreateTemposTable extends Migration
             $table->integer('hora')->default(7);            
             $table->enum('periodo',['Manhã','Tarde'])->default('Manhã');      
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

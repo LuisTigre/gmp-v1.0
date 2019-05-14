@@ -227,9 +227,10 @@ public function index()
        // dd(Turma::avaliacoesDoAluno2($aluno_id,'S'));
 
        $user = auth()->user();       
-       $turma = Turma::find(2);
        $aluno = Aluno::find($aluno_id);
-       $disciplina = Disciplina::find(1);       
+
+       $turma = $aluno->turmas()->get()->first();
+       // $disciplina = Disciplina::find(1);       
        $modulo = $turma->modulo()->first();
        $curso = Curso::find($modulo->curso_id);
        $classe = Classe::find($modulo->classe_id);
