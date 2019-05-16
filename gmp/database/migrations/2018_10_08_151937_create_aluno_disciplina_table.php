@@ -21,7 +21,7 @@ class CreateAlunoDisciplinaTable extends Migration
             $table->integer('aluno_id')->unsigned()->index()->nullable();
             $table->foreign('aluno_id')->references('id')->on('alunos')->onDelete('cascade');
             $table->integer('user_id')->unsigned()->index()->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');     
+            $table->foreign('user_id')->references('id')->on('users');     
             $table->timestamps();
         });
     }

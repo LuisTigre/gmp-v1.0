@@ -34,13 +34,21 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
         
         $user = auth()->user();
 
-
+            
     	if(!isset($row['nome_completo']) & !isset($row['disciplina']) & !isset($row['turma']) & !isset($row['ano_lectivo']) & !isset($row['ano_lectivo']) ){
-            return null;
+
+            dd($row);
+            }     
         }else{
             $ano_lectivo = intVal($row['ano_lectivo']);            
-            $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$ano_lectivo)->first();         
+            $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$ano_lectivo)->first();
+            $turma = null;
+            if(is_null($turma)){
+                dd("TURMA INEXISTENTE !!!
+                    PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+            }       
             $alunos = $turma->alunos()->get();  
+
             $disciplina = Disciplina::where('acronimo',$row['disciplina'])->first();
             $director_turma = $turma->professores()->where('director','s')->first();         
             $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
@@ -100,6 +108,11 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
         ]);         
             }            
           }
+            }else{
+                if(is_null($alunos)){
+                dd("PROFESSOR OU ALUNO INEXISTENTE !!!
+                    PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+                } 
             }
         }            
    }

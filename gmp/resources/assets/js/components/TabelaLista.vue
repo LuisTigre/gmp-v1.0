@@ -21,45 +21,81 @@
             <td v-if="detalhe || editar || deletar || buttons">
               <form v-bind:id="index" v-if="deletar && token" v-bind:action="deletar + item.id" method="post">
               <input type="hidden" name="_method" value="DELETE">
-              <input type="hidden" name="_token" v-bind:value="token">
+              <input type="hidden" name="_token" v-bind:value="token">              
 
-              <a v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
-
-              <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe</a>
+              <a v-if="detalhe && !modal" v-bind:href="detalhe"><i class="fas fa-trash"></i>Detalhe</a>
               <modallink v-if="detalhe && modal" v-bind:item="item" v-bind:url="detalhe" tipo="link" nome="detalhe" titulo="Detalhe " css=""></modallink>
 
               <a v-if="editar && !modal" v-bind:href="editar"> Editar </a>
               <modallink v-if="editar && modal" v-bind:item="item" v-bind:url="editar" tipo="link" nome="editar" titulo="Editar " css=""></modallink>
 
               <a href="#" v-on:click="executaForm(index)"> Deletar</a>
+                              
+                <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;margin-top:-7.5px;">
+                  <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <i class="glyphicon glyphicon-option-vertical"></i>
+                  </a>                  
+                  <div  class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                    <a class="list-group-item btn-xs" v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
+                  </div>
+                </span>
+                
+              
 
             </form>
               <!-- *************** WITHOUT TOKEN ***************** -->
               <span v-if="!token">
-
-              <a v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>                
-              <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe </a>
+                     
+              <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe </a>           
               
               <modallink v-if="detalhe && modal" v-bind:item="item" tipo="link" v-bind:url="detalhe" nome="detalhe" titulo="detalhe " css=""></modallink>
 
               <a v-if="editar && !modal" v-bind:href="editar"> Editar</a>
               <modallink v-if="editar && modal" tipo="link" nome="editar" titulo="Editar " v-bind:item="item" v-bind:url="editar" css=""></modallink>
 
-              <a v-if="deletar" v-bind:href="deletar">Deletar</a>   
-              </span>
+              <a v-if="deletar" v-bind:href="deletar">Deletar</a>
+                         
+                <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;;margin-top:-7.5px;">
+                  <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <i class="glyphicon glyphicon-option-vertical"></i>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <a class="list-group-item" v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
+                  </div>
+                </span>
+              </span>   
+             
 
               <!-- ******************* WITH TOKEN ************************ -->
               <span v-if="token && !deletar">
 
-              <a v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
+              <div class="dropdown" v-if="buttons && modal">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <a v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
+                  </div>
+              </div>
 
               <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe </a>
               <modallink v-if="detalhe && modal" v-bind:item="item" v-bind:url="detalhe" tipo="link" nome="detalhe" titulo="detalhe " css=""></modallink>
               
               <a v-if="editar && !modal" v-bind:href="editar"> Editar</a>
               <modallink v-if="editar && modal" tipo="link" v-bind:item="item" v-bind:url="editar" nome="editar" titulo="Editar " css=""></modallink>
-            </span>            
-            </span>            
+
+                             
+                <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;">
+                  <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <i class="glyphicon glyphicon-option-vertical"></i>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <a class="list-group-item" v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
+                  </div>
+                </span>
+              </span>
+                        
+                       
             </td>
           </tr>
         </tbody>
@@ -90,7 +126,12 @@
     },
     methods:{
         executaForm: function(index){
-          document.getElementById(index).submit();
+
+          if (confirm("Eliminar ?")) {
+            document.getElementById(index).submit();
+            
+          } else {            
+          }
         },
         ordenaColuna: function(coluna){
           this.ordemAuxCol = coluna;

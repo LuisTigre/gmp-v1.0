@@ -203,17 +203,23 @@ public function index()
            
    }
 
-   function bolentim($aluno_id){
-      $pdf = \App::make('dompdf.wrapper');
-      $pdf = new Dompdf;
-      $pdf->loadHTML($this->convert_bolentim_html($aluno_id));      
-      $pdf->set_paper('A4','landscape');
-      $pdf->render();
-      return $pdf->stream('dompdf_out.pdf',array('Attachment' => false));
-      exit(0);
+   function bolentim($aluno_id){        
+      if(is_null($this->convert_bolentim_html($aluno_id))){
+          return redirect()->back()->withErrors("ALUNO SEM TURMA CORRESPONDENTE")->withInput(); 
+
+      }else{
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf = new Dompdf;
+        $pdf->loadHTML($this->convert_bolentim_html($aluno_id));      
+        $pdf->set_paper('A4','landscape');
+        $pdf->render();
+        return $pdf->stream('dompdf_out.pdf',array('Attachment' => false));
+        exit(0);        
+      }
     }
 
     function dec_com_notas($aluno_id){
+
       $pdf = \App::make('dompdf.wrapper');
       $pdf = new Dompdf;
       $pdf->loadHTML($this->convert_declaracao_com_notas_html($aluno_id));      
@@ -221,6 +227,7 @@ public function index()
       $pdf->render();
       return $pdf->stream('dompdf_out.pdf',array('Attachment' => false));
       exit(0);
+      
     }
 
   function convert_bolentim_html($aluno_id){
@@ -230,6 +237,10 @@ public function index()
        $aluno = Aluno::find($aluno_id);
 
        $turma = $aluno->turmas()->get()->first();
+       if(is_null($turma)){       
+           
+       }else{
+
        // $disciplina = Disciplina::find(1);       
        $modulo = $turma->modulo()->first();
        $curso = Curso::find($modulo->curso_id);
@@ -700,7 +711,7 @@ public function index()
 </html";
 
       return $output;
-       
+      } 
 
   }
 

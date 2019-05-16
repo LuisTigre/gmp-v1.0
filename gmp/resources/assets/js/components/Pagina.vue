@@ -8,8 +8,14 @@
     </div>
    
 </template>
+<style media="screen">  
+  body{
+    height:500px;
+  }
+</style>
 
 <script>
+
   export default {
       props:['tamanho'],
       computed:{

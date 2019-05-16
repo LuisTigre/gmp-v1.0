@@ -43900,13 +43900,17 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(107)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(55)
 /* template */
 var __vue_template__ = __webpack_require__(56)
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -43958,6 +43962,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['tamanho'],
@@ -44178,6 +44188,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'buttons', 'token', 'modal', 'tamanho'],
@@ -44190,7 +44236,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     executaForm: function executaForm(index) {
-      document.getElementById(index).submit();
+
+      if (confirm("Eliminar ?")) {
+        document.getElementById(index).submit();
+      } else {}
     },
     ordenaColuna: function ordenaColuna(coluna) {
       this.ordemAuxCol = coluna;
@@ -44392,26 +44441,9 @@ var render = function() {
                                   domProps: { value: _vm.token }
                                 }),
                                 _vm._v(" "),
-                                _vm._l(_vm.buttons, function(button) {
-                                  return _vm.buttons && _vm.modal
-                                    ? _c(
-                                        "a",
-                                        {
-                                          attrs: {
-                                            href:
-                                              button.url +
-                                              item.id +
-                                              "/" +
-                                              button.action
-                                          }
-                                        },
-                                        [_vm._v(_vm._s(button.nome) + " ")]
-                                      )
-                                    : _vm._e()
-                                }),
-                                _vm._v(" "),
                                 _vm.detalhe && !_vm.modal
                                   ? _c("a", { attrs: { href: _vm.detalhe } }, [
+                                      _c("i", { staticClass: "fas fa-trash" }),
                                       _vm._v("Detalhe")
                                     ])
                                   : _vm._e(),
@@ -44459,9 +44491,59 @@ var render = function() {
                                     }
                                   },
                                   [_vm._v(" Deletar")]
-                                )
+                                ),
+                                _vm._v(" "),
+                                _vm.buttons && _vm.modal
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "dropdown dropleft",
+                                        staticStyle: {
+                                          position: "absolute",
+                                          "margin-top": "-7.5px"
+                                        }
+                                      },
+                                      [
+                                        _vm._m(0, true),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "dropdown-menu dropdown-menu-right",
+                                            attrs: {
+                                              "aria-labelledby": "dropdownMenu2"
+                                            }
+                                          },
+                                          _vm._l(_vm.buttons, function(button) {
+                                            return _vm.buttons && _vm.modal
+                                              ? _c(
+                                                  "a",
+                                                  {
+                                                    staticClass:
+                                                      "list-group-item btn-xs",
+                                                    attrs: {
+                                                      href:
+                                                        button.url +
+                                                        item.id +
+                                                        "/" +
+                                                        button.action
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(button.nome) + " "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          })
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
                               ],
-                              2
+                              1
                             )
                           : _vm._e(),
                         _vm._v(" "),
@@ -44469,24 +44551,6 @@ var render = function() {
                           ? _c(
                               "span",
                               [
-                                _vm._l(_vm.buttons, function(button) {
-                                  return _vm.buttons && _vm.modal
-                                    ? _c(
-                                        "a",
-                                        {
-                                          attrs: {
-                                            href:
-                                              button.url +
-                                              item.id +
-                                              "/" +
-                                              button.action
-                                          }
-                                        },
-                                        [_vm._v(_vm._s(button.nome) + " ")]
-                                      )
-                                    : _vm._e()
-                                }),
-                                _vm._v(" "),
                                 _vm.detalhe && !_vm.modal
                                   ? _c("a", { attrs: { href: _vm.detalhe } }, [
                                       _vm._v("Detalhe ")
@@ -44529,9 +44593,58 @@ var render = function() {
                                   ? _c("a", { attrs: { href: _vm.deletar } }, [
                                       _vm._v("Deletar")
                                     ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.buttons && _vm.modal
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "dropdown dropleft",
+                                        staticStyle: {
+                                          position: "absolute",
+                                          "margin-top": "-7.5px"
+                                        }
+                                      },
+                                      [
+                                        _vm._m(1, true),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "dropdown-menu",
+                                            attrs: {
+                                              "aria-labelledby": "dropdownMenu2"
+                                            }
+                                          },
+                                          _vm._l(_vm.buttons, function(button) {
+                                            return _vm.buttons && _vm.modal
+                                              ? _c(
+                                                  "a",
+                                                  {
+                                                    staticClass:
+                                                      "list-group-item",
+                                                    attrs: {
+                                                      href:
+                                                        button.url +
+                                                        item.id +
+                                                        "/" +
+                                                        button.action
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(button.nome) + " "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          })
+                                        )
+                                      ]
+                                    )
                                   : _vm._e()
                               ],
-                              2
+                              1
                             )
                           : _vm._e(),
                         _vm._v(" "),
@@ -44539,23 +44652,60 @@ var render = function() {
                           ? _c(
                               "span",
                               [
-                                _vm._l(_vm.buttons, function(button) {
-                                  return _vm.buttons && _vm.modal
-                                    ? _c(
-                                        "a",
+                                _vm.buttons && _vm.modal
+                                  ? _c("div", { staticClass: "dropdown" }, [
+                                      _c(
+                                        "button",
                                         {
+                                          staticClass:
+                                            "btn btn-secondary dropdown-toggle",
                                           attrs: {
-                                            href:
-                                              button.url +
-                                              item.id +
-                                              "/" +
-                                              button.action
+                                            type: "button",
+                                            id: "dropdownMenu2",
+                                            "data-toggle": "dropdown",
+                                            "aria-haspopup": "true",
+                                            "aria-expanded": "false"
                                           }
                                         },
-                                        [_vm._v(_vm._s(button.nome) + " ")]
+                                        [
+                                          _vm._v(
+                                            "\n                  Dropdown\n                "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "dropdown-menu",
+                                          attrs: {
+                                            "aria-labelledby": "dropdownMenu2"
+                                          }
+                                        },
+                                        _vm._l(_vm.buttons, function(button) {
+                                          return _vm.buttons && _vm.modal
+                                            ? _c(
+                                                "a",
+                                                {
+                                                  attrs: {
+                                                    href:
+                                                      button.url +
+                                                      item.id +
+                                                      "/" +
+                                                      button.action
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(button.nome) + " "
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        })
                                       )
-                                    : _vm._e()
-                                }),
+                                    ])
+                                  : _vm._e(),
                                 _vm._v(" "),
                                 _vm.detalhe && !_vm.modal
                                   ? _c("a", { attrs: { href: _vm.detalhe } }, [
@@ -44593,9 +44743,55 @@ var render = function() {
                                         css: ""
                                       }
                                     })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.buttons && _vm.modal
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "dropdown dropleft",
+                                        staticStyle: { position: "absolute" }
+                                      },
+                                      [
+                                        _vm._m(2, true),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "dropdown-menu",
+                                            attrs: {
+                                              "aria-labelledby": "dropdownMenu2"
+                                            }
+                                          },
+                                          _vm._l(_vm.buttons, function(button) {
+                                            return _vm.buttons && _vm.modal
+                                              ? _c(
+                                                  "a",
+                                                  {
+                                                    staticClass:
+                                                      "list-group-item",
+                                                    attrs: {
+                                                      href:
+                                                        button.url +
+                                                        item.id +
+                                                        "/" +
+                                                        button.action
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(button.nome) + " "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          })
+                                        )
+                                      ]
+                                    )
                                   : _vm._e()
                               ],
-                              2
+                              1
                             )
                           : _vm._e()
                       ])
@@ -44610,7 +44806,65 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-secondary dropdown-toggle",
+        attrs: {
+          type: "button",
+          id: "dropdownMenu2",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("i", { staticClass: "glyphicon glyphicon-option-vertical" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-secondary dropdown-toggle",
+        attrs: {
+          type: "button",
+          id: "dropdownMenu2",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("i", { staticClass: "glyphicon glyphicon-option-vertical" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-secondary dropdown-toggle",
+        attrs: {
+          type: "button",
+          id: "dropdownMenu2",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("i", { staticClass: "glyphicon glyphicon-option-vertical" })]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -45612,7 +45866,7 @@ if(false) {
 /* 82 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
 
 /***/ }),
 /* 83 */
@@ -46130,7 +46384,7 @@ if(false) {
 /* 87 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
 
 /***/ }),
 /* 88 */
@@ -48713,6 +48967,49 @@ if (false) {
 /***/ (function(module, exports) {
 
 throw new Error("Module build failed: ModuleBuildError: Module build failed: \r\nundefined\r\n^\r\n      File to import not found or unreadable: node_modules/font-awesome/scss/font-awesome.scss.\nParent style sheet: stdin\r\n      in C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\sass\\app.scss (line 6, column 1)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:195:19)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:230:18\n    at context.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\sass-loader\\lib\\loader.js:55:13)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:2244:31)\n    at Object.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:906:16)\n    at options.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\index.js:294:32)");
+
+/***/ }),
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(108);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("544a24ef", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e8d4e10\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Pagina.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e8d4e10\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Pagina.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\nbody{\n  height:500px;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);
