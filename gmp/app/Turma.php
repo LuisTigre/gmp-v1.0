@@ -10,6 +10,7 @@ use App\Aluno;
 use App\Turma;
 use App\Modulo;
 use App\Classe;
+use App\Epoca;
 
 
 class Turma extends Model
@@ -62,32 +63,35 @@ class Turma extends Model
     public static function classificaoTrimestrais2($turma_id,$trimestre){
 
         $turma = Turma::find($turma_id);
+        $avaliacoesTrimestrais = Turma::avaliacaoTrimestralDaTurma($turma->id,$trimestre);
         $alunos = Turma::listaAlunos2($turma_id,100);          
         $discQtd = $turma->disciplinas()->count();        
-        $disciplinas = Turma::listaDisciplinas($turma_id,100);        
-              $data = collect([]);   
-              $data2 = collect([]);
-              $discs = collect([]);
-              $avaliacao = collect([]);
-              $prs_info = [];
-              $newdata = collect([]);
-              $i = 0;             
+        $disciplinas = Turma::listaDisciplinas($turma_id,100);                
+        $data = collect([]);   
+        $data2 = collect([]);
+        $discs = collect([]);
+        $avaliacao = collect([]);
+        $prs_info = [];                
+        $newdata = collect([]);
+        $i = 0;             
           foreach ($alunos as $aluno){
 
               $medias = Collect([]);
+              $avalicaoDoAluno = $avaliacoesTrimestrais->where('aluno_id',$aluno->id);
+              foreach ($disciplinas as $disciplina) {        
 
-              foreach ($disciplinas as $disciplina) {         
-
-                  $data->push(Turma::cotacaoTrimestral($turma_id,$aluno->id,$disciplina->id,$trimestre)->toArray());                  
+                  
+                  $data = $avalicaoDoAluno->where('disciplina_id',$disciplina->id)->first();      
                                  
-                  if(!empty($data[$i])){                                   
+                  if(!is_null($data)){                                   
                       if($trimestre == 'I'){
                         
                         /*VERIFICAR SE EXISTE VALORES NULOS NAS FALTAS E MÉDIAS... SE SIM SUBSTITUI POR VALORES VAZIOS*/
                         
-                        $fnj1 = empty($data[$i][0]->fnj1) == true? '': $data[$i][0]->fnj1;               
-                        $fj1 = empty($data[$i][0]->fj1) == true? '': $data[$i][0]->fj1;
-                        $ct1 = empty($data[$i][0]->ct1) == true? '': $data[$i][0]->ct1; 
+                        $fnj1 = is_null($data->fnj1) == true? '': $data->fnj1;               
+                        $fj1 = is_null($data->fj1) == true? '': $data->fj1;               
+                        $ct1 = is_null($data->ct1b) == true? '': $data->ct1b;               
+                        
                        /*FIM DA VERIFICAÇÃO*/
 
                         $data2->put($disciplina->id .'_'. 'fnj1',$fnj1);   
@@ -100,9 +104,9 @@ class Turma extends Model
 
                         /*VERIFICAR SE EXISTE VALORES NULOS NAS FALTAS E MÉDIAS... SE SIM SUBSTITUI POR VALORES VAZIOS*/
                         
-                        $fnj2 = empty($data[$i][0]->fnj2) == true? '': $data[$i][0]->fnj2;               
-                        $fj2 = empty($data[$i][0]->fj2) == true? '': $data[$i][0]->fj2;
-                        $ct2 = empty($data[$i][0]->ct2) == true? '': $data[$i][0]->ct2; 
+                        $fnj2 = is_null($data->fnj2) == true? '': $data->fnj2;               
+                        $fj2 = is_null($data->fj2) == true? '': $data->fj2;               
+                        $ct2 = is_null($data->ct2b) == true? '': $data->ct2b; 
                        /*FIM DA VERIFICAÇÃO*/
 
                         $data2->put($disciplina->id .'_'. 'fnj2',$fnj2);   
@@ -113,9 +117,9 @@ class Turma extends Model
                       }else{
                         /*VERIFICAR SE EXISTE VALORES NULOS NAS FALTAS E MÉDIAS... SE SIM SUBSTITUI POR VALORES VAZIOS*/
                         
-                        $fnj3 = empty($data[$i][0]->fnj3) == true? '': $data[$i][0]->fnj3;               
-                        $fj3 = empty($data[$i][0]->fj3) == true? '': $data[$i][0]->fj3;
-                        $notafinal = empty($data[$i][0]->ct3) == true? '': $data[$i][0]->ct3; 
+                        $fnj3 = is_null($data->fnj3) == true? '': $data->fnj3;               
+                        $fj3 = is_null($data->fj3) == true? '': $data->fj3;               
+                        $notafinal = is_null($data->notafinalb) == true? '': $data->notafinalb; 
                        /*FIM DA VERIFICAÇÃO*/
 
                         $data2->put($disciplina->id .'_'. 'fnj3',$fnj3);   
@@ -218,26 +222,38 @@ class Turma extends Model
             $disciplinas = Turma::listaDisciplinasCurriculares($turma->modulo_id,100);        
             $modulo = Modulo::find($turma->modulo_id);
             $curso = Curso::find($modulo->curso_id);
-            $classe = Classe::find($modulo->classe_id); 
+            $classe = Classe::find($modulo->classe_id);
             $modulo_nome = explode('ª', $modulo->nome);
             $modulo_nome = explode(' ', $modulo_nome[0]);        
             $ca_terminadas = collect([]);
             $disciplinas_terminais = $modulo->disciplinas()->where('terminal','S')->get();
             $ca_terminadas_sorted = collect([]);
 
-            $modulo_10 = Modulo::where('nome',$curso->acronimo . ' 10ª')->first();
-            $modulo_11 = Modulo::where('nome',$curso->acronimo . ' 11ª')->first();
-            $modulo_12 = Modulo::where('nome',$curso->acronimo . ' 12ª')->first();
-            $modulo_13 = Modulo::where('nome',$curso->acronimo . ' 13ª')->first();
 
-            $disciplinas_10 = $modulo_10->disciplinas()->get();
-            $disciplinas_11 = $modulo_11->disciplinas()->get();
-            $disciplinas_12 = $modulo_12->disciplinas()->get();
-            $disciplinas_13 = $modulo_13->disciplinas()->get();              
+            if($classe->nome == '10ª' || $classe->nome == '11ª' || $classe->nome == '12ª' || $classe->nome == '13ª'){
+              $modulo_10 = Modulo::where('nome',$curso->acronimo . ' 10ª')->first();
+              $disciplinas_10 = $modulo_10->disciplinas()->get();
+
+            }
+            if($classe->nome == '11ª' || $classe->nome == '12ª' || $classe->nome == '13ª'){             
+              $modulo_11 = Modulo::where('nome',$curso->acronimo . ' 11ª')->first();
+              $disciplinas_11 = $modulo_11->disciplinas()->get();
+              $disc_terminadas_10 = $modulo_10->disciplinas()->where('terminal','S')->where('curricular','S')->get();            
+
+            }
+            if($classe->nome == '12ª' || $classe->nome == '13ª'){              
+              $modulo_12 = Modulo::where('nome',$curso->acronimo . ' 12ª')->first();
+              $disciplinas_12 = $modulo_12->disciplinas()->get();
+              $disc_terminadas_11 = $modulo_11->disciplinas()->where('terminal','S')->where('curricular','S')->get();
+
+            }
+            if($classe->nome == '13ª'){              
+              $modulo_13 = Modulo::where('nome',$curso->acronimo . ' 13ª')->first();
+              $disciplinas_13 = $modulo_13->disciplinas()->get();    
+              $disc_terminadas_12 = $modulo_12->disciplinas()->where('terminal','S')->where('curricular','S')->get(); 
+
+            }
             
-            $disc_terminadas_10 = $modulo_10->disciplinas()->where('terminal','S')->where('curricular','S')->get();            
-            $disc_terminadas_11 = $modulo_11->disciplinas()->where('terminal','S')->where('curricular','S')->get();
-            $disc_terminadas_12 = $modulo_12->disciplinas()->where('terminal','S')->where('curricular','S')->get(); 
               
             $disciplinas_curriculares = $modulo->disciplinas()->where('curricular','S')->get();             
             $data = collect([]);   
@@ -250,14 +266,13 @@ class Turma extends Model
 
             /*INICIO DE VERIFICACAO POR ALUNO*/            
             foreach ($alunos as $aluno){
-                // $aluno_ref = Aluno::find($aluno->id);                                
-                $aluno_ref = Aluno::find(5);                                
+                $aluno_ref = Aluno::find($aluno->id);                                        
                 $medias = Collect([]);
                 $negativas_terminais = Collect([]);
                 $negativas_continuidade = Collect([]);
                 $obs_recurso = collect([]);
                 $obs_deficiencia = collect([]);
-                $aluno_avaliacoes = Turma::avaliacoesDoAluno2($aluno->id,'S');
+                $aluno_avaliacoes = Turma::avaliacoesDoAluno2($aluno->id,'S');               
 
                 $aluno_result = $aluno_avaliacoes['Result_10'];                                
                 $aluno_avaliacoes_10 = collect([]);
@@ -307,7 +322,7 @@ class Turma extends Model
                           && ($aluno_avaliacao_disc['result'] == 'exame1' 
                           || $aluno_avaliacao_disc['result'] == 'exame2')){                      
                           $obs_recurso->push($disc_term->acronimo);
-                            dd($obs_recurso);
+                            
                           }
 
                           if(isset($aluno_avaliacao_disc['result']) 
@@ -784,7 +799,19 @@ class Turma extends Model
 
    }
 
+
+
+   /*FUNCAO QUE BUSCA TODAS AS DISCIPLINAS FREQUENTADAS POR ALUNO E TODAS AS SUAS 
+   AVALIACOES */
+   public static function avaliacoes_por_disciplinas_frequentadas($aluno_id,$curricular){ 
+   
+      
+
+   }
+
+   /*FUNCAO QUE CALCULA OS DADOS PARA PAUTAS FINAIS*/
    public static function avaliacoesDoAluno2($aluno_id,$curricular){ 
+                          
       $user = auth()->user();       
          $aluno = Aluno::find($aluno_id);               
          $aluno_turmas = $aluno->turmas()->get();               
@@ -794,7 +821,7 @@ class Turma extends Model
          $modulos = $curso->Modulos()->get();
          $classe = Classe::find($modulo->classe_id);
          $epoca = Epoca::where('activo','S')->first();   
-         $avaliacoesDoAluno = Turma::avaliacoesDoAluno($aluno_id);
+         $avaliacoesDoAluno = Turma::avaliacoesDoAluno($aluno_id);         
          $turma_nome = explode(' ', $turma->nome);         
          $disciplinas = collect([]);
          
@@ -818,7 +845,8 @@ class Turma extends Model
                   $avaliacaoCatDoAlunoDisc->put('disciplina_nome',$disciplina->nome);               
                   $avaliacaoCatDoAlunoDisc->put('disciplina_acronimo',$disciplina->acronimo);               
                   $avaliacaoCatDoAlunoDisc->put('disciplina_categoria',$disciplina->categoria);               
-                  $avaliacaoCatDoAluno = $avaliacoesDoAluno->where('disciplina_id',$disciplina->id)->sortBy('modulo'); 
+                  $avaliacaoCatDoAluno = $avaliacoesDoAluno->where('disciplina_id',$disciplina->id)->sortBy('modulo');
+                      
 
                       $disc_modulos = '';
                                    
@@ -845,12 +873,12 @@ class Turma extends Model
                       $avaliacaoCatDoAlunoDisc->put("fnj1_". $modulo_nome[1],$avaliacao->fnj1);
                       $avaliacaoCatDoAlunoDisc->put("mac1_". $modulo_nome[1],$avaliacao->mac1);
                       $avaliacaoCatDoAlunoDisc->put("p11_". $modulo_nome[1],$avaliacao->p11);
-                      $avaliacaoCatDoAlunoDisc->put("p12_". $modulo_nome[1],$avaliacao->p12);
+                      // $avaliacaoCatDoAlunoDisc->put("p12_". $modulo_nome[1],$avaliacao->p12);
                       $avaliacaoCatDoAlunoDisc->put("ct1_". $modulo_nome[1],$avaliacao->ct1);
                       $avaliacaoCatDoAlunoDisc->put("fnj2_". $modulo_nome[1],$avaliacao->fnj2);
                       $avaliacaoCatDoAlunoDisc->put("mac2_". $modulo_nome[1],$avaliacao->mac2);
                       $avaliacaoCatDoAlunoDisc->put("p21_". $modulo_nome[1],$avaliacao->p21);
-                      $avaliacaoCatDoAlunoDisc->put("p22_". $modulo_nome[1],$avaliacao->p22);                                         
+                      // $avaliacaoCatDoAlunoDisc->put("p22_". $modulo_nome[1],$avaliacao->p22);                                         
                       $avaliacaoCatDoAlunoDisc->put("ct2_". $modulo_nome[1],$avaliacao->ct2);
                       $avaliacaoCatDoAlunoDisc->put("fnj3_". $modulo_nome[1],$avaliacao->fnj3);
                       $avaliacaoCatDoAlunoDisc->put("mac3_". $modulo_nome[1],$avaliacao->mac3);
@@ -939,7 +967,8 @@ class Turma extends Model
 
                     }
                     
-                  }/*fim dos modulos*/                  
+                  }/*fim dos modulos*/   
+                      
                     /*SE EXISTIR UMA NEGATIVA ANTES DO EXAME*/
                     if($avaliacaoCatDoAlunoDisc['status'] == 'completed'){  
                          $disc_modulos = $avaliacaoCatDoAlunoDisc['disc_modulos'];
@@ -1081,18 +1110,21 @@ class Turma extends Model
                   }else{          
                         
 
-                        $mods = ['10ª','11ª','12ª'];           
+                        $mods = ['10ª','11ª','12ª'];        
 
                       foreach ($mods as $mn){
+                          if($avaliacaoCatDoAlunoDisc['ca_'.$mn] != '' 
+                          && $avaliacaoCatDoAlunoDisc['ca_'.$mn] != '-'){
+                              // dd('yup');
+                              $resultado = 'Trans.';                      
+                              $ca = $avaliacaoCatDoAlunoDisc['ca_'.$mn];
+                              $resultado = $ca < 10 ? $resultado = 'n/Continua' : $resultado = 'Continua'; 
+                              $avaliacaoCatDoAlunoDisc->put('result',$resultado);
+                          }                          
+                          if($classe->nome == $mn){
+                             break;
+                          }
 
-                        if($avaliacaoCatDoAlunoDisc['ca_'.$mn] != '' 
-                        && $avaliacaoCatDoAlunoDisc['ca_'.$mn] != '-'){
-                            // dd('yup');
-                            $resultado = 'Trans.';                      
-                            $ca = $avaliacaoCatDoAlunoDisc['ca_'.$mn];
-                            $resultado = $ca < 10 ? $resultado = 'n/Continua' : $resultado = 'Continua'; 
-                            $avaliacaoCatDoAlunoDisc->put('result',$resultado);
-                        }
                                                                     
                       }
                   }            
@@ -1102,31 +1134,49 @@ class Turma extends Model
               
               }/*fim das disciplinas*/
 
+                if($classe->nome == '10ª' || $classe->nome == '11ª' || $classe->nome == '12ª' || $classe->nome == '13ª'){
+                    $modulo_10 = Modulo::where('nome',$curso->acronimo . ' 10ª')->first();
+                    $disciplinas_10 = $modulo_10->disciplinas()->where('curricular','S')->get();
+              
 
-                $modulo_10 = Modulo::where('nome',$curso->acronimo . ' 10ª')->first();
-                $modulo_11 = Modulo::where('nome',$curso->acronimo . ' 11ª')->first();
-                $modulo_12 = Modulo::where('nome',$curso->acronimo . ' 12ª')->first();
-                $modulo_13 = Modulo::where('nome',$curso->acronimo . ' 13ª')->first();
+                }
+                if($classe->nome == '11ª' || $classe->nome == '12ª' || $classe->nome == '13ª'){             
+                    $modulo_11 = Modulo::where('nome',$curso->acronimo . ' 11ª')->first();
+                    $disciplinas_11 = $modulo_11->disciplinas()->where('curricular','S')->get();
+                              
+                    foreach ($disciplinas_10 as $disc_10) {
+                      if($disc_10->pivot->terminal == 'S'){
+                          $disciplinas_11->prepend($disc_10);
+                      }
+                    }
 
-                $disciplinas_10 = $modulo_10->disciplinas()->where('curricular','S')->get();
-                $disciplinas_11 = $modulo_11->disciplinas()->where('curricular','S')->get();
-                $disciplinas_12 = $modulo_12->disciplinas()->where('curricular','S')->get();
-                $disciplinas_13 = $modulo_13->disciplinas()->where('curricular','S')->get();
+                }
+                if($classe->nome == '12ª' || $classe->nome == '13ª'){              
+                    $modulo_12 = Modulo::where('nome',$curso->acronimo . ' 12ª')->first();
+                    $disciplinas_12 = $modulo_12->disciplinas()->where('curricular','S')->get();
+                    
+                    foreach ($disciplinas_11 as $disc_11) {
+                      if($disc_11->pivot->terminal == 'S'){
+                          $disciplinas_12->prepend($disc_11);
+                      }
+                    }
+                  
+
+                }
+                if($classe->nome == '13ª'){              
+                  $modulo_13 = Modulo::where('nome',$curso->acronimo . ' 13ª')->first();
+                  $disciplinas_13 = $modulo_13->disciplinas()->where('curricular','S')->get();
+                    foreach ($disciplinas_12 as $disc_12) {
+                      if($disc_12->pivot->terminal == 'S'){
+                          $disciplinas_13->prepend($disc_12);
+                      }
+                  
+
+                }
+
+
+
                 
-                foreach ($disciplinas_10 as $disc_10) {
-                  if($disc_10->pivot->terminal == 'S'){
-                      $disciplinas_11->prepend($disc_10);
-                  }
-                }
-                foreach ($disciplinas_11 as $disc_11) {
-                  if($disc_11->pivot->terminal == 'S'){
-                      $disciplinas_12->prepend($disc_11);
-                  }
-                }
-                foreach ($disciplinas_12 as $disc_12) {
-                  if($disc_12->pivot->terminal == 'S'){
-                      $disciplinas_13->prepend($disc_12);
-                  }
                 } 
 
 
@@ -1397,11 +1447,91 @@ class Turma extends Model
    }
 
    
+     /*BUSCA TODAS AS CTS TRIMESTRAIS*/
+     public static function avaliacaoTrimestralDaTurma($turma_id,$trimestre){       
+        
+        if($trimestre == 'I'){
+          $listaModelo = DB::table('avaliacoes_view')
+                        ->select('avaliacoes_view.aluno_id',
+                                 'avaliacoes_view.disciplina_id',
+                                 'avaliacoes_view.ct1b',
+                                 'avaliacoes_view.fnj1',
+                                 'avaliacoes_view.fj1')
+                         ->where('avaliacoes_view.turma_id',$turma_id)
+                         ->orderBy('avaliacoes_view.disciplina_id','ASC')
+                         ->groupBy('avaliacoes_view.id')->get();
+
+        }else if($trimestre == 'II'){
+          $listaModelo = DB::table('avaliacoes_view')
+                        ->select('avaliacoes_view.aluno_id',
+                                 'avaliacoes_view.disciplina_id',
+                                 'avaliacoes_view.ct2b',
+                                 'avaliacoes_view.fnj2',
+                                 'avaliacoes_view.fj2')
+                         ->where('avaliacoes_view.turma_id',$turma_id)
+                         ->orderBy('avaliacoes_view.disciplina_id','ASC')
+                         ->groupBy('avaliacoes_view.id')->get();
+        }else{
+           $listaModelo = DB::table('avaliacoes_view')
+                        ->select('avaliacoes_view.aluno_id',
+                                 'avaliacoes_view.disciplina_id',
+                                 'avaliacoes_view.notafinalb',
+                                 'avaliacoes_view.fnj3',
+                                 'avaliacoes_view.fj3')
+                         ->where('avaliacoes_view.turma_id',$turma_id)
+                         ->orderBy('avaliacoes_view.disciplina_id','ASC')
+                         ->groupBy('avaliacoes_view.id')->get();
+
+        }
+       
+        return $listaModelo;
+
+   }
+
+
+   /*BUSCA TODAS AS CTS ANUAIS*/
+     public static function avaliacaoTrimestraisDaTurma($turma_id){       
+        
+          $listaModelo = DB::table('avaliacoes_view')
+                          ->select('avaliacoes_view.aluno_id',
+                                   'avaliacoes_view.aluno',
+                                   'avaliacoes_view.disciplina',
+                                   'avaliacoes_view.disciplina_id',
+                                   'avaliacoes_view.ct1b',
+                                   'avaliacoes_view.fnj1',
+                                   'avaliacoes_view.fj1',
+                                   'avaliacoes_view.ct2b',
+                                   'avaliacoes_view.fnj2',
+                                   'avaliacoes_view.fj2',
+                                   'avaliacoes_view.disciplina_id',
+                                   'avaliacoes_view.notafinalb',
+                                   'avaliacoes_view.fnj3',
+                                   'avaliacoes_view.fj3')
+                           ->where('avaliacoes_view.turma_id',$turma_id)
+                           ->orderBy('avaliacoes_view.disciplina_id','ASC')
+                           ->groupBy('avaliacoes_view.id')->get();      
+       
+          return $listaModelo;
+
+   }
+
+
+
+
    /*BUSCA TODAS AS AVALIACOES DO ALUNO EM TODOS OS ANOS E DISCIPLINAS*/
-   public static function avaliacoesDoAluno($aluno_id){    
-                      $epoca = Epoca::where('Activo','S')->first();
-                      $sortedListaModelo = collect([]);
-                      $listaModelo = DB::table('avaliacaos')
+   public static function avaliacoesDoAluno($aluno_id){
+                  
+                  // $turma = Turma::find($turma_id);
+                  // $ano_lectivo = $turma->ano_lectivo;
+                  $ano_lectivo = 2019;
+                  $listaModelo = collect([]);
+                  
+                  $epoca = Epoca::where('Activo','S')->first();
+                  $sortedListaModelo = collect([]);
+
+                  if($ano_lectivo < 2019){
+                  
+                  $listaModelo = DB::table('avaliacaos')
                        ->where('avaliacaos.aluno_id','=',$aluno_id) 
                        ->join('turmas','turmas.id','=','avaliacaos.turma_id')
                        ->where('turmas.ano_lectivo','<=',$epoca->ano_lectivo)
@@ -1422,7 +1552,7 @@ class Turma extends Model
                                 'turmas.ano_lectivo',
                                 'alunos.idmatricula',
                                 'alunos.nome',
-                                DB::raw('year(data_de_nascimento)-year(now()) as idade'),
+                                DB::raw('year(now()) - year(data_de_nascimento) as idade'),
                                 'disciplinas.acronimo as disciplina',
                                 'avaliacaos.fnj1',
                                 'avaliacaos.mac1',
@@ -1455,6 +1585,62 @@ class Turma extends Model
                        ->orderBy('disciplinas.nome','ASC')
                         ->groupBy('avaliacaos.id')->get();
 
+
+                    }else{
+
+
+                       $listaModelo = DB::table('avaliacaos')
+                       ->where('avaliacaos.aluno_id','=',$aluno_id) 
+                       ->join('turmas','turmas.id','=','avaliacaos.turma_id')
+                       ->where('turmas.ano_lectivo','<=',$epoca->ano_lectivo)
+                       ->join('modulos','modulos.id','=','turmas.modulo_id')
+                       ->join('disciplinas','disciplinas.id','=','avaliacaos.disciplina_id')
+                       ->join('alunos','alunos.id','=','avaliacaos.aluno_id')
+                       ->join('aluno_turma','aluno_turma.aluno_id','=','alunos.id')           
+                       ->leftjoin('users','users.id','=','avaliacaos.user_id')
+
+                       ->select('avaliacaos.id',
+                                'avaliacaos.turma_id',
+                                'modulos.nome as modulo',
+                                'modulos.id as modulo_id',
+                                'avaliacaos.disciplina_id',
+                                'avaliacaos.aluno_id',
+                                'aluno_turma.numero',
+                                'turmas.ano_lectivo',
+                                'alunos.idmatricula',
+                                'alunos.nome',
+                                DB::raw('year(now()) - year(data_de_nascimento) as idade'),
+                                'disciplinas.acronimo as disciplina',
+                                'avaliacaos.fnj1',
+                                'avaliacaos.mac1',
+                                'avaliacaos.p11',                                
+                                DB::raw('round((avaliacaos.mac1 + avaliacaos.p11)/2,1) as ct1'),
+                                'avaliacaos.fnj2',
+                                'avaliacaos.mac2',
+                                'avaliacaos.p21',                                
+                                DB::raw('round((avaliacaos.mac2 + avaliacaos.p21)/2,1) as cf2'),
+                                DB::raw('round((avaliacaos.mac1 + avaliacaos.p11)/2,1) as ct1copy'),
+                                  DB::raw('round(((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2,1) as ct2'),
+                                'avaliacaos.fnj3',                                
+                                'avaliacaos.mac3',
+                                'avaliacaos.p31',                                
+                                DB::raw('round((avaliacaos.mac3 + avaliacaos.p31)/2,1) as cf3'),
+                                DB::raw('round(((avaliacaos.mac1 + avaliacaos.p11 + avaliacaos.p12)/3 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2,1) as ct2copy'),
+                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2,1) as ct3'),
+                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2,1) as mtc'),
+                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2 * 0.6,1) as sessenta'),
+                                  'avaliacaos.p32',
+                                DB::raw('round(avaliacaos.p32 * 0.4,1) as quarenta' ),
+                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2 * 0.6 + avaliacaos.p32 * 0.4,1) as notafinal'),
+                                DB::raw('round(avaliacaos.exame1,1) as exame1' ),
+                                DB::raw('round(avaliacaos.exame2,1) as exame2' ),
+                                DB::raw('round(avaliacaos.exame3,1) as exame3' ),
+                                  'avaliacaos.status'
+                              )   
+                       ->orderBy('disciplinas.nome','ASC')
+                        ->groupBy('avaliacaos.id')->get();                                     
+          }
+
                     /*MOSTRA AS AVALIACOES ANULADAS APENAS NO ANO QUE AS MESMAS OCORRERAM*/
                     foreach ($listaModelo as $lista){
 
@@ -1469,6 +1655,7 @@ class Turma extends Model
 
                       }                        
                     }
+                   
 
        return $sortedListaModelo;
 
@@ -1607,7 +1794,8 @@ class Turma extends Model
                        ->join('modulos','modulos.id','=','turmas.modulo_id')
                        ->join('cursos','cursos.id','=','modulos.curso_id')
                        ->join('classes','classes.id','=','modulos.classe_id') 
-                       ->select('turmas.id','turmas.nome','cursos.nome as curso','classes.nome as classe','turmas.ano_lectivo','users.name as usuario')
+                       ->join('Salas','salas.id','=','turmas.sala_id')
+                       ->select('turmas.id','turmas.nome','cursos.nome as curso','classes.nome as classe','Salas.nome as sala','turmas.ano_lectivo','users.name as usuario')
                        ->orderBy('turmas.nome','desc')                      
                        ->where('disciplina_turma.professor_id','=',$professor->id)
                        ->where('turmas.ano_lectivo','=',$ano_lectivo)    

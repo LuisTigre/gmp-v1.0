@@ -19,7 +19,15 @@
       criar="#criar" editar="/admin/turmas/" 
       deletar="/admin/turmas/" token="{{csrf_token()}}"
       modal="sim"
-      v-bind:buttons="[{'nome':'Alunos','url':'/admin/turmas/' ,'action':'alunos'},{'nome':'Disciplinas','url':'/admin/turmas/','action':'disciplinas'},{'nome':'Pauta Trimestral','url':'/admin/turmas/','action':'pauta'},{'nome':'Pauta Final','url':'/admin/turmas/','action':'pautafinal'},{'nome':'Horário','url':'/admin/turmas/','action':'horario'},{'nome':'Aulas','url':'/admin/turmas/','action':'aulas'}]"
+      v-bind:buttons="[
+      {'nome':'Alunos','url':'/admin/turmas/' ,'action':'alunos'},
+      {'nome':'Disciplinas','url':'/admin/turmas/','action':'disciplinas'},
+      {'nome':'Pauta Trimestral','url':'/admin/turmas/','action':'pauta'},
+      {'nome':'Pauta Final','url':'/admin/turmas/','action':'pautafinal'},
+      {'nome':'Ficha de Notas','url':'/admin/turmas/','action':'ficha_apr'},
+      {'nome':'Horário','url':'/admin/turmas/','action':'horario'},
+      {'nome':'Aulas','url':'/admin/turmas/','action':'aulas'}
+      ]"
       >
       </tabela-lista>
       @else

@@ -246,7 +246,7 @@ public function index()
        $curso = Curso::find($modulo->curso_id);
        $classe = Classe::find($modulo->classe_id);
        $epoca = Epoca::where('activo','S')->first();   
-       $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S');
+       $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S');      
        $aluno_turmas = $aluno->turmas()->get();
        $area_formaçao = Area::find($curso->area_id); 
        $instituicao = Instituicao::all()->first();             
@@ -255,9 +255,17 @@ public function index()
        $modulo_11 = $modulo->where('nome',$curso->acronimo . ' 11ª')->first();
        $modulo_12 = $modulo->where('nome',$curso->acronimo . ' 12ª')->first();
 
-       $turma_10 = $aluno_turmas->where('modulo_id',$modulo_10->id)->last();
-       $turma_11 = $aluno_turmas->where('modulo_id',$modulo_11->id)->last();
-       $turma_12 = $aluno_turmas->where('modulo_id',$modulo_12->id)->last();
+       if(!is_null($modulo_10)){
+         $turma_10 = $aluno_turmas->where('modulo_id',$modulo_10->id)->last();         
+       }
+
+       if (!is_null($modulo_11)) {
+         $turma_11 = $aluno_turmas->where('modulo_id',$modulo_11->id)->last();        
+       }
+       if (!is_null($modulo_11)) {
+         $turma_12 = $aluno_turmas->where('modulo_id',$modulo_12->id)->last();        
+       }
+
        
        $label_10 = '';
        $label_11 = '';
@@ -275,14 +283,14 @@ public function index()
        $label_10 = $turma_10_info[2];
        $numero_10 = $turma_10->pivot->numero;
        
-       if(!is_null($turma_11)){
+       if(isset($turma_11) && !is_null($turma_11)){
          $turma_11_info = explode(' ',$turma_11->nome);
          $label_11 = $turma_11_info[2];
          $numero_11 = $turma_11->pivot->numero;
          $ano_lectivo_11 = $turma_11->ano_lectivo;
        }
 
-       if(!is_null($turma_12)){
+       if(isset($turma_11) && !is_null($turma_12)){
          $turma_12_info = explode(' ',$turma_12->nome);
          $label_12 = $turma_12_info[2];
          $numero_12 = $turma_12->pivot->numero; 
@@ -432,7 +440,7 @@ public function index()
           top:9%;
        }
        #rodape p{
-         margin-top:-13px;
+         margin-top:-11px;
        }
        #rodape > div{
           float:left;
@@ -584,10 +592,9 @@ public function index()
                 ";
                 foreach ($categoria as $key => $value){
                   if((($i == 0 && $y == 0) && $value == $categorias[0]) || (($i == 0 && $y == 0) && $value == $categorias[1]) || (($i == 0 && $y == 0) && $value == $categorias[2])){
-                      $rowspan = intVal(sizeof($lista));
-
+                      $rowspan = intVal(sizeof($lista));                        
                       $output .="
-                      <td style='text-align:center;text-transform:uppercase;' rowspan='$rowspan'>$value</td>";
+                      <td style='text-align:center;text-transform:uppercase;' rowspan='$rowspan'>Componente $value</td>";
                        
                     $i++; 
                   }else if($value != $categorias[0] && $value != $categorias[1] 
@@ -919,7 +926,7 @@ public function index()
             <p>REPÚBLICA DE ANGOLA</p>                                                              
             <p>MINISTÉRIO DA EDUCAÇÃO</p>                                                           
             <p style='font-weight:bold;text-align:center;font-size:14'>Instituto Politécnico de  Cabinda</p>                                            
-            <p style='text-transform:uppercase;font-weight:bold;text-align:center;font-size:18'>DECLARAÇÃO DE ESTUDOS Nº36</p>                          
+            <p style='text-transform:uppercase;font-weight:bold;text-align:center;font-size:18'>DECLARAÇÃO DE ESTUDOS Nº</p>                          
             <p style='text-transform:uppercase;font-weight:bold;text-align:center;font-size:18'>$curso->acronimo/$instituicao->sigla/$aluno_ultima_turma->ano_lectivo</p>                          
             <p style='font-weight:bold;text-align:center;font-size:18'>$instituicao->nome</p>            
             </div>

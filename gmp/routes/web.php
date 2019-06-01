@@ -75,6 +75,7 @@ Route::get('admin/alunos/importAlunos','admin\alunosController@import')->name('a
 Route::get('/dynamic_pdf/pdf/{id}', 'admin\turmaPautaController@pdf',['parameters'=>['index'=>'filter']]);
 
 Route::get('admin/turmas/{id}/pautafinal', 'admin\turmaPautaController@pautafinalpdf',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/ficha_apr', 'admin\turmaPautaController@ficha_de_aproveitamento',['parameters'=>['index'=>'filter']]);
 
 Route::get('admin/alunos/{id}/bolentim', 'admin\alunosController@bolentim',['parameters'=>['index'=>'filter']]);
 

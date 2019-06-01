@@ -78,7 +78,7 @@ class ModulosController extends Controller
             }
             $user = auth()->user();
             $modulo = Modulo::where('curso_id',$curso->id)->get()
-                            ->where('curso_id',$classe->id)
+                            ->where('classe_id',$classe->id)
                             ->where('ano',$epoca->ano_lectivo);
             
             if($modulo->isEmpty()){

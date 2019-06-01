@@ -18,6 +18,7 @@ use App\Avaliacao;
 use App\Epoca;
 use App\Curso;
 use App\Area;
+use App\Instituicao;
 
 
 class TurmaAvaliacaoController extends Controller
@@ -236,7 +237,8 @@ class TurmaAvaliacaoController extends Controller
        $epoca = Epoca::where('activo','S')->first();          
        $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);
        $total_alunos = $listaModelo->count(); 
-
+       $instituicao = Instituicao::all()->first();
+       
 
        if($epoca->trimestre == 'I'){               
          $aptos = round(($listaModelo->where('ct1','>=',10)->count() * 100)/$total_alunos,1);  
@@ -360,10 +362,10 @@ class TurmaAvaliacaoController extends Controller
       </style>
       </head>
       <body onload='atribueCor()'>
-  <div tamanho='11'>
-   <div id='cabecalho' align='center' style='font-size: 11px;font-weight: bold;' class='table-responsive text-uppercase'>
-      <p>COLÉGIO PADRE BUILU</p>                           
-      <p>FÉ E CIÊNCIA</p>                                       
+  <div style='font-size: 10.5px;'>
+   <div id='cabecalho' align='center' style='font-size: 10.5px;font-weight: bold;' class='table-responsive text-uppercase'>
+      <p>$instituicao->nome</p>                           
+      <p>$instituicao->lema</p>                                       
       <p>ENSINO SECUNDÁRIO TÉCNICO PROFISSIONAL</p>       
       <p>PAUTA DE APROVEITAMENTO</p>            
       <p>ÁREA DE FORMAÇÃO:$area->nome</p>           
@@ -381,7 +383,7 @@ class TurmaAvaliacaoController extends Controller
        <p><span style='font-weight: bold;'>DISCIPLINA:</span> <span style='color:red;'>$disciplina->acronimo</span> ($disciplina->nome)</p>     
     </div>
     <div id='seccao_3' align='center' class='col-md-6'>
-       <p style='font-size: 11px;;'>
+       <p style='font-size: 8px;'>
         <span style='font-weight: bold;'>Aptos:</span> <span style='font-weight:bold;color:red;'>$aptos%  
         </span>
         <span style='font-weight: bold;'>N/Aptos:</span> <span style='font-weight:bold;color:red;'>$naptos%
@@ -395,7 +397,7 @@ class TurmaAvaliacaoController extends Controller
     </div>
     </div>
      <div id='tabela_area'>
-      <table id='mytable' class='table table-bordered table-xs table-condensed' style='font-size:10px;'>
+      <table id='mytable' class='table table-bordered table-xs table-condensed' style='font-size:11px;'>
       <thead>
       <tr style='font-weight: bold;'>
       <th scope='col' rowspan='2'>#</th>    
@@ -458,14 +460,21 @@ class TurmaAvaliacaoController extends Controller
   <tbody>";
         $counter = 0;    
         $counter2 = 0;    
-        $fundo = '';    
+        $fundo = '';
+        $font_size = 0;
+        
         foreach($listaModelo as $aluno){
-                
           if($aluno->status == 'Desistido'){
             $fundo ='yellow';
           }else{
             $fundo = '';
 
+          }
+          if($listaModelo->count() > 45){
+              $font_size = 9.8;              
+
+          }else{
+              $font_size = 10;
           }
           // $counter2++;
           // if($counter2%2!=0){
@@ -474,7 +483,7 @@ class TurmaAvaliacaoController extends Controller
           //   $fundo = '#fff';
           // }
         $output .="
-        <tr style='font-size: 9px;background:$fundo;'>";
+        <tr style='font-size: $font_size px;background:$fundo;'>";
         foreach ($aluno as $key => $value){
 
          if($value != null && $value !=''){

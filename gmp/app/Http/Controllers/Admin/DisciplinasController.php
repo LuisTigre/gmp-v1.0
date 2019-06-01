@@ -63,8 +63,8 @@ class DisciplinasController extends Controller
         $data = $request->all();
        if($request->has('nome')){        
         $validacao = \Validator::make($data,[
-        "nome" => "required",        
-        "acronimo" => "required"        
+        "nome" => "required|unique:disciplinas",        
+        "acronimo" => "required|unique:disciplinas"        
         ]);
         if($validacao->fails()){
             return redirect()->back()->withErrors($validacao)->withInput();

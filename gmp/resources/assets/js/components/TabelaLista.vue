@@ -8,7 +8,7 @@
         <input type="search" class="form-control" placeholder="buscar" v-model="buscar">
       </div>      
     </div>
-      <table class="table table-striped table-hover table-xs ">
+      <table class="table table-striped table-hover table-xs" style="font-size:11.5px;">
         <thead>
           <tr>
             <th style="cursor:pointer" v-on:click="ordenaColuna(index)" v-for="(titulo,index) in titulos">{{ titulo }}</th>
@@ -31,7 +31,7 @@
 
               <a href="#" v-on:click="executaForm(index)"> Deletar</a>
                               
-                <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;margin-top:-7.5px;">
+                <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;margin-top:-8px;left:95%;">
                   <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    <i class="glyphicon glyphicon-option-vertical"></i>
                   </a>                  

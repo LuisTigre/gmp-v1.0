@@ -37,12 +37,12 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
             
     	if(!isset($row['nome_completo']) & !isset($row['disciplina']) & !isset($row['turma']) & !isset($row['ano_lectivo']) & !isset($row['ano_lectivo']) ){
 
-            dd($row);
-            }     
+            return null;
+                 
         }else{
             $ano_lectivo = intVal($row['ano_lectivo']);            
             $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$ano_lectivo)->first();
-            $turma = null;
+
             if(is_null($turma)){
                 dd("TURMA INEXISTENTE !!!
                     PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
