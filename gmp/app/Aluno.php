@@ -10,7 +10,7 @@ use App\Turma;
 class Aluno extends Model
 {  
               
-   protected $fillable = ['nome','data_de_nascimento','idmatricula','repetente','sexo','telefone','encarregado_tel','email','modulo_id','status','pai','mae','doctipo','doc_numero','doc_local_emissao','doc_data_emissao','doc_data_validade','naturalidade','provincia','pais','morada','escola_origem'];
+   protected $fillable = ['nome','data_de_nascimento','idmatricula','repetente','sexo','telefone','encarregado_tel','email','modulo_id','status','pai','mae','doctipo','doc_numero','doc_local_emissao','doc_data_emissao','doc_data_validade','naturalidade','provincia','pais','morada','escola_origem','devedor'];
          
    // protected $fillable = ['nome','data_de_nascimento','idmatricula'];   
 

@@ -49,6 +49,7 @@ class AdminController extends Controller
         $totalClasses = Classe::count();
         $totalModulos = Modulo::count();
         $totalProfessores = Professor::count();
+        $totalDevedores = Aluno::where('devedor','S')->count();
         $totalTurmas = Turma::count();
         if($user->professor == 'S'){
             $professor = Professor::where('email',$user->email)->first();
@@ -63,6 +64,6 @@ class AdminController extends Controller
         // }
         $totalAlunos = Aluno::count();        
 
-        return view('admin',compact('listaMigalhas','totalAutores','totalUsuarios','totalArtigos','totalAdmin','totalCursos','totalDisciplinas','totalClasses','totalTurmas','totalProfessores','totalModulos','totalAlunos','totalSalas','totalAreas'));
+        return view('admin',compact('listaMigalhas','totalAutores','totalUsuarios','totalArtigos','totalAdmin','totalCursos','totalDisciplinas','totalClasses','totalTurmas','totalProfessores','totalModulos','totalAlunos','totalSalas','totalAreas','totalDevedores'));
     }
 }

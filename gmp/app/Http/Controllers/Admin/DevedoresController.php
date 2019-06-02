@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Aluno;
 use Illuminate\Validation\Rule;
 
-class AutoresController extends Controller
+class DevedoresController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +19,12 @@ class AutoresController extends Controller
     {
       $listaMigalhas = json_encode([
         ["titulo"=>"Admin","url"=>route('admin')],
-        ["titulo"=>"Lista de Autores","url"=>""]
+        ["titulo"=>"Lista de Devedores","url"=>""]
         ]);
-       $listaModelo = User::select('id','name','email')->where('autor','=','S')->paginate(5);       
-       return view('admin.autores.index',compact('listaMigalhas','listaModelo'));
+      // dd('got it');
+       $listaModelo = Aluno::select('id','nome','encarregado_tel','telefone')->where('devedor','=','S')->paginate(5);
+       $listaAlunos = Aluno::listaAlunos(100);      
+       return view('admin.alunos.devedores.index',compact('listaMigalhas','listaModelo','listaAlunos'));
     }
 
     /**
@@ -42,17 +45,21 @@ class AutoresController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();        
+        $data = $request->all();
+
+
         $validacao = \Validator::make($data,[
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:6',
+        'aluno_id' => 'required'       
         ]);
         if($validacao->fails()){
             return redirect()->back()->withErrors($validacao)->withInput();
         }
-        $data['password'] = bcrypt($data['password']);
-        User::create($data);
+        foreach ($data['aluno_id'] as $key => $value) {
+             $aluno = Aluno::find($value);
+             $aluno->devedor = 'S';
+             $aluno->save();
+        }       
+
         return redirect()->back();
     }
 
@@ -89,26 +96,19 @@ class AutoresController extends Controller
     {
        $data = $request->all();
 
-        if(isset($data['password']) && $data('password') != ""){
-            $validacao = \Validator::make($data,[
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            ]);
-            $data['password'] = bcrypt($data['password']);
-        }else{
-            $validacao = \Validator::make($data,[
-            'name' => 'required|string|max:255',                      
-            'email' => ['required','string','email','max:255',Rule::unique('users')->ignore($id)]           
-            ]);
-            unset($data['password']);
-            
-        }
-        
+
+        $validacao = \Validator::make($data,[
+        'aluno_id' => 'required'       
+        ]);
         if($validacao->fails()){
             return redirect()->back()->withErrors($validacao)->withInput();
         }
-        User::find($id)->update($data);
+        foreach ($data['aluno_id'] as $key => $value) {
+             $aluno = Aluno::find($value);
+             $aluno->devedor = 'N';
+             $aluno->save();
+        }       
+
         return redirect()->back();
     }
 
@@ -120,7 +120,10 @@ class AutoresController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
+        dd('Hey it worked');
+        $aluno = Aluno::find($id);
+        $aluno->devedor = 'N';
+        $aluno->update();
         return redirect()->back();
     }
 }

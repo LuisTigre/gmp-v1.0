@@ -6,18 +6,18 @@
 	    <painel titulo="Dashboard">
 	    	<migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
 	    	<div class="row">
-	    		@can('professor')
-	    		<div class="col-md-2">
-	                <caixa titulo="Artigos" qtd="{{$totalArtigos}}" url="{{route('artigos.index')}}" cor="brown" icon="ion ion-pie-graph"></caixa>
-	            </div>
-	            <div class="col-md-2">
-	                <caixa titulo="Turmas" qtd="{{$totalTurmas}}" url="{{route('turmas.index')}}" cor="darkblue" icon="ion ion-person-stalker"></caixa>
-	            </div>
+	    		@can('professor')	    		
 	            <div class="col-md-2">
 	                <caixa titulo="Professores" qtd="{{$totalProfessores}}" url="{{route('professores.index')}}" cor="brown" icon="ion ion-person-stalker"></caixa>
 	            </div>	
+	            <div class="col-md-2">
+	                <caixa titulo="Turmas" qtd="{{$totalTurmas}}" url="{{route('turmas.index')}}" cor="darkblue" icon="ion ion-person-stalker"></caixa>
+	            </div>
 	    		@endcan
 	    		@can('eAdmin')
+	    		<div class="col-md-2">
+	                <caixa titulo="Artigos" qtd="{{$totalArtigos}}" url="{{route('artigos.index')}}" cor="brown" icon="glyphicon glyphicon-comment"></caixa>
+	            </div>
 	    		<div class="col-md-2">
 	                <caixa titulo="Usuários" qtd="{{$totalUsuarios}}" url="{{route('usuarios.index')}}" cor="brown" icon="ion ion-person-stalker">	                	
 	                </caixa>
@@ -55,9 +55,9 @@
 	            <div class="col-md-2">
 	                <caixa titulo="Modulos" qtd="{{$totalModulos}}" url="{{route('modulos.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
 	            </div>
-	            <!-- <div class="col-md-2">
-	                <caixa titulo="Atividades" qtd="{{$totalClasses}}" url="{{route('atividades.index')}}" cor="red" icon="glyphicon glyphicon-book"></caixa>
-	            </div> -->
+	            <div class="col-md-2">
+	                <caixa titulo="Devedores" qtd="{{$totalDevedores}}" url="{{route('devedores.index')}}" cor="brown" icon="fa fa-money"></caixa>
+	            </div>
 	            <div class="col-md-2">
 	                <caixa titulo="Anos Acad." qtd="{{$totalClasses}}" url="{{route('epocas.index')}}" cor="brown" icon="glyphicon glyphicon-calendar"></caixa>
 	            </div>	

@@ -91,6 +91,7 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
 	Route::resource('artigos','ArtigosController')->middleware('can:professor');
 	Route::resource('usuarios','UsuariosController')->middleware('can:eAdmin');
 	Route::resource('autores','AutoresController')->middleware('can:professor');
+	Route::resource('devedores','DevedoresController')->middleware('can:professor');
 	Route::resource('adm','AdminController')->middleware('can:eAdmin');
 	Route::resource('horario','HorarioController')->middleware('can:eAdmin');
 	Route::resource('cursos','cursosController')->middleware('can:eAdmin');

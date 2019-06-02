@@ -1140,7 +1140,7 @@ class TurmaPautaController extends Controller
       $vermelhado = '';
       $status = $aluno['Result'];      
       if($status == 'Desistido' || $status == 'Suspenso' || $status == 'Transferido'){
-          $status=='Desistido'? $fundo = 'rgb(249,239,184)':($status=='Suspenso'? $fundo = 'rgb(255,212,227)' : $fundo ='rgb(247,221,252)');
+          $status=='Desistido'? $fundo = 'yellow':($status=='Suspenso'? $fundo = 'rgb(255,212,227)' : $fundo ='rgb(247,221,252)');
             
       }
       $ct = 9;
@@ -1267,7 +1267,7 @@ class TurmaPautaController extends Controller
 
 
 function ficha_de_aproveitamento($turma_id){
-      set_time_limit(240);
+      set_time_limit(1000);
       $turma = Turma::find($turma_id);
       $director_turma = $turma->professores()->where('director','s')->first();
       $pdf = \App::make('dompdf.wrapper');
@@ -1306,7 +1306,7 @@ function ficha_de_aproveitamento($turma_id){
         ["titulo"=>"Professores","url"=>""]
     ]);       
         
-        $listaModelo = Turma::avaliacaoTrimestraisDaTurma($turma_id);
+        $listaModelo = Turma::avaliacaoTrimestraisDaTurma($turma_id);        
         $lista = collect([]);
         $elements = ['I TRIM NOTAS'=>'I TRIM NOTAS',
                      'I TRIM FALTAS'=>'I TRIM FALTAS',
@@ -1318,10 +1318,12 @@ function ficha_de_aproveitamento($turma_id){
                     ];
 
           foreach ($alunos as $aluno){
+            $aluno_total_faltas = 0;
             $avaliacao_aluno_collection = collect([]);
             $aluno_avaliacao = $listaModelo->where('aluno_id',$aluno->id);              
             $avaliacao_aluno_collection->put('nome',$aluno->nome);
             $avaliacao_aluno_collection->put('numero',$aluno->numero);
+            $avaliacao_aluno_collection->put('devedor',$aluno->devedor);
             
              foreach ($elements as $key => $element) {
                 $data = collect([]);
@@ -1359,12 +1361,14 @@ function ficha_de_aproveitamento($turma_id){
                           $f1 = $f1 != null ? $f1 : 0;
                           $f2 = $f2 != null ? $f2 : 0;
                           $total = $f1 + $f2;
+                          $aluno_total_faltas += $total;                          
                           $total = $total != 0 ? $total : '';                   
-                          $data->put($key . '_' . $disciplina->acronimo,$total);                          
+                          $data->put($key . '_' . $disciplina->acronimo,$total);
 
                        }else if($key == 'CARGA HORÁRIA'){
-                          $value = $disciplina->pivot->carga;                                             
-                          $data->put($key . '_' . $disciplina->acronimo,$value);                         
+                          $element = $disciplina->pivot->carga;                                             
+                          $data->put($key . '_' . $disciplina->acronimo,$element);
+                          $total += $element;                         
                           
 
                        }else if($key == 'ESTADO'){
@@ -1378,35 +1382,42 @@ function ficha_de_aproveitamento($turma_id){
                                                      
                     }else{
                       if($key == 'CARGA HORÁRIA'){
-                          $value = $disciplina->pivot->carga;                   
-                          $data->put($key . '_' . $disciplina->acronimo,$value);
+                          $element = $disciplina->pivot->carga;
+                          $total += $element;                   
+                          $data->put($key . '_' . $disciplina->acronimo,$element);
                           
                        }else{
                           $data->put($key . '_' . $disciplina->acronimo,'');
 
                        }
 
-                        if($key == 'I TRIM FALTAS'){
-                          $element = 10;
-                          $data->put($key . '_' . $disciplina->acronimo,$element);
-                          $total += $element;
-                        }
-                        if($key == 'II TRIM FALTAS'){
-                          $element = 10;
-                          $data->put($key . '_' . $disciplina->acronimo,$element);
-                          $total += $element;
-                        }
+                       //  if($key == 'I TRIM FALTAS'){
+                       //    $element = 10;
+                       //    $data->put($key . '_' . $disciplina->acronimo,$element);
+                       //    $total += $element;
+                       //  }
+                       //  if($key == 'II TRIM NOTAS'){
+                       //    $element = 10;
+                       //    $data->put($key . '_' . $disciplina->acronimo,$element);
+                       //    $total += $element;
+                       //  }
+                       //  if($key == 'II TRIM FALTAS'){
+                       //    $element = 10;
+                       //    $data->put($key . '_' . $disciplina->acronimo,$element);
+                       //    $total += $element;
+                       //  }
 
-                        if($key == 'TOTAL FALTAS'){
-                          $f1 = $avaliacao_aluno_collection['I TRIM FALTAS']['I TRIM FALTAS_' . $disciplina->acronimo];
-                          $f2 = $avaliacao_aluno_collection['II TRIM FALTAS']['II TRIM FALTAS_' . $disciplina->acronimo];
-                          $f1 = $f1 != null ? $f1 : 0;
-                          $f2 = $f2 != null ? $f2 : 0;
-                          $total = $f1 + $f2;
-                          $total = $total != 0 ? $total : '';                   
-                          $data->put($key . '_' . $disciplina->acronimo,$total);                          
+                       //  if($key == 'TOTAL FALTAS'){
+                       //    $f1 = $avaliacao_aluno_collection['I TRIM FALTAS']['I TRIM FALTAS_' . $disciplina->acronimo];
+                       //    $f2 = $avaliacao_aluno_collection['II TRIM FALTAS']['II TRIM FALTAS_' . $disciplina->acronimo];
+                       //    $f1 = $f1 != null ? $f1 : 0;
+                       //    $f2 = $f2 != null ? $f2 : 0;
+                       //    $aluno_total_faltas += $total;
+                       //    $total = $f1 + $f2;
+                       //    $total = $total != 0 ? $total : '';                   
+                       //    $data->put($key . '_' . $disciplina->acronimo,$total);                          
 
-                       }
+                       // }
 
                         
 
@@ -1420,11 +1431,17 @@ function ficha_de_aproveitamento($turma_id){
                       if($key == 'I TRIM NOTAS' || $key == 'II TRIM NOTAS'){
                         $total = $total / $disciplinas->count();
                       }
+                      if($key == 'TOTAL FALTAS'){
+                        $total = $aluno_total_faltas;
+                        $avaliacao_aluno_collection->put('ALUNO_TOTAL_FALTAS',$total);
+                      }
+
                       $data->put('total',round($total,1));
                       $avaliacao_aluno_collection->put($key,$data);
              }
-
+                      
                     $lista->push($avaliacao_aluno_collection);                    
+                      
           }        
                     $listaModelo = collect(["data"=>$lista]);                    
               
@@ -1504,11 +1521,15 @@ function ficha_de_aproveitamento($turma_id){
         // dd($lista);
         $nome = $aluno['nome'];      
         $numero = $aluno['numero']; 
+        $aluno_total_faltas = $aluno['ALUNO_TOTAL_FALTAS'];
            
       $count++;
-      if($count == 5){
-        break;
-      }       
+      if($count == 33){
+        // continue;
+      }
+      if($aluno['devedor'] == 'S'){
+         continue;
+      }              
           // $avaliacoes_do_aluno = $listaModelo->where('aluno_id',$aluno->id); 
         $output .="
         <div class='cabecalho' align='center' style='font-size: 12px;font-weight: bold;'' class='table-responsive text-uppercase'>
@@ -1518,7 +1539,7 @@ function ficha_de_aproveitamento($turma_id){
         <p>FICHA DE NOTA DO $epoca->trimestre TRIMESTRE DO ANO LECTIVO $turma->ano_lectivo</p>    
        </div>
       <div class='aluno_bio' align='left' style='font-size: 12px;font-weight: bold;' class='text-uppercase'>
-        <p><span>NOME: $nome</span>     <span>N: $numero</span>
+        <p><span>NOME: $nome</span>     <span>Nº: $numero</span>
            <span>CLASSE: $classe->nome</span>     <span>CURSO: $curso->acronimo</span>
         </p> 
       </div>      
@@ -1541,7 +1562,7 @@ function ficha_de_aproveitamento($turma_id){
 
          foreach ($aluno as $key => $item) {
 
-          if($key != 'nome' && $key != 'numero'){
+          if($key != 'nome' && $key != 'numero' && $key != 'ALUNO_TOTAL_FALTAS' && $key != 'devedor'){
              
           $output .="
          <tr>
@@ -1555,27 +1576,29 @@ function ficha_de_aproveitamento($turma_id){
                 $cor = 'black';
                 if(is_null($i)){
                   $i = '';
+                // }else if($key == 'ESTADO'){
+                //   $cor = 'black'; 
+
                 }else{
                   if($key != 'I TRIM FALTAS' 
                     && $key != 'II TRIM FALTAS'
                     && $key != 'TOTAL FALTAS'
                     && $key != 'CARGA HORÁRIA'){
                     
-                        if($i != '' && $i < 10){
+                        if(($i != '' && $i < 10) && ($i != 'MANT.' && $i != 'EXC.')){
                           $cor = 'red';                       
 
                         }else if($i == '' &&  $i <= 0){
                           $i = '';                       
 
-                        }
-                        else{
+                        }else{
                           $cor = 'black';
                           
 
                         }
                   }else{
                         if($i == '' || $i == 0){
-                           $i = '';
+                           $i = '';                       
                         }
                   }
                 }        
@@ -1596,8 +1619,8 @@ function ficha_de_aproveitamento($turma_id){
       </div>
       <div class='rodape'  class='text-uppercase'>            
              <div class='rodape-item'>
-               <p>OBS.: Faltas  (               ) </p>                    
-               <p>Cabinda,      de      2019</p>
+               <p>OBS.: Faltas  ( $aluno_total_faltas ) </p>                    
+               <p>Cabinda,  " . date('d').' / '.date('m').' / '.date('Y') . "</p>               
              </div>
              <div class='rodape-item' style='text-align:right;'>
                <p style='margin-bottom:-30px;font-size:10px;'>O(A) DIRECTOR(A) DE TURMA</p>                  

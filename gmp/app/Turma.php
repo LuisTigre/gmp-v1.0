@@ -1495,6 +1495,7 @@ class Turma extends Model
           $listaModelo = DB::table('avaliacoes_view')
                           ->select('avaliacoes_view.aluno_id',
                                    'avaliacoes_view.aluno',
+                                   'avaliacoes_view.devedor',
                                    'avaliacoes_view.disciplina',
                                    'avaliacoes_view.disciplina_id',
                                    'avaliacoes_view.ct1b',
@@ -1909,7 +1910,7 @@ class Turma extends Model
                      ->join('alunos','alunos.id','=','aluno_turma.aluno_id')
                      ->join('turmas','turmas.id','=','aluno_turma.turma_id') 
                      ->where('aluno_turma.turma_id','=',$turma_id) 
-                     ->select('alunos.id','aluno_turma.numero','alunos.nome','aluno_turma.status','aluno_turma.cargo','users.name as usuario')
+                     ->select('alunos.id','aluno_turma.numero','alunos.nome','alunos.devedor','aluno_turma.status','aluno_turma.cargo','users.name as usuario')
                      ->orderBy('alunos.nome','ASC')
                      ->paginate($paginate);   
            return $lista;

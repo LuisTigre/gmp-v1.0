@@ -42,6 +42,7 @@ class CreateAlunosTable extends Migration
             $table->String('pais');
             $table->String('morada');
             $table->String('escola_origem');            
+            $table->enum('devedor',['S','N'])->default('N');
             $table->timestamps();                      
 
         });
