@@ -33,7 +33,7 @@ public function index()
         ["titulo"=>"Lista de Alunos","url"=>""]
     ]);
        
-       $listaModelo = Aluno::listaAlunos(100);
+       $listaModelo = Aluno::listaAlunos(10000);
        $listaModulos = Modulo::all();
 
        return view('admin.alunos.index',compact('listaMigalhas','listaModelo','listaModulos'));

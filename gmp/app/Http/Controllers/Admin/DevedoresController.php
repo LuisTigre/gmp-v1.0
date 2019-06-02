@@ -22,8 +22,8 @@ class DevedoresController extends Controller
         ["titulo"=>"Lista de Devedores","url"=>""]
         ]);
       // dd('got it');
-       $listaModelo = Aluno::select('id','nome','encarregado_tel','telefone')->where('devedor','=','S')->paginate(5);
-       $listaAlunos = Aluno::listaAlunos(100);      
+       $listaModelo = Aluno::select('id','nome','encarregado_tel','telefone')->where('devedor','=','S')->paginate(100);
+       $listaAlunos = Aluno::listaAlunos(5000);      
        return view('admin.alunos.devedores.index',compact('listaMigalhas','listaModelo','listaAlunos'));
     }
 

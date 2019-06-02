@@ -1,7 +1,8 @@
 <template>
   <div v-bind:class="defineTamanho">   
    <div class="table-responsive">     
-    <div class="form-inline">     
+    <div class="form-inline">
+    <slot></slot>     
       <a v-if="criar && !modal" v-bind:href="criar">Criar</a>
       <modallink v-if="criar && modal" tipo="link" nome="adicionar" titulo="Criar" css=""></modallink>
       <div class="form-group pull-right">

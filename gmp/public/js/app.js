@@ -44264,6 +44264,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'buttons', 'token', 'modal', 'tamanho'],
@@ -44372,6 +44373,8 @@ var render = function() {
         "div",
         { staticClass: "form-inline" },
         [
+          _vm._t("default"),
+          _vm._v(" "),
           _vm.criar && !_vm.modal
             ? _c("a", { attrs: { href: _vm.criar } }, [_vm._v("Criar")])
             : _vm._e(),
@@ -44411,7 +44414,7 @@ var render = function() {
             })
           ])
         ],
-        1
+        2
       ),
       _vm._v(" "),
       _c(
@@ -45910,7 +45913,7 @@ if(false) {
 /* 84 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
 
 /***/ }),
 /* 85 */
@@ -46428,7 +46431,7 @@ if(false) {
 /* 89 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
 
 /***/ }),
 /* 90 */

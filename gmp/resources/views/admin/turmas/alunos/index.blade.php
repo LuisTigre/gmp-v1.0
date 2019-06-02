@@ -21,8 +21,12 @@
       criar="#criar" detalhe="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/" 
       editar="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/" 
       v-bind:deletar="'/admin/turmas/'+{{json_encode($turma->id)}}+'/alunos/'" token="{{csrf_token()}}"
-      modal="sim" 
-      ></tabela-lista>
+      modal="sim">
+        <span class="no-print text-danger">          
+          <!-- <a href="" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-file"></i>Ficha de Notas</a> -->
+          <!-- <modallink tipo="link" nome="adicionar" titulo="Fichas" css="btn btn-default btn-xs glyphicon glyphicon-file"></modallink>   -->  
+      </span>
+      </tabela-lista>
       @else
       <tabela-lista
       v-bind:titulos="['#','Nº','Nome Completo','Status','Cargo','Alt. por']"

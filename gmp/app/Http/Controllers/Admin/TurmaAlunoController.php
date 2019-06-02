@@ -36,26 +36,8 @@ class TurmaAlunoController extends Controller
        $listaTurmas = Turma::orderBy('nome')->get();
        $modulo = $turma->modulo()->first();
 
-       $listaAlunos = Aluno::where('modulo_id',$modulo->id)->get()->sortBy(['data','nome']);
-       $listaAlunos2 = collect([]);
-
-       $alunos_da_turma = collect([]);
-       $alunos_filtrados = collect([]);
-       $turmas_do_ano = Turma::where('ano_lectivo',$epoca->ano_lectivo)->get();
-
+       $listaAlunos = Turma::alunos_turmas_actuais($turma->modulo_id,100);
        
-       foreach ($listaAlunos as $aluno) {
-
-            foreach ($turmas_do_ano as $turma_do_ano) {
-                $alunos_da_turma = $turma_do_ano->alunos()->where('id',$aluno->id)->get();
-            }
-               if(sizeof($alunos_da_turma) == 0){                
-                $alunos_filtrados->prepend($aluno);                
-               }           
-           }
-       $listaAlunos2 = $alunos_filtrados;
-             
-       $listaAlunos = $listaAlunos2->where('modulo_id',$modulo->id)->sortByDesc('data_de_nascimento');
           
        $user = auth()->user();
        return view('admin.turmas.alunos.index',compact('turma','listaMigalhas','listaModelo','listaCursos','listaTurmas','listaAlunos','user','modulo'));

@@ -59,6 +59,7 @@ class Aluno extends Model
        }
        return $listaAlunos;
    }
+   
 
 
    public static function exportarAlunos()

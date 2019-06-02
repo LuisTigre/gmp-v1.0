@@ -1952,6 +1952,29 @@ class Turma extends Model
         return $qtd;
    }
 
+   public static function alunos_turmas_actuais($modulo_id,$paginate)
+   {
+       $epoca = Epoca::where('Activo','S')->first();
+       $user = auth()->user();
+       if($user->admin == "S"){
+           $listaAlunos = DB::table('alunos')
+                        ->where('alunos.modulo_id',$modulo_id)
+                        ->whereNotIn('alunos.id',function($query) use ($modulo_id,$epoca){
+                          $query->select(DB::raw('aluno_turma.aluno_id'))->from('aluno_turma')
+                        ->whereIn('aluno_turma.turma_id',function($query2) use ($modulo_id,$epoca){
+                          $query2->select(DB::raw('turmas.id'))->from('turmas')
+                        ->where('turmas.modulo_id',$modulo_id)
+                        ->where('turmas.ano_lectivo',$epoca->ano_lectivo)->get();
+                        })->get();
+                        })->select('alunos.id','alunos.nome','alunos.data_de_nascimento')                             
+                        ->orderBy('alunos.nome','ASC')
+                        ->paginate($paginate);
+           $listaAlunos = $listaAlunos->sortBy(['alunos.data','alunos.nome']);           
+                      
+       }      
+       return $listaAlunos;
+   }
+
 
 
    
