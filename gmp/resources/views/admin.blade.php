@@ -27,10 +27,7 @@
 	            </div>
 	            <div class="col-md-2">
 	                <caixa titulo="Admin" qtd="{{$totalAdmin}}" url="{{route('adm.index')}}" cor="brown" icon="ion ion-person"></caixa>
-	            </div>	
-	            <!-- <div class="col-md-2">
-	                <caixa titulo="Horário" qtd="{{$totalAdmin}}" url="{{route('horario.index')}}" cor="brown" icon="glyphicon glyphicon-time"></caixa>
-	            </div>
+	            </div>	            
 	            <div class="col-md-2">
 	                <caixa titulo="Recursos" qtd="{{$totalAdmin}}" url="{{route('recursos.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
 	            </div> -->
