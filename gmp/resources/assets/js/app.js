@@ -39,7 +39,6 @@ Vue.component('formulario', require('./components/Formulario.vue'));
 Vue.component('artigocard', require('./components/artigocard.vue'));
 Vue.component('grupo-lista', require('./components/GrupoLista.vue'));
 Vue.component('tabela-pauta', require('./components/TabelaPauta.vue'));
-Vue.component('tabela-pauta-recurso', require('./components/TabelaPautaRecurso.vue'));
 Vue.component('tabela-mini-pauta', require('./components/TabelaMiniPauta.vue'));
 Vue.component('tabela-horario', require('./components/TabelaHorario.vue'));
 Vue.component('buttonlink', require('./components/ButtonLink.vue'));

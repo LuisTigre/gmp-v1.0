@@ -41,13 +41,16 @@ class TurmaAlunoController extends Controller
           
        $user = auth()->user();
        return view('admin.turmas.alunos.index',compact('turma','listaMigalhas','listaModelo','listaCursos','listaTurmas','listaAlunos','user','modulo'));
+    }
+
+    public function listaModelo($id)
+    {  
+       $turma = Turma::find($id);    
+       $listaAlunos = Turma::alunos_turmas_actuais($turma->modulo_id,100);
+       return $listaAlunos;
     }    
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         //
@@ -91,20 +94,9 @@ class TurmaAlunoController extends Controller
                 }           
             return redirect()->back();
         }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
        return Aluno::find($id);
@@ -165,11 +157,25 @@ class TurmaAlunoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($turma_id,$aluno_id)
+    {         
+           $aluno = Aluno::find($aluno_id);      
+           $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();
+           Turma::find($turma_id)->alunos()->detach($aluno_id);
+            // return redirect()->back();
+            return 204;                
+    }
+    public function deleteMultiple($turma_id,$aluno_id)
     {   
-       
-       $aluno = Aluno::find($aluno_id);      
-       $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();
-       Turma::find($turma_id)->alunos()->detach($aluno_id);
-        return redirect()->back();
+       // if(is_array($turma_id)){
+           // $aluno = Aluno::find($aluno_id);      
+           // $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();
+           // Turma::find($turma_id)->alunos()->detach($aluno_id);
+           //  return 204;            
+       // }else{
+       //     $aluno = Aluno::find($aluno_id);      
+       //     $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();
+       //     Turma::find($turma_id)->alunos()->detach($aluno_id);
+       //      return redirect()->back();       
+       // }
     }
 }

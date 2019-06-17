@@ -58,13 +58,13 @@
          <td>{{item.nome}}</td>   
         <!--  <td></td> -->   
          <!-- I TRIMESTRE -->
-         <td class="centro"><span>{{item.f1}}</span></td>     
+         <td class="centro"><span>{{item.fnj1}}</span></td>     
          <td class="centro nota"><span>{{item.mac1}}</span></td>     
          <td class="centro nota"><span>{{item.p11}}</span></td>     
          <td class="centro nota"><span>{{item.p12}}</span></td>     
          <td class="centro nota"><span>{{item.ct1}}</span></td>     
          <!-- II TRIMESTRE -->
-         <td class="centro"><span>{{item.f2}}</span></td>
+         <td class="centro"><span>{{item.fnj2}}</span></td>
          <td class="centro nota"><span>{{item.mac2}}</span></td>     
          <td class="centro nota"><span>{{item.p21}}</span></td>     
          <td class="centro nota"><span>{{item.p22}}</span></td>     
@@ -72,7 +72,7 @@
          <td class="centro nota"><span>{{item.ct1}}</span></td>    
          <td class="centro nota"><span>{{item.ct2}}</span></td>           
          <!-- III TRIMESTRE -->
-         <td class="centro"><span>{{item.f3}}</span></td>  
+         <td class="centro"><span>{{item.fnj3}}</span></td>  
          <td class="centro nota"><span>{{item.mac3}}</span></td>     
          <td class="centro nota"><span>{{item.p31}}</span></td>     
          <td class="centro nota"><span>{{item.cf3}}</span></td>     

@@ -104,6 +104,7 @@ class TurmaPautaController extends Controller
        // $disciplina = Disciplina::find($);
        $modulo = $turma->modulo()->first();       
        $curso = Curso::find($modulo->curso_id);
+       $area = Area::find($curso->area_id);
        $classe = Classe::find($modulo->classe_id); 
        $coordenador = Professor::find($curso->professor_id);
        $director_instituicao = $curso->director_instituto_mae;
@@ -284,7 +285,7 @@ class TurmaPautaController extends Controller
         <p>$instituicao->lema</p>                                       
         <p>ENSINO SECUNDÁRIO TÉCNICO PROFISSIONAL</p>       
         <p>PAUTA DE APROVEITAMENTO</p>            
-        <p>ÁREA DE FORMAÇÃO: $curso->nome</p>           
+        <p>ÁREA DE FORMAÇÃO: $area->nome</p>           
         <p>REGIME DIURNO (<span>$turma->periodo</span>)</p> 
       </div>
       <div id='seccao_topo_grupo' align='center' style='font-size: 12px;'>
@@ -355,7 +356,7 @@ class TurmaPautaController extends Controller
       }
       foreach($listaCabecalho2 as $key => $value){
       $output .="
-      <th scope='col' colspan='2' class='centro'>Faltas</th>  
+      <th style='font-size:8px;' scope='col' colspan='2' class='centro'>FALTAS</th>  
       <th scope='col' rowspan='2' class='centro'>$ct</th>
       ";
       }
@@ -363,13 +364,13 @@ class TurmaPautaController extends Controller
     </tr>
     <tr>";
       foreach($listaCabecalho2 as $key => $value){
-      $output .="<th scope='col' class='centro'>J</th>  
-      <th scope='col' class='centro'>N</th>";      
+      $output .="<th scope='col' class='centro'>I</th>  
+      <th scope='col' class='centro'>J</th>";      
       }         
       $output .="</tr>
      </thead>
      <tbody>";
-      foreach($listaModelo['data'] as $key=>$aluno){    
+      foreach($listaModelo['data'] as $key=>$aluno){     
                 
       $count = 0;    
       $fundo = '';      
@@ -393,26 +394,31 @@ class TurmaPautaController extends Controller
               $cor = 'black';                 
             }else if($value != '' & floatval($value) < 10){
             $cor = 'red'; 
-           // dd($value);
-           }
-        $output .="<td class='ct' style='text-align:center;font-weight:bold;'>
-                    <span style='color:$cor;'>$value</span>
-                   </td>";          
-        $ct +=3; 
-        }else if($count==sizeof($aluno)-1){
-           floatval($value) < 11 ? $cor = 'red':$cor = 'black';
 
+           }
+          $output .="<td class='ct' style='text-align:center;font-weight:bold;'>
+                      <span style='color:$cor;text-transform:uppercase;font-size:8px;'>$value</span>
+                     </td>";          
+          $ct +=3; 
+          }else if($count==sizeof($aluno)-1){
+           floatval($value) <= 10 ? $cor = 'red':$cor = 'black';
+
+           /*valores da média*/
           $output .="<td style='text-align:center;font-weight:bold;'>
                     <span style='color:$cor;'>$value</span>
                    </td>";          
+           /*valores da genero,numero,idade*/
           }else if($count==sizeof($aluno)-2 || $count==1 || $count==4){
             $output .="<td class='centro'>$value</td>";
-          }else{
+          
+          }else if($count==3 || $count==2){
             $output .="<td>$value</td>";
+          }else{
+            $output .="<td class='centro'>$value</td>";
           }
 
         
-        }
+     }
       $output .="</tr>";    
       }
           
@@ -1325,7 +1331,7 @@ function ficha_de_aproveitamento($turma_id){
             $avaliacao_aluno_collection->put('numero',$aluno->numero);
             $avaliacao_aluno_collection->put('devedor',$aluno->devedor);
             
-             foreach ($elements as $key => $element) {
+             foreach ($elements as $key => $element) {                
                 $data = collect([]);
                 $cat_avaliacao = collect([]);
                 $cat_avaliacao->put($key .'_'. $aluno->id,$element);
@@ -1351,7 +1357,7 @@ function ficha_de_aproveitamento($turma_id){
                           $total += $element;
 
                        }else if($key == 'II TRIM FALTAS'){
-                          $element = $aluno_avaliacao_aluno_disc->fnj1;
+                          $element = $aluno_avaliacao_aluno_disc->fnj2;
                           $data->put($key . '_' . $disciplina->acronimo,$element);
                           $total += $element;
 
@@ -1373,7 +1379,7 @@ function ficha_de_aproveitamento($turma_id){
 
                        }else if($key == 'ESTADO'){
                           $total_faltas = $avaliacao_aluno_collection['TOTAL FALTAS']['TOTAL FALTAS_' . $disciplina->acronimo];
-                          $total_faltas = $total_faltas != null ? $$total_faltas : 0;
+                          $total_faltas = $total_faltas != null ? $total_faltas : 0;
                           $carga = $disciplina->pivot->carga;
                           $estado = $total_faltas >= $carga * 3 ? 'EXC.' : 'MANT.';
                           $data->put($key . '_' . $disciplina->acronimo,$estado);                        

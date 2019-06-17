@@ -33,7 +33,7 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
     public function model(array $row){
         
         $user = auth()->user();
-
+        dd($row);
             
     	if(!isset($row['nome_completo']) & !isset($row['disciplina']) & !isset($row['turma']) & !isset($row['ano_lectivo']) & !isset($row['ano_lectivo']) ){
 
@@ -50,6 +50,10 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
             $alunos = $turma->alunos()->get();  
 
             $disciplina = Disciplina::where('acronimo',$row['disciplina'])->first();
+            if(is_null($disciplina)){
+                dd("DISCIPLINA INEXISTENTE !!!
+                    PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+            }       
             $director_turma = $turma->professores()->where('director','s')->first();         
             $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
             $aluno = $alunos->where('nome',$row['nome_completo'])->first();            
@@ -119,6 +123,7 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
 
    public function headingRow(): int
     {
-        return 13;
+        // return 13;
+        return 5;
     }
 }

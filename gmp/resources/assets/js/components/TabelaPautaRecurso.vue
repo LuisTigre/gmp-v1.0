@@ -1,4 +1,4 @@
-<template  v-model="defineCor">
+template  v-model="defineCor">
   <div v-on:mousemove="atribueCor" v-bind:class="defineTamanho"> 
   <div class="table-responsive">  
     <div class="form-inline">     

@@ -1224,7 +1224,6 @@ Vue.component('formulario', __webpack_require__(73));
 Vue.component('artigocard', __webpack_require__(76));
 Vue.component('grupo-lista', __webpack_require__(79));
 Vue.component('tabela-pauta', __webpack_require__(82));
-Vue.component('tabela-pauta-recurso', __webpack_require__(87));
 Vue.component('tabela-mini-pauta', __webpack_require__(92));
 Vue.component('tabela-horario', __webpack_require__(97));
 Vue.component('buttonlink', __webpack_require__(102));
@@ -44137,7 +44136,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\ntd {\n  padding: -20px;\n}\n", ""]);
+exports.push([module.i, "\n< tr .checked {\n   background:crimson;\n   color:white;\n}\n/*li:has(> a.active) {  styles to apply to the li tag  }*/\n", ""]);
 
 // exports
 
@@ -44265,12 +44264,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'buttons', 'token', 'modal', 'tamanho'],
+  props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'index_url', 'buttons', 'multiselect', 'token', 'modal', 'tamanho'],
+  mounted: function mounted() {
+    this.preecherDados;
+    this.lista;
+  },
+
   data: function data() {
     return {
       buscar: '',
+      visibilidade: "",
+      itens_selecionados: [],
       ordemAux: this.ordem || 'asc',
       ordemcolAux: this.ordemcol || 0
     };
@@ -44278,9 +44289,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     executaForm: function executaForm(index) {
 
-      if (confirm("Eliminar ?")) {
-        document.getElementById(index).submit();
-      } else {}
+      if (confirm("Deseja eliminar ?")) {
+        if (this.itens_selecionados.length != 0) {
+          for (var i = 0; i < this.itens_selecionados.length; i++) {
+            // console.log(this.deletar+this.itens_selecionados[i]+"/deleteMultiple");
+            axios.delete(this.deletar + this.itens_selecionados[i]).then(function (res) {}).catch(function (err) {
+              console.log(err);
+            });
+          }
+        } else {
+          // document.getElementById(index).submit();
+          alert("Selecione pelo menos um item na lista...");
+        }
+      }
+      window.location.replace(this.index_url);
     },
     ordenaColuna: function ordenaColuna(coluna) {
       this.ordemAuxCol = coluna;
@@ -44289,6 +44311,60 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         this.ordemAux = 'asc';
       }
+    },
+    addiconarUmAoCheckList: function addiconarUmAoCheckList(event) {
+      var id = event.target.id;
+      var element = document.getElementById(id);
+      var isChecked = element.checked;
+      if (isChecked == true) {
+        element.className = "checked";
+        element.offsetParent.parentElement.className = "danger";
+      } else {
+        element.className = "";
+        element.offsetParent.parentElement.className = "";
+      }
+
+      var checkedItems = document.getElementsByClassName("checked");
+      this.itens_selecionados = [];
+
+      for (var i = 0; i < checkedItems.length; i++) {
+        this.itens_selecionados.push(checkedItems[i].value);
+      }
+    },
+    addiconarTodosAoCheckList: function addiconarTodosAoCheckList(event) {
+      var id = event.target.id;
+      var element = document.getElementsByTagName('checkbox');
+      var isChecked = element.checked;
+      if (isChecked == true) {
+        element.className = "checked";
+        element.offsetParent.parentElement.className = "danger";
+      } else {
+        element.className = "";
+        element.offsetParent.parentElement.className = "";
+      }
+
+      var checkedItems = document.getElementsByClassName("checked");
+      this.itens_selecionados = [];
+
+      for (var i = 0; i < checkedItems.length; i++) {
+        this.itens_selecionados.push(checkedItems[i].value);
+      }
+    },
+
+    visualizarChecklist: function visualizarChecklist() {
+
+      document.getElementsByClassName("ckbColumn");
+      this.visibilidade = this.visibilidade == "collapse" ? "" : "collapse";
+    },
+    preecherDados: function preecherDados() {
+      var _this = this;
+
+      axios.get(this.index_url).then(function (res) {
+        _this.itens.data = res.data;
+        console.log(_this.itens.data);
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
   },
   filters: {
@@ -44304,7 +44380,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   computed: {
     lista: function lista() {
-      var _this = this;
+      var _this2 = this;
 
       var lista = this.itens.data;
       var ordem = this.ordemAux || "asc";
@@ -44333,12 +44409,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return 0;
         });
       }
-
       if (this.buscar) {
         return lista.filter(function (res) {
           res = Object.values(res);
           for (var k = 0; k < res.length; k++) {
-            if ((res[k] + "").toLowerCase().indexOf(_this.buscar.toLowerCase()) >= 0) {
+            if ((res[k] + "").toLowerCase().indexOf(_this2.buscar.toLowerCase()) >= 0) {
               return true;
             }
           }
@@ -44428,6 +44503,18 @@ var render = function() {
             _c(
               "tr",
               [
+                _vm.multiselect
+                  ? _c(
+                      "th",
+                      {
+                        staticClass: "ckbColumn",
+                        style: { visibility: _vm.visibilidade },
+                        on: { click: _vm.addiconarUmAoCheckList }
+                      },
+                      [_vm._m(0)]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _vm._l(_vm.titulos, function(titulo, index) {
                   return _c(
                     "th",
@@ -44457,12 +44544,29 @@ var render = function() {
               return _c(
                 "tr",
                 [
+                  _vm.multiselect
+                    ? _c("td", { staticClass: "ckbColumn" }, [
+                        _c("label", [
+                          _c("input", {
+                            style: { visibility: _vm.visibilidade },
+                            attrs: { type: "checkbox", id: index + "_item" },
+                            domProps: { value: item.id },
+                            on: { click: _vm.addiconarUmAoCheckList }
+                          })
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _vm._l(item, function(i) {
-                    return _c("td", [_vm._v(_vm._s(_vm._f("formataData")(i)))])
+                    return _c(
+                      "td",
+                      { on: { click: _vm.visualizarChecklist } },
+                      [_vm._v(_vm._s(_vm._f("formataData")(i)))]
+                    )
                   }),
                   _vm._v(" "),
                   _vm.detalhe || _vm.editar || _vm.deletar || _vm.buttons
-                    ? _c("td", [
+                    ? _c("td", { on: { click: _vm.visualizarChecklist } }, [
                         _vm.deletar && _vm.token
                           ? _c(
                               "form",
@@ -44489,8 +44593,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _vm.detalhe && !_vm.modal
                                   ? _c("a", { attrs: { href: _vm.detalhe } }, [
-                                      _c("i", { staticClass: "fas fa-trash" }),
-                                      _vm._v("Detalhe")
+                                      _vm._v(" Detalhe ")
                                     ])
                                   : _vm._e(),
                                 _vm._v(" "),
@@ -44551,7 +44654,7 @@ var render = function() {
                                         }
                                       },
                                       [
-                                        _vm._m(0, true),
+                                        _vm._m(1, true),
                                         _vm._v(" "),
                                         _c(
                                           "div",
@@ -44653,7 +44756,7 @@ var render = function() {
                                         }
                                       },
                                       [
-                                        _vm._m(1, true),
+                                        _vm._m(2, true),
                                         _vm._v(" "),
                                         _c(
                                           "div",
@@ -44800,7 +44903,7 @@ var render = function() {
                                         staticStyle: { position: "absolute" }
                                       },
                                       [
-                                        _vm._m(2, true),
+                                        _vm._m(3, true),
                                         _vm._v(" "),
                                         _c(
                                           "div",
@@ -44854,6 +44957,16 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _c("a", { attrs: { href: "" } }, [
+        _c("i", { staticClass: "glyphicon glyphicon-trash" })
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -45913,7 +46026,7 @@ if(false) {
 /* 84 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
+throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)");
 
 /***/ }),
 /* 85 */
@@ -46352,524 +46465,11 @@ if (false) {
 }
 
 /***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(88)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(90)
-/* template */
-var __vue_template__ = __webpack_require__(91)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\TabelaPautaRecurso.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] TabelaPautaRecurso.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1e72c76f", Component.options)
-  } else {
-    hotAPI.reload("data-v-1e72c76f", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(89);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("3b82b120", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1e72c76f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPautaRecurso.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1e72c76f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TabelaPautaRecurso.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPautaRecurso.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)\n    at <anonymous>");
-
-/***/ }),
-/* 90 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'token', 'modal', 'tamanho'],
-  data: function data() {
-    return {
-      buscar: '',
-      ordemAux: this.ordem || 'asc',
-      ordemcolAux: this.ordemcol || 0
-    };
-  },
-  methods: {
-    executaForm: function executaForm(index) {
-      document.getElementById(index).submit();
-    },
-    ordenaColuna: function ordenaColuna(coluna) {
-      this.ordemAuxCol = coluna;
-      if (this.ordemAux.toLowerCase() == "asc") {
-        this.ordemAux = 'desc';
-      } else {
-        this.ordemAux = 'asc';
-      }
-    },
-    atribueCor: function atribueCor(event) {
-
-      var table = document.getElementById("mytable");
-      var row = 3;
-      var col = 4;
-      var limite = table.rows.length;
-      /*PERCORRE CADA LINHA DA TABELA*/
-      for (var i = row; i < limite; i++) {
-        /*PERCORRE CADA CELULA DA LINHA*/
-        for (var a = col; a < table.rows[i].cells.length; a++) {
-
-          /*ATRIBUI O STRIPPED COLOR NA TABELA*/
-          // table.rows[i].cells[a].style.background = "#fafafa";
-          /*FIM...*/
-
-          /*RECUPERA O VALOR DA ACTUAL CELULA DA TABELA PERCORIDA*/
-          var valor = table.rows[i].cells[a].innerText;
-
-          if (valor != null && valor != '') if (valor == 'Reprovado') {
-            table.rows[i].cells[a].style.color = "red";
-          } else if (valor == 'Desistido' || valor == 'Suspenso' || valor == 'Transferido') {
-
-            /*PERCORRE CADA CELULA DA LINHA DA TABELA DE */
-            for (var b = 0; b <= table.rows[i].cells.length - 1; b++) {
-              console.log(table.rows[i].cells.length - 1);
-
-              /*COLORI O A CELULA TODA MEDIANTE O STATUS DO ALUNO*/
-              valor == 'Desistido' ? table.rows[i].cells[b].style.background = "rgb(249,239,184)" : valor == 'Suspenso' ? table.rows[i].cells[b].style.background = "rgb(255,212,227)" : table.rows[i].cells[b].style.background = "rgb(247,221,252)";
-            }
-          } else if (parseInt(valor) < 10) {
-            table.rows[i].cells[a].style.color = "red";
-          } else {}
-        }
-      }
-    }
-  },
-  filters: {
-    formataData: function formataData(valor) {
-      if (!valor) return '';
-      valor = valor.toString();
-      if (valor.split('-').length == 3) {
-        valor = valor.split('-');
-        return valor[2] + '/' + valor[1] + '/' + valor[0];
-      }
-      return valor;
-    }
-
-  },
-  computed: {
-    lista: function lista() {
-      var _this = this;
-
-      var lista = this.itens.data;
-      var ordem = this.ordemAux || "asc";
-      var ordemcol = this.ordemcolAux || 0;
-      ordem.toLowerCase();
-      ordemcol = parseInt(ordemcol);
-
-      if (ordem == "asc") {
-        lista.sort(function (a, b) {
-          if (Object.values(a)[ordemcol] > Object.values(b)[ordemcol]) {
-            return 1;
-          }
-          if (Object.values(a)[ordemcol] < Object.values(b)[ordemcol]) {
-            return -1;
-          }
-          return 0;
-        });
-      } else {
-        lista.sort(function (a, b) {
-          if (Object.values(a)[ordemcol] < Object.values(b)[ordemcol]) {
-            return 1;
-          }
-          if (Object.values(a)[ordemcol] > Object.values(b)[ordemcol]) {
-            return -1;
-          }
-          return 0;
-        });
-      }
-
-      if (this.buscar) {
-        return lista.filter(function (res) {
-          res = Object.values(res);
-          for (var k = 0; k < res.length; k++) {
-            if ((res[k] + "").toLowerCase().indexOf(_this.buscar.toLowerCase()) >= 0) {
-              return true;
-            }
-          }
-          return false;
-        });
-      }
-
-      return lista;
-    },
-    defineTamanho: function defineTamanho() {
-      if (!this.tamanho || parseInt(this.tamanho) <= 2) {
-        return "col-md-12";
-      } else {
-        return "col-md-" + parseInt(this.tamanho);
-      }
-    },
-    defineCor: function defineCor() {
-      var x = document.getElementsByClassName("ct1");
-      var x = document.getElementById("mytable");
-      console.log(x);
-    }
-  }
-
-});
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { class: _vm.defineTamanho, on: { mousemove: _vm.atribueCor } },
-    [
-      _c("div", { staticClass: "table-responsive" }, [
-        _c("div", { staticClass: "form-inline" }, [
-          _c("div", { staticClass: "form-group pull-right" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.buscar,
-                  expression: "buscar"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "search", placeholder: "buscar" },
-              domProps: { value: _vm.buscar },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.buscar = $event.target.value
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-bordered table-sm table-condensed table-striped ",
-            staticStyle: { "font-size": "10px" },
-            attrs: { id: "mytable" }
-          },
-          [
-            _c("thead", [
-              _c(
-                "tr",
-                { staticStyle: { "font-weight": "bold" } },
-                [
-                  _c(
-                    "th",
-                    {
-                      staticStyle: { cursor: "pointer" },
-                      attrs: { rowspan: "3" },
-                      on: {
-                        click: function($event) {
-                          _vm.ordenaColuna(_vm.index)
-                        }
-                      }
-                    },
-                    [_vm._v("#")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    {
-                      staticClass: "nome",
-                      staticStyle: { cursor: "pointer", width: "30%" },
-                      attrs: { rowspan: "3" },
-                      on: {
-                        click: function($event) {
-                          _vm.ordenaColuna(_vm.index)
-                        }
-                      }
-                    },
-                    [_vm._v("Nome")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.titulos.data, function(titulo, index) {
-                    return _c(
-                      "th",
-                      {
-                        staticStyle: {
-                          cursor: "pointer",
-                          "text-align": "center"
-                        },
-                        attrs: { colspan: "3" },
-                        on: {
-                          click: function($event) {
-                            _vm.ordenaColuna(index)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(titulo.acronimo))]
-                    )
-                  }),
-                  _vm._v(" "),
-                  _c("th", { attrs: { rowspan: "3" } }, [_vm._v("Md")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { rowspan: "3" } }, [_vm._v("OBS")])
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "tr",
-                [
-                  _vm._l(_vm.titulos.data, function(titulo, index) {
-                    return [
-                      _c(
-                        "th",
-                        {
-                          staticClass: "faltas",
-                          staticStyle: { cursor: "pointer" },
-                          attrs: { colspan: "2" },
-                          on: {
-                            click: function($event) {
-                              _vm.ordenaColuna(index)
-                            }
-                          }
-                        },
-                        [_vm._v("Faltas")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "ct1",
-                          staticStyle: { cursor: "pointer" },
-                          attrs: { rowspan: "2" },
-                          on: {
-                            click: function($event) {
-                              _vm.ordenaColuna(index)
-                            }
-                          }
-                        },
-                        [_vm._v("CT1")]
-                      )
-                    ]
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "tr",
-                [
-                  _vm._l(_vm.titulos, function(titulo, index) {
-                    return [
-                      _c(
-                        "th",
-                        {
-                          staticStyle: { cursor: "pointer" },
-                          on: {
-                            click: function($event) {
-                              _vm.ordenaColuna(index)
-                            }
-                          }
-                        },
-                        [_vm._v("J")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticStyle: { cursor: "pointer" },
-                          on: {
-                            click: function($event) {
-                              _vm.ordenaColuna(index)
-                            }
-                          }
-                        },
-                        [_vm._v("I")]
-                      )
-                    ]
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              {
-                model: {
-                  value: _vm.defineCor,
-                  callback: function($$v) {
-                    _vm.defineCor = $$v
-                  },
-                  expression: "defineCor"
-                }
-              },
-              _vm._l(_vm.lista, function(item, index) {
-                return _c(
-                  "tr",
-                  _vm._l(item, function(i) {
-                    return _c("td", { staticClass: "dados" }, [
-                      _vm._v(_vm._s(_vm._f("formataData")(i)))
-                    ])
-                  })
-                )
-              })
-            )
-          ]
-        )
-      ])
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1e72c76f", module.exports)
-  }
-}
-
-/***/ }),
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -47397,7 +46997,7 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(item.nome))]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro" }, [
-                      _c("span", [_vm._v(_vm._s(item.f1))])
+                      _c("span", [_vm._v(_vm._s(item.fnj1))])
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
@@ -47417,7 +47017,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro" }, [
-                      _c("span", [_vm._v(_vm._s(item.f2))])
+                      _c("span", [_vm._v(_vm._s(item.fnj2))])
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
@@ -47445,7 +47045,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro" }, [
-                      _c("span", [_vm._v(_vm._s(item.f3))])
+                      _c("span", [_vm._v(_vm._s(item.fnj3))])
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
@@ -49013,7 +48613,7 @@ if (false) {
 /* 105 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: ModuleBuildError: Module build failed: \r\nundefined\r\n^\r\n      File to import not found or unreadable: node_modules/font-awesome/scss/font-awesome.scss.\nParent style sheet: stdin\r\n      in C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\sass\\app.scss (line 6, column 1)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:195:19)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:230:18\n    at context.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\sass-loader\\lib\\loader.js:55:13)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:2244:31)\n    at Object.callback (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\async\\dist\\async.js:906:16)\n    at options.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\index.js:294:32)");
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Windows 64-bit with Unsupported runtime (64)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.5.3\n    at module.exports (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\binding.js:13:13)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\index.js:14:35)\n    at Module._compile (internal/modules/cjs/loader.js:776:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)\n    at Module.load (internal/modules/cjs/loader.js:653:32)\n    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)\n    at Function.Module._load (internal/modules/cjs/loader.js:585:3)\n    at Module.require (internal/modules/cjs/loader.js:690:17)\n    at require (internal/modules/cjs/helpers.js:25:18)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\sass-loader\\lib\\loader.js:3:14)\n    at Module._compile (internal/modules/cjs/loader.js:776:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)\n    at Module.load (internal/modules/cjs/loader.js:653:32)\n    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)\n    at Function.Module._load (internal/modules/cjs/loader.js:585:3)\n    at Module.require (internal/modules/cjs/loader.js:690:17)\n    at require (internal/modules/cjs/helpers.js:25:18)\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:13:17)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:195:19)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:170:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:27:11)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:362:2)\n    at NormalModule.doBuild (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:182:3)\n    at NormalModule.build (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:275:15)\n    at Compilation.buildModule (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\Compilation.js:149:10)\n    at moduleFactory.create (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\Compilation.js:447:10)\n    at factory (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:241:5)\n    at applyPluginsAsyncWaterfall (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:94:13)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\tapable\\lib\\Tapable.js:268:11\n    at NormalModuleFactory.params.normalModuleFactory.plugin (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\tapable\\lib\\Tapable.js:272:13)\n    at resolver (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:69:10)\n    at process.nextTick (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:194:7)\n    at process._tickCallback (internal/process/next_tick.js:61:11)");
 
 /***/ })
 /******/ ]);

@@ -159,17 +159,17 @@ public function index()
     }
 
 
-    public static function exportarAlunos()
-   {
-       $user = auth()->user();
-       if($user->admin == "S"){
-        Excel::create('alunos',function($excel){
-            $excel->sheet('alunos',function($sheet){
-                $sheet->loadView('admin.alunos.index');
-            });
-        })->export('xlsx');
-       }
-   }
+   //  public static function exportarAlunos()
+   // {
+   //     $user = auth()->user();
+   //     if($user->admin == "S"){
+   //      Excel::create('alunos',function($excel){
+   //          $excel->sheet('alunos',function($sheet){
+   //              $sheet->loadView('admin.alunos.index');
+   //          });
+   //      })->export('xlsx');
+   //     }
+   // }
 
    public function fileUpload(){
         return view('admin.alunos.upload');
@@ -190,18 +190,18 @@ public function index()
        return Excel::download(new AlunosExport,'alunos.xlsx');           
    }
 
-   public static function import(Request $request)
-   {
-       
-       if($request->has('file')){
-            $path = $request->file('file')->getRealPath();
-        Excel::import(new AlunosImport,$path);
+   // public static function import(Request $request)
+   // {
+      
+   //     if($request->has('file')){
+   //          $path = $request->file('file')->getRealPath();
+   //      Excel::import(new AlunosImport,$path);
 
-        return redirect('/')->with('success','All Good !!');
-        }
+   //      return redirect('/')->with('success','All Good !!');
+   //      }
         
            
-   }
+   // }
 
    function bolentim($aluno_id){        
       if(is_null($this->convert_bolentim_html($aluno_id))){

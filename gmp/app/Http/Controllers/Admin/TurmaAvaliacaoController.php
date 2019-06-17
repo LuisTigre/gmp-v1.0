@@ -87,7 +87,7 @@ class TurmaAvaliacaoController extends Controller
     }
     
     public function store(Request $request)
-    {
+    {       $validacao = null;
         if($request->has('professor_id')){            
             $data = $request->except('_token');
             $user = auth()->user();
@@ -105,14 +105,14 @@ class TurmaAvaliacaoController extends Controller
             return redirect()->back();    
 
             }else if($request->has('excel_file')){
-              
+               $data = $request->except(['_token','excel_file']);
                foreach (request()->file('excel_file') as $file){
 
-                Excel::import(new AvaliacaosExcelImport,$file);
+                $validacao = Excel::import(new AvaliacaosExcelImport,$file);
 
                }           
-                return redirect()->back();
-                // return redirect()->route('turmas.disciplinas.avaliacaos',[]);
+                              
+                return redirect()->route('turmas.disciplinas.avaliacaos.index',$data)->withErrors($validacao)->withInput();
             }else{
                 return redirect()->back();
             }
@@ -211,8 +211,8 @@ class TurmaAvaliacaoController extends Controller
         return redirect()->back();
     }
 
-    public function fileUpload(){
-        return view('admin.turmas.disciplinas.avaliacaos.upload');
+    public function fileUpload($turma,$disciplina){        
+        return view('admin.turmas.disciplinas.avaliacaos.upload',compact('turma','disciplina'));
    }
 
    function pdf($turma_id,$disciplina_id){

@@ -11,15 +11,20 @@
                         <form class="form-horizontal" method="POST" action="{{route('avaliacaos.store') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <div class="custom-file col-md-12 col-md-offset-5">
-                              <input type="file" multiple="multiple" class="custom-file-input" id="importar" name="excel_file[]" lang="eng" value="old(excel_file)">
-                              <label class="custom-file-label" for="importar">Excel</label>
-                              @if ($errors->has('title'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('title') }}</strong>
-                                    </span>
-                                    @endif
+
+                                <div class="custom-file col-md-12 col-md-offset-5">
+
+                                  <input type="file" multiple="multiple" class="custom-file-input" id="importar" name="excel_file[]" lang="eng" value="old(excel_file)">
+                                  <label class="custom-file-label" for="importar">Excel</label>
+                                        @if ($errors->has('title'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('title') }}</strong>
+                                            </span>
+                                        @endif
                                 </div>
+
+                                <input type="hidden" name="turma" value="{{$turma}}">
+                                <input type="hidden" name="disciplina" value="{{$disciplina}}">
                             </div>
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-5">

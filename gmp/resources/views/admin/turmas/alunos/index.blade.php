@@ -18,6 +18,8 @@
       v-bind:titulos="['#','Nº','Nome Completo','Devedor','Status','Cargo','Alt. por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"
+      multiselect="sim"
+      index_url="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/"
       criar="#criar" detalhe="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/" 
       editar="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/" 
       v-bind:deletar="'/admin/turmas/'+{{json_encode($turma->id)}}+'/alunos/'" token="{{csrf_token()}}"
