@@ -31,99 +31,170 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
     
 
     public function model(array $row){
-        
+        set_time_limit(120);
         $user = auth()->user();
-        dd($row);
+        if(isset($row['pauta'])){
             
-    	if(!isset($row['nome_completo']) & !isset($row['disciplina']) & !isset($row['turma']) & !isset($row['ano_lectivo']) & !isset($row['ano_lectivo']) ){
+           if(isset($row['turma']) && isset($row['nome_completo'])){
+                $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$row['ano_lectivo'])->first();
+                    
+                    if(!is_null($turma)){
+                        // dd($row);
+                        $modulo = $turma->modulo;
+                        $aluno = Aluno::where('nome',$row['nome_completo'])->get()->where('idmatricula',$row['idmatricula'])->first();
+                        // dd($aluno);
+                        $disciplinas = $turma->disciplinas()->get();
+                        $newAvaliacao;
 
-            return null;
+                        foreach($disciplinas as $key => $disc){
+                                $newAvaliacao = Avaliacao::where('disciplina_id',$disc->id)->get()->where('aluno_id',$aluno->id)->last();
+                                
+                                if(!is_null($newAvaliacao)){
+                                    if(isset($row[strtolower($disc->acronimo)])){      
+                                        $ca = floatval($row[strtolower($disc->acronimo)]);
+
+                                        $newAvaliacao->update([     
+                                            'user_id' => $user->id,
+                                            'turma_id' => $turma->id,
+                                            'disciplina_id' => $disc->id,
+                                            'aluno_id' => $aluno->id,
+                                            'mac1' => $ca,
+                                            'p11' => $ca,
+                                            'mac2' => $ca,
+                                            'p21' => $ca,                       
+                                            'mac3' => $ca,
+                                            'p31' => $ca,
+                                            'p32' => $ca                        
+                                        ]);   
+                                        // $newAvaliacao->save();      
+                                    }
+                                }else{
+                                    if(isset($row[strtolower($disc->acronimo)])){      
+                                        $ca = floatval($row[strtolower($disc->acronimo)]);
+
+                                        $newAvaliacao = new Avaliacao([     
+                                            'user_id' => $user->id,
+                                            'turma_id' => $turma->id,
+                                            'disciplina_id' => $disc->id,
+                                            'aluno_id' => $aluno->id,
+                                            'mac1' => $ca,
+                                            'p11' => $ca,
+                                            'mac2' => $ca,
+                                            'p21' => $ca,                       
+                                            'mac3' => $ca,
+                                            'p31' => $ca,
+                                            'p32' => $ca                        
+                                        ]);   
+                                        $newAvaliacao->save();      
+                                    }
+                                }
+                                
+                        }
+                        return $newAvaliacao;
+                         
+                    }else{
+                        return null;
+                    }
+
+            }else{
+                return null;
+            }     
+           
+        }else{            
+            $this->createNewAvaliacao($row,$user);
+        }           
+   }
+
+   public function createNewAvaliacao($row,$user){
+        if(!isset($row['nome_completo']) & !isset($row['disciplina']) & !isset($row['turma']) & !isset($row['ano_lectivo']) & !isset($row['ano_lectivo']) ){
+
+                return null;
+                     
+            }else{
+                $ano_lectivo = intVal($row['ano_lectivo']);            
+                $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$ano_lectivo)->first();
+
+                if(is_null($turma)){
+                    dd("TURMA INEXISTENTE !!!
+                        PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+                }       
+                $alunos = $turma->alunos()->get();  
+
+                $disciplina = Disciplina::where('acronimo',$row['disciplina'])->first();
+                if(is_null($disciplina)){
+                    dd("DISCIPLINA INEXISTENTE !!!
+                        PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+                }       
+                $director_turma = $turma->professores()->where('director','s')->first();         
+                $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
+                $aluno = $alunos->where('nome',$row['nome_completo'])->first();            
+                
+                if($professor != null && $aluno != null){
+
+                if($user->admin == 'S' 
+                // || $user->email == $director_turma->email 
+                || $user->email == $professor->email){ 
+                    $avaliacao = Avaliacao::where('turma_id',2)->where('disciplina_id',9)->where('aluno_id',1)->get();                
+                    $avaliacao = Avaliacao::where('turma_id',$turma->id)->where('disciplina_id',$disciplina->id)->where('aluno_id',$aluno->id)->get();
+                                                 
+                if($avaliacao->isNotEmpty()){
+                $avaliacao = $avaliacao->first();
+                $data = [
+                'professor_id' => $professor->id,
+                'user_id' => $user->id,
+                'turma_id' => $turma->id,
+                'disciplina_id' => $disciplina->id,
+                'aluno_id' => $aluno->id,
+                'mac1' => $row['mac1'],
+                'p11' => $row['p11'],
+                'p12' => $row['p12'],
+                'fnj1' => $row['faltas1'],            
+                'mac2' => $row['mac2'],
+                'p21' => $row['p21'],
+                'p22' => $row['p22'],
+                'fnj2' => $row['faltas2'],           
+                'mac3' => $row['mac3'],
+                'p31' => $row['p31'],
+                'p32' => $row['pg'],
+                'fnj3' => $row['faltas3']];
+                $avaliacao->update($data);
+                return $avaliacao;              
+
+                }else{
                  
-        }else{
-            $ano_lectivo = intVal($row['ano_lectivo']);            
-            $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$ano_lectivo)->first();
-
-            if(is_null($turma)){
-                dd("TURMA INEXISTENTE !!!
-                    PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
-            }       
-            $alunos = $turma->alunos()->get();  
-
-            $disciplina = Disciplina::where('acronimo',$row['disciplina'])->first();
-            if(is_null($disciplina)){
-                dd("DISCIPLINA INEXISTENTE !!!
-                    PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
-            }       
-            $director_turma = $turma->professores()->where('director','s')->first();         
-            $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
-            $aluno = $alunos->where('nome',$row['nome_completo'])->first();            
-            
-            if($professor != null && $aluno != null){
-
-            if($user->admin == 'S' 
-            // || $user->email == $director_turma->email 
-            || $user->email == $professor->email){ 
-                $avaliacao = Avaliacao::where('turma_id',2)->where('disciplina_id',9)->where('aluno_id',1)->get();                
-                $avaliacao = Avaliacao::where('turma_id',$turma->id)->where('disciplina_id',$disciplina->id)->where('aluno_id',$aluno->id)->get();
-                                             
-            if($avaliacao->isNotEmpty()){
-            $avaliacao = $avaliacao->first();
-            $data = [
-            'professor_id' => $professor->id,
-            'user_id' => $user->id,
-            'turma_id' => $turma->id,
-            'disciplina_id' => $disciplina->id,
-            'aluno_id' => $aluno->id,
-            'mac1' => $row['mac1'],
-            'p11' => $row['p11'],
-            'p12' => $row['p12'],
-            'fnj1' => $row['faltas1'],            
-            'mac2' => $row['mac2'],
-            'p21' => $row['p21'],
-            'p22' => $row['p22'],
-            'fnj2' => $row['faltas2'],           
-            'mac3' => $row['mac3'],
-            'p31' => $row['p31'],
-            'p32' => $row['pg'],
-            'fnj3' => $row['faltas3']];
-            $avaliacao->update($data);
-            return $avaliacao;              
-
-            }else{
-             
-             return new Avaliacao([         
-            'professor_id' => $professor->id,
-            'user_id' => $user->id,
-            'turma_id' => $turma->id,
-            'disciplina_id' => $disciplina->id,
-            'aluno_id' => $aluno->id,
-            'mac1' => $row['mac1'],
-            'p11' => $row['p11'],
-            'p12' => $row['p12'],
-            'fnj1' => $row['faltas1'],            
-            'mac2' => $row['mac2'],
-            'p21' => $row['p21'],
-            'p22' => $row['p22'],
-            'fnj2' => $row['faltas2'],           
-            'mac3' => $row['mac3'],
-            'p31' => $row['p31'],
-            'p32' => $row['pg'],
-            'fnj3' => $row['faltas3']                        
-        ]);         
-            }            
-          }
-            }else{
-                if(is_null($alunos)){
-                dd("PROFESSOR OU ALUNO INEXISTENTE !!!
-                    PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
-                } 
+                 return new Avaliacao([         
+                'professor_id' => $professor->id,
+                'user_id' => $user->id,
+                'turma_id' => $turma->id,
+                'disciplina_id' => $disciplina->id,
+                'aluno_id' => $aluno->id,
+                'mac1' => $row['mac1'],
+                'p11' => $row['p11'],
+                'p12' => $row['p12'],
+                'fnj1' => $row['faltas1'],            
+                'mac2' => $row['mac2'],
+                'p21' => $row['p21'],
+                'p22' => $row['p22'],
+                'fnj2' => $row['faltas2'],           
+                'mac3' => $row['mac3'],
+                'p31' => $row['p31'],
+                'p32' => $row['pg'],
+                'fnj3' => $row['faltas3']                        
+            ]);         
+                }            
+              }
+                }else{
+                    if(is_null($alunos)){
+                    dd("PROFESSOR OU ALUNO INEXISTENTE !!!
+                        PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+                    } 
+                }
             }
-        }            
    }
 
    public function headingRow(): int
     {
-        // return 13;
-        return 5;
+        return 13;
+        // return 5;
     }
 }

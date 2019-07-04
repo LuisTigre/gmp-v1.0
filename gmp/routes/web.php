@@ -68,6 +68,7 @@ Route::get('/admin/turmas/{turma_id}/disciplinas/{disc_id}/Upload', 'admin\Turma
 // 	'uses' => 'admin\alunosController@fileUpload' 
 // ]);
 Route::get('/exportAlunos','admin\alunosController@export');
+Route::get('/exportInvoices','admin\usuariosController@export');
 
 Route::get('admin/alunos/importAlunos','admin\alunosController@import')->name('alunos.import');
 	
@@ -75,6 +76,8 @@ Route::get('admin/alunos/importAlunos','admin\alunosController@import')->name('a
 Route::get('/dynamic_pdf/pdf/{id}', 'admin\turmaPautaController@pdf',['parameters'=>['index'=>'filter']]);
 
 Route::get('admin/turmas/{id}/pautafinal', 'admin\turmaPautaController@pautafinalpdf',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/pautafinalexcel', 'admin\turmaPautaController@pautafinalexcel',['parameters'=>['index'=>'filter']]);
+
 Route::get('admin/turmas/{id}/ficha_apr', 'admin\turmaPautaController@ficha_de_aproveitamento',['parameters'=>['index'=>'filter']]);
 Route::get('admin/alunos/{id}/bolentim', 'admin\alunosController@bolentim',['parameters'=>['index'=>'filter']]);
 

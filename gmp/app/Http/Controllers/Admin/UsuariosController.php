@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Professor;
+use App\Exports\UsuarioExport;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\Rule;
 class UsuariosController extends Controller
 {
@@ -128,5 +131,10 @@ class UsuariosController extends Controller
          $professor->delete();            
         }
         return redirect()->back();
+    }
+
+    public function export() 
+    {
+        return Excel::download(new UsuarioExport, 'usuarios.xlsx');
     }
 }
