@@ -46,17 +46,16 @@ class TurmaAvaliacaoController extends Controller
        $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);        
        $listaCabecalho2 = $turma->disciplinas()->get();           
        $avaliacoes = $turma->avaliacaos()->where('disciplina_id',$disciplina->id)->get();
-       $alunos_da_turma = $turma->alunos()->get();
+       $alunos_da_turma = $disciplina->buscarAlunosDaDisciplina($turma)->first();
        $listaAlunosNaoAvaliados = collect([]);      
        foreach ($alunos_da_turma as $aluno) {
-            // $aluno = Aluno::find(132);
-           
-              $aluno_avaliacoes = $aluno->avaliacaos()->where('disciplina_id',$disciplina->id)->get()->where('aluno_id',$aluno->id)->where('turma_id',$turma->id);
-              if($aluno_avaliacoes->isEmpty()){
-                $listaAlunosNaoAvaliados->push($aluno);
-              }else{
-                
-              }
+               if($aluno->status == 'Activo'){
+                   $aluno = Aluno::find($aluno->id);               
+                   $aluno_avaliacoes = $aluno->avaliacaos()->where('disciplina_id',$disciplina->id)->get()->where('aluno_id',$aluno->id)->where('turma_id',$turma->id);
+                  if($aluno_avaliacoes->isEmpty()){
+                    $listaAlunosNaoAvaliados->push($aluno);
+                  }
+               }       
            
        }
     
@@ -87,22 +86,35 @@ class TurmaAvaliacaoController extends Controller
     }
     
     public function store(Request $request)
-    {       $validacao = null;
+    {       
         if($request->has('professor_id')){            
             $data = $request->except('_token');
-            $user = auth()->user();
-            $data['user_id'] = $user->id;
-            $disciplina = Disciplina::find($data['disciplina_id']);
-            $aluno = Aluno::find($data['aluno_id']);
-            $turma = Turma::find($data['professor_id']);
-            $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
-                         
-            $data['professor_id'] = $professor->id;                        
-            $avaliacao = Avaliacao::create($data);
-            $avaliacao->turma()->associate($turma);
-            $avaliacao->save();
-            
-            return redirect()->back();    
+           
+            // $avaliacao = Avaliacao::where('aluno_id',$data['aluno_id'])->get()
+            //            ->where('turma_id',$data['turma_id'])
+            //            ->where('disciplina_id',$data['disciplina_id']);
+            // if($avaliacao->isNotEmpty()){              
+            //     $erro = "Erro: Avaliacão já existente !!!";
+            //         return redirect()->back()->withErrors($erro)->withInput();
+            // }else{
+                $user = auth()->user();
+                $data['user_id'] = $user->id;
+                $disciplina = Disciplina::find($data['disciplina_id']);
+                $aluno = Aluno::find($data['aluno_id']);
+                $turma = Turma::find($data['turma_id']);
+                $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
+                if(is_null($professor)){
+                    $erro = "Erro: Nenhum professor associado a disciplina !!!";
+                    return redirect()->back()->withErrors($erro)->withInput();
+                }else{             
+                    $data['professor_id'] = $professor->id; 
+                    // dd($data);                       
+                    $avaliacao = Avaliacao::create($data);
+                    $avaliacao->turma()->associate($turma);
+                    $avaliacao->save();
+                  return redirect()->back();    
+                }
+           
 
             }else if($request->has('excel_file')){
                $data = $request->except(['_token','excel_file']);
@@ -158,39 +170,52 @@ class TurmaAvaliacaoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $avaliacao = Avaliacao::find($id);
-        $epoca = Epoca::where('activo','S')->first();
-        // if($epoca->fechado == 'S'){
-        // $data = $request->only('_method','_token','exame1','exame2');         
-        // }else{
-        $data = $request->all(); 
-        // }
-          
-        // $validacao = \Validator::make($data,[
-        // "Professor" => "required",        
-        // "carga" => "required",       
-                
-        // ]);
-        // if($validacao->fails()){
-        //     return redirect()->back()->withErrors($validacao)->withInput();
-        // }
-        
+    {   
         $user = auth()->user();                       
-            $disciplina = Disciplina::find($avaliacao->disciplina_id);
-            $turma = Turma::find($avaliacao->turma_id);
-            $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
-            $avaliacao->user()->associate($user);
-            $avaliacao->professor()->associate($professor);
-            $avaliacao->turma()->associate($turma);
-            $avaliacao->save();
-            $avaliacao->update($data);
-            
 
-            // $turma->attach($user);
-        
-   
-        return redirect()->back();
+        $avaliacao = Avaliacao::find($id);
+        if($avaliacao->status != 'bloqueado' || $user->admin == 'S'){
+            $epoca = Epoca::where('activo','S')->first();
+            // if($epoca->fechado == 'S'){
+            // $data = $request->only('_method','_token','exame1','exame2');         
+            // }else{
+            $data = $request->all(); 
+            // }
+              
+            // $validacao = \Validator::make($data,[
+            // "Professor" => "required",        
+            // "carga" => "required",       
+                    
+            // ]);
+            // if($validacao->fails()){
+            //     return redirect()->back()->withErrors($validacao)->withInput();
+            // }
+            
+                $disciplina = Disciplina::find($avaliacao->disciplina_id);
+                $turma = Turma::find($avaliacao->turma_id);
+                $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
+                if(is_null($professor)){
+                    $erro = "Erro: Nenhum professor associado a disciplina !!!";
+                    return redirect()->back()->withErrors($erro)->withInput();
+                }else{
+                    $avaliacao->user()->associate($user);
+                    $avaliacao->professor()->associate($professor);
+                    $avaliacao->turma()->associate($turma);
+                    $avaliacao->save();
+                    $avaliacao->update($data);
+
+                }
+                
+
+                // $turma->attach($user);
+            
+       
+            return redirect()->back();
+
+        }else{
+            $erro = "Nota congelada: consulte o administrador !!!";
+            return redirect()->back()->withErrors($erro)->withInput();
+        }
         
     }
 

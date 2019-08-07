@@ -33,7 +33,7 @@ public function index()
         ["titulo"=>"Lista de Alunos","url"=>""]
     ]);
        
-       $listaModelo = Aluno::listaAlunos(10000);
+       $listaModelo = Aluno::listaAlunos(100);       
        $listaModulos = Modulo::all();
 
        return view('admin.alunos.index',compact('listaMigalhas','listaModelo','listaModulos'));
@@ -277,17 +277,26 @@ public function index()
 
        $ano_lectivo_10 = '';
        $ano_lectivo_11 = '';
-       $ano_lectivo_12 = '';      
+       $ano_lectivo_12 = '';  
+
+       $provenienca_10 = '';
+       $provenienca_11 = '';
+       $provenienca_12 = '';      
       
        $turma_10_info = explode(' ',$turma_10->nome);       
        $label_10 = $turma_10_info[2];
-       $numero_10 = $turma_10->pivot->numero;
+       $numero_10 = $turma_10->pivot->numero;      
+       $provenienca_10 = $turma_10->pivot->provenienca;
+       $provenienca_10 = $provenienca_10 == '' ? $instituicao->nome : $provenienca_10; 
+       $ano_lectivo_10 = $turma_10->ano_lectivo;
        
        if(isset($turma_11) && !is_null($turma_11)){
          $turma_11_info = explode(' ',$turma_11->nome);
          $label_11 = $turma_11_info[2];
          $numero_11 = $turma_11->pivot->numero;
          $ano_lectivo_11 = $turma_11->ano_lectivo;
+         $provenienca_11 = $turma_11->pivot->provenienca;
+         $provenienca_11 = $provenienca_11 == '' ? $instituicao->nome : $provenienca_11;       
        }
 
        if(isset($turma_11) && !is_null($turma_12)){
@@ -295,6 +304,8 @@ public function index()
          $label_12 = $turma_12_info[2];
          $numero_12 = $turma_12->pivot->numero; 
          $ano_lectivo_12 = $turma_12->ano_lectivo;         
+         $provenienca_12 = $turma_12->pivot->provenienca;
+         $provenienca_12 = $provenienca_12 == '' ? $instituicao->nome : $provenienca_12;       
         }
 
        
@@ -531,10 +542,10 @@ public function index()
                       <th scope='col' scope='col' colspan='10'>TURMA:$label_11   Nº$numero_11 ANOLECTIVO $ano_lectivo_11</th>     
                       <th scope='col' scope='col' colspan='10'>TURMA:$label_12   Nº$numero_12 ANOLECTIVO $ano_lectivo_12</th>     
                     </tr>
-                    <tr>      
-                      <th scope='col' scope='col' colspan='10'>ESCOLA DE PROVENIÊNCIA: COLÉGIO PADRE BUILU</th>     
-                      <th scope='col' scope='col' colspan='10'>ESCOLA DE PROVENIÊNCIA: COLÉGIO PADRE BUILU</th>     
-                      <th scope='col' scope='col' colspan='10'>ESCOLA DE PROVENIÊNCIA: COLÉGIO PADRE BUILU</th>     
+                    <tr style='text-transform:uppercase;'>      
+                      <th scope='col' scope='col' colspan='10'>ESCOLA DE PROVENIÊNCIA: $provenienca_10</th>     
+                      <th scope='col' scope='col' colspan='10'>ESCOLA DE PROVENIÊNCIA: $provenienca_11</th>     
+                      <th scope='col' scope='col' colspan='10'>ESCOLA DE PROVENIÊNCIA: $provenienca_12</th>     
                     </tr>
                     <tr>      
                       <th scope='col' colspan='3'>TRIMESTRE</th>

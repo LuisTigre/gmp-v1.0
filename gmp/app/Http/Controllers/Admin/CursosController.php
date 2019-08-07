@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Curso;
 use App\Area;
 use App\Professor;
+use App\Disciplina;
 
 class CursosController extends Controller
 {
@@ -66,6 +67,7 @@ class CursosController extends Controller
         $curso->professor()->associate($professor);
         $curso->area()->associate($area);
         $curso->save();
+        $curso->criar_modulos_senao_existir();
         
         return redirect()->back();
     }
@@ -134,7 +136,47 @@ class CursosController extends Controller
      */
     public function destroy($id)
     {
-        Curso::find($id)->delete();
+        $curso = Curso::find($id);
+        $curso->modulos()->delete();
+        $curso->delete();
+
         return redirect()->back();
+    }
+
+    public function disciplinas($curso_id)
+    {
+        $curso = Curso::find($curso_id);        
+
+        $user = auth()->user();       
+       // dd($user);
+       $listaMigalhas = json_encode([
+        ["titulo"=>"Admin","url"=>route('admin')],
+        ["titulo"=>"Cursos","url"=>route('cursos.index')],
+        ["titulo"=>"disciplinas","url"=>""],
+    ]);
+       // $cabecalho = ['#','Disciplina','Acron.'];
+       // if($curso->modulos()->get()->where('nome', $curso->acronimo . ' 10ª')->isNotEmpty()){      
+       //  array_push($cabecalho, '10ª');
+       // }
+       // if($curso->modulos()->get()->where('nome', $curso->acronimo . ' 11ª')->isNotEmpty()){      
+       //  array_push($cabecalho, '11ª');
+       // }
+       // if($curso->modulos()->get()->where('nome', $curso->acronimo . ' 12ª')->isNotEmpty()){      
+       //  array_push($cabecalho, '12ª');
+       // }
+       // if($curso->modulos()->get()->where('nome', $curso->acronimo . ' 13ª')->isNotEmpty()){      
+       //  array_push($cabecalho, '13ª');
+       // }
+       // array_push($cabecalho, 'Curlar');
+       // array_push($cabecalho, 'Categoria');
+         
+       $modulo = $curso->modulos()->get()->first();
+       $listaModelo =$curso->disciplinas(100);
+       $listaProfessores = Professor::all()->sortBy('nome');
+       $listaAreas = Area::all()->sortBy('nome');
+       $listaDisciplinas = Disciplina::orderBy('nome')->get();
+
+       return view('admin.cursos.disciplinas.index',compact('listaMigalhas','listaModelo','user','listaProfessores','listaAreas','curso','cabecalho','listaDisciplinas','modulo'));
+
     }
 }

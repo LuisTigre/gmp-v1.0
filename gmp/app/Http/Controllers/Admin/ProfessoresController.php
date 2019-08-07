@@ -159,4 +159,19 @@ public function index()
     public function fileUpload(){
         return view('admin.professores.upload');
    }
+
+   public function turmas($id){
+        $professor = Professor::find($id);
+
+        $listaMigalhas = json_encode([
+        ["titulo"=>"Admin","url"=>route('admin')],
+        ["titulo"=>"Lista de Professores","url"=>""]
+    ]);
+       $user = auth()->user();       
+       $listaModelo = $professor->listaTurmas(100);
+
+
+       return view('admin.professores.turmas.index',compact('listaMigalhas','listaModelo','user','professor'));
+
+   }
 }

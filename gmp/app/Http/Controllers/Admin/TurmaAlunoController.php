@@ -10,6 +10,8 @@ use App\Classe;
 use App\Aluno;
 use App\Turma;
 use App\Epoca;
+use App\Instituicao;
+use App\Disciplina;
 
 class TurmaAlunoController extends Controller
 {
@@ -35,12 +37,12 @@ class TurmaAlunoController extends Controller
        $listaCursos = Curso::all();
        $listaTurmas = Turma::orderBy('nome')->get();
        $modulo = $turma->modulo()->first();
-
+       $listaDisciplinas = Disciplina::orderBy('nome')->get();
        $listaAlunos = Turma::alunos_turmas_actuais($turma->modulo_id,100);
        
           
        $user = auth()->user();
-       return view('admin.turmas.alunos.index',compact('turma','listaMigalhas','listaModelo','listaCursos','listaTurmas','listaAlunos','user','modulo'));
+       return view('admin.turmas.alunos.index',compact('turma','listaMigalhas','listaModelo','listaCursos','listaTurmas','listaAlunos','user','modulo','listaDisciplinas'));
     }
 
     public function listaModelo($id)
@@ -58,41 +60,42 @@ class TurmaAlunoController extends Controller
     
     public function store(Request $request)
     {
-        $data = $request->except('_token');        
+        $data = $request->except('_token');                
+        $user = auth()->user();
+        $data['user_id'] = $user->id;
              
-            // dd($data);               
-            // $validacao = \Validator::make($data,[
-            // "carga" => "required",        
-            // "duracao" => "required"      
-            // ]);
-            // if($validacao->fails()){
-            //     return redirect()->back()->withErrors($validacao)->withInput();
-            // }
-            $user = auth()->user();
-            $data['user_id'] = $user->id;
-            $newData = $data;
-            $turma = Turma::find($data['turma_id']);           
-            $aluno = Aluno::find($data['aluno_id']);
-
-            foreach($data['aluno_id'] as $aluno) {
-                $newData['aluno_id'] = $aluno;              
-                $newData['numero'] = Turma::qtdAlunos($data['turma_id']) + 1;                            
-                $turma->alunos()->attach(intVal($aluno),$newData);
-
-            }
-            $alunos_da_turma = $turma->listaAlunos($turma->id,100);            
-            // $collator = collator('en_us');
-            // $alunos_da_turma = $collator->sort($alunos_da_turma);
-            $numero = 0;
-            foreach ($alunos_da_turma as $key => $aluno_info){                
-                 $aluno = Aluno::find($aluno_info->id);
-                 $numero++;
-                 $data['numero'] = $numero;                 
-                 $aluno_info->numero = $numero;                
-                 $turma->alunos()->updateExistingPivot($aluno_info->id,['numero' => $numero]);
-                 $aluno->migrarNotasAnteriores();                 
-                }           
+            TurmaAlunoController::inscrever_aluno_na_turma($data);
             return redirect()->back();
+    }
+
+
+    public static function inscrever_aluno_na_turma($data){      
+
+        $newData = $data;
+        $turma = Turma::find($data['turma_id']);           
+        $aluno = Aluno::find($data['aluno_id']);
+
+        foreach($data['aluno_id'] as $aluno) {
+            $newData['aluno_id'] = $aluno;              
+            $newData['numero'] = Turma::qtdAlunos($data['turma_id']) + 1;
+            $newData['provenienca'] = $data['provenienca'];
+            if($turma->alunos()->where('aluno_id',$aluno)->get()->isEmpty()){
+                $turma->alunos()->attach(intVal($aluno),$newData);
+            }                           
+
+        }
+        $alunos_da_turma = $turma->listaAlunos($turma->id,100);            
+       
+        $numero = 0;
+        foreach ($alunos_da_turma as $key => $aluno_info){                
+             $aluno = Aluno::find($aluno_info->id);
+             $numero++;
+             $data['numero'] = $numero;                 
+             $aluno_info->numero = $numero;                
+             $turma->alunos()->updateExistingPivot($aluno_info->id,['numero' => $numero]);
+              $aluno->migrarNotasAnteriores();                 
+            } 
+
         }
     
     
@@ -136,7 +139,7 @@ class TurmaAlunoController extends Controller
             $user = auth()->user();
             $turma = Turma::find($data['turma_id']);
             $aluno = Aluno::find($data['aluno_id']);            
-            $turma->alunos()->updateExistingPivot($data['aluno_id'],$request->only(['numero','cargo','status']));
+            $turma->alunos()->updateExistingPivot($data['aluno_id'],$request->only(['numero','cargo','provenienca','status']));
             $aluno->status = $data['status'];
             $turma->user()->associate($user);
             $aluno->user()->associate($user);
@@ -158,11 +161,14 @@ class TurmaAlunoController extends Controller
      */
     public function destroy($turma_id,$aluno_id)
     {         
-           $aluno = Aluno::find($aluno_id);      
-           $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();
-           Turma::find($turma_id)->alunos()->detach($aluno_id);
-            // return redirect()->back();
-            return 204;                
+           $aluno = Aluno::find($aluno_id);               
+           $turma = Turma::find($turma_id);
+           $turma_anterior = $aluno->buscarTurmaAnterior($turma);
+           $aluno->revalidarNotasAnteriores($turma_anterior);          
+           $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();           
+           $turma->alunos()->detach($aluno_id);
+            return redirect()->back();
+            // return 204;                
     }
     public function deleteMultiple($turma_id,$aluno_id)
     {   

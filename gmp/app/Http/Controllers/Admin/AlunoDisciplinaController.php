@@ -24,55 +24,16 @@ class AlunoDisciplinaController extends Controller
        $user = auth()->user();       
        $turma = Turma::find($turma_id);      
        $disciplina = Disciplina::find($disciplina_id);
-       // $alunos = Turma::listaAlunosRepOuNao($turma->id,100);
-       // $alunos_rep = $alunos->where('repetente','S');
-
-       // $alunos_sorted = $alunos->where('repetente','N');       
-       // $alunos_sorted_arr = [];       
-       // $data = [];
-       // $disciplinas = $modulo->withPivot()->get();       
+       
        $listaMigalhas = json_encode([
         ["titulo"=>"Admin","url"=>route('admin')],
         ["titulo"=>"Turmas","url"=>route('turmas.index')],       
+        ["titulo"=>"Disciplinas","url"=>route('turmas.disciplinas.index',[$turma_id])],       
         ["titulo"=>"Alunos","url"=>""]
-    ]);
-
-       // foreach ($alunos_sorted as $alunos_sorted) {
-       //          $data = ["id"=>$alunos_sorted->id,
-       //        "idmatricula"=>$alunos_sorted->idmatricula,
-       //        "numero"=>$alunos_sorted->numero,
-       //        "nome"=>$alunos_sorted->nome,
-       //        "idade"=>$alunos_sorted->idade,
-       //        "sexo"=>$alunos_sorted->sexo,
-       //        "status"=>$alunos_sorted->status,
-       //        "repetente"=>$alunos_sorted->repetente,
-       //        "usuario"=>$alunos_sorted->usuario];
-
-       //        array_push($alunos_sorted_arr, $data);          
-       // }
-       // foreach ($alunos_rep as $repetente){       
-       
-       //     $avaliacaoDaDisciplina = Turma::avaliacoesDoAluno2($repetente->id,'S')->where('disciplina_id',$disciplina_id)->first();           
-       //     if(isset($avaliacaoDaDisciplina['result']) 
-       //      && ($avaliacaoDaDisciplina['result'] == 'Tran.' 
-       //      || $avaliacaoDaDisciplina['result'] == 'Continua')){            
-       //     }else{
-
-       //       $data = ["id"=>$repetente->id,
-       //        "idmatricula"=>$repetente->idmatricula,
-       //        "numero"=>$repetente->numero,
-       //        "nome"=>$repetente->nome,
-       //        "idade"=>$repetente->idade,
-       //        "sexo"=>$repetente->sexo,
-       //        "status"=>$repetente->status,
-       //        "repetente"=>$repetente->repetente,
-       //        "usuario"=>$repetente->usuario];               
-       //       array_push($alunos_sorted_arr, $data);
-       //     }
-       // }
+    ]);      
       
-       $listaModelo = $disciplina->buscarAlunosDaDisciplina($turma); 
-       // dd($listaModelo); 
+       $listaModelo = $disciplina->buscarAlunosDaDisciplina($turma);       
+       
        $listaDisciplinas = Disciplina::orderBy('nome')->get();       
        $listaProfessores = Professor::orderBy('nome')->get();       
        $user = auth()->user();

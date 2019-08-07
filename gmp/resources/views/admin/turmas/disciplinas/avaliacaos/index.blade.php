@@ -41,6 +41,7 @@
       <input type="hidden" name="professor_id" value="{{$turma->id}}">
       <input type="hidden" name="user_id" value="">
       <input type="hidden" name="disciplina_id" value="{{$disciplina->id}}">
+      <input type="hidden" name="turma_id" value="{{$turma->id}}">
       <div class="form-group col-xs-12">
         <label for="nome">Nome</label>
         <select class="form-control" id="nome" name="aluno_id" value="{{old('aluno_id')}}">

@@ -11,27 +11,24 @@
       </div>
     @endif
 
-    <painel titulo="Lista de Professores">
+    <painel titulo="{{$professor->nome}} / Turmas">
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
      @if ($user->professor == 'S') 
       <tabela-lista
-      v-bind:titulos="['#','Nome','Telefone','E-mail']"
+      v-bind:titulos="['#','Turma','Discplina','Ano','Director']"
       v-bind:itens="{{json_encode($listaModelo)}}"
-      ordem="asc" ordemcol="1"
-      criar="#criar" detalhe="/admin/professores/" editar="/admin/professores/" 
+      ordem="desc" ordemcol="3"      
       token="{{csrf_token()}}"
       modal="sim"
-      v-bind:buttons="[{'nome':'Turmas','url':'/admin/professores/' ,'action':'turmas'}]"
+      
       ></tabela-lista>
      @elseif($user->admin == 'S') 
       <tabela-lista
-      v-bind:titulos="['#','Nome','Telefone','E-mail']"
+      v-bind:titulos="['#','Turma','Discplina','Ano','Director']"
       v-bind:itens="{{json_encode($listaModelo)}}"
-      ordem="asc" ordemcol="1"
-      criar="#criar" detalhe="/admin/professores/" editar="/admin/professores/" 
-      deletar="/admin/professores/" token="{{csrf_token()}}"
+      ordem="desc" ordemcol="3"      
       modal="sim"
-      v-bind:buttons="[{'nome':'Turmas','url':'/admin/professores/' ,'action':'turmas'}]"
+      
       ></tabela-lista>
       @endif
       <div align="center">        

@@ -94,7 +94,7 @@ class EpocasController extends Controller
     public function update(Request $request, $id)
     {
         
-
+        set_time_limit(240);
         $data = $request->all();
         $validacao = \Validator::make($data,[
         // 'ano_lectivo' => 'required|unique:epocas'        
@@ -129,19 +129,19 @@ class EpocasController extends Controller
                         $aluno = Aluno::where('idmatricula',$avaliacao['idmatricula'])->first();
                         $turma_nome = explode(' ', $turma->nome);
                         $modulo = '';
-                       if($turma_nome[1] =='10ª'){                                          
-                        $modulo = Modulo::where('nome',$turma_nome[0] . ' 11ª')->first();
-                        $aluno->modulo_id = $modulo->id;
-                        $aluno->save();                        
-                       }else if($turma_nome[1] =='11ª'){
-                        $modulo = Modulo::where('nome',$turma_nome[0] . ' 12ª')->first();
-                        $aluno->modulo_id = $modulo->id;
-                        $aluno->save();
-                       }else{
-                        $modulo = Modulo::where('nome',$turma_nome[0] . ' 13ª')->first();
-                        $aluno->modulo_id = $modulo->id;
-                        $aluno->save();
-                       }                      
+                        if($turma_nome[1] =='10ª'){                                          
+                            $modulo = Modulo::where('nome',$turma_nome[0] . ' 11ª')->first();
+                            $aluno->modulo_id = $modulo->id;
+                            $aluno->save();                        
+                        }else if($turma_nome[1] =='11ª'){
+                            $modulo = Modulo::where('nome',$turma_nome[0] . ' 12ª')->first();
+                            $aluno->modulo_id = $modulo->id;
+                            $aluno->save();
+                        }else{
+                            $modulo = Modulo::where('nome',$turma_nome[0] . ' 13ª')->first();
+                            $aluno->modulo_id = $modulo->id;
+                            $aluno->save();
+                        }                      
                    }
                 }
                }

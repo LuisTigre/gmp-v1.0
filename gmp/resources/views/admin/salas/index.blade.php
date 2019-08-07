@@ -22,7 +22,11 @@
       deletar="/admin/salas/" token="{{csrf_token()}}"
       modal="sim"
 
-      ></tabela-lista>
+      >
+       <span class="no-print text-danger">          
+          <a href="/admin/turmas" class="btn btn-default btn-xs"></i>Turmas</a>       
+      </span>  
+      </tabela-lista>
       <div align="center">        
         {{$listaModelo}}
       </div>

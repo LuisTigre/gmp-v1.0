@@ -34,7 +34,8 @@
           
            axios.get(req_url).then(res => {
            if(url_parts[0] != 'itself'){
-            this.$store.commit('setItem',res.data);              
+            this.$store.commit('setItem',res.data);  
+             console.log(this.item);             
            }         
            });
 

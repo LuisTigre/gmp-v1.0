@@ -14,19 +14,19 @@
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
      @if($user->admin == 'S')
       <tabela-lista
-      v-bind:titulos="['#','Matricula','Nº','Nome','Idade','Sexo','Status','Repentente','Alterado por','Acção']"
+      v-bind:titulos="['#','Nº','Nome','Devedor','Repentente','Status','Cargo','Proveniença','Alterado por','Acção']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="2"         
       modal="sim"
-      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'}]"
+      v-bind:buttons="[{'nome':'Ficha','url':'/admin/alunos/' ,'action':'bolentim'}]"
       ></tabela-lista>      
       @else
       <tabela-lista
-      v-bind:titulos="['#','Disciplina','Acrónimo','Professor','Alterado por']"
+      v-bind:titulos="['#','Nº','Nome','Devedor','Repentente','Status','Cargo','Proveniença','Alterado por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"        
       modal="sim"
-      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'}]"
+      
       ></tabela-lista>
       @endif
       <!-- <div align="center">        

@@ -22,7 +22,13 @@
       deletar="/admin/disciplinas/" token="{{csrf_token()}}"
       modal="sim"
 
-      ></tabela-lista>
+      >
+      <span class="no-print text-danger">          
+          <a href="/admin/cursos" class="btn btn-default btn-xs"></i>Cursos</a>    
+          <a href="/admin/classes" class="btn btn-default btn-xs"></i>classes</a>    
+      </span>      
+
+      </tabela-lista>
       <div align="center">        
         {{$listaModelo}}
       </div>

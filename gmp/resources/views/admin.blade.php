@@ -28,12 +28,12 @@
 	            <div class="col-md-2">
 	                <caixa titulo="Admin" qtd="{{$totalAdmin}}" url="{{route('adm.index')}}" cor="brown" icon="ion ion-person"></caixa>
 	            </div>	            
-	            <div class="col-md-2">
+	           <!--  <div class="col-md-2">
 	                <caixa titulo="Recursos" qtd="{{$totalAdmin}}" url="{{route('recursos.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
-	            </div> -->
-	            <div class="col-md-2">
+	            </div>  -->
+	           <!--  <div class="col-md-2">
 	                <caixa titulo="Áreas" qtd="{{$totalAreas}}" url="{{route('areas.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
-	            </div>
+	            </div> -->
 	            <div class="col-md-2">
 	                <caixa titulo="Instituição" qtd="{{1}}" url="{{route('instituicaos.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
 	            </div>
@@ -46,21 +46,24 @@
 	            <div class="col-md-2">
 	                <caixa titulo="Disciplinas" qtd="{{$totalDisciplinas}}" url="{{route('disciplinas.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
 	            </div>	
-	            <div class="col-md-2">
+	            <!-- <div class="col-md-2">
 	                <caixa titulo="Classes" qtd="{{$totalClasses}}" url="{{route('classes.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
-	            </div>		
-	            <div class="col-md-2">
+	            </div>	 -->	
+	            <!-- <div class="col-md-2">
 	                <caixa titulo="Modulos" qtd="{{$totalModulos}}" url="{{route('modulos.index')}}" cor="brown" icon="glyphicon glyphicon-book"></caixa>
-	            </div>
+	            </div> -->
 	            <div class="col-md-2">
 	                <caixa titulo="Devedores" qtd="{{$totalDevedores}}" url="{{route('devedores.index')}}" cor="brown" icon="fa fa-money"></caixa>
 	            </div>
 	            <div class="col-md-2">
 	                <caixa titulo="Anos Acad." qtd="{{$totalClasses}}" url="{{route('epocas.index')}}" cor="brown" icon="glyphicon glyphicon-calendar"></caixa>
 	            </div>	
-	            <div class="col-md-2">
+	            <!-- <div class="col-md-2">
 	                <caixa titulo="Salas" qtd="{{$totalSalas}}" url="{{route('salas.index')}}" cor="brown" icon="glyphicon glyphicon-home"></caixa>
-	            </div>				
+	            </div>	 --> 
+	            <!-- <div class="col-md-2">
+	                <caixa titulo="Estatisticas" qtd="{{$totalSalas}}" url="{{route('salas.index')}}" cor="brown" icon="glyphicon glyphicon-stats"></caixa>
+	            </div>	 -->			
 	    		@endcan
 
 	    		

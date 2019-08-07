@@ -54,9 +54,9 @@ disc.categoria,
 us.name as usuario
 from avaliacaos av 
 inner join alunos al on av.aluno_id = al.id 
-inner join turmas tur on av.turma_id  = tur.id
+inner join turmas tur on av.turma_id  = tur.id  
 inner join disciplinas disc on av.disciplina_id = disc.id
 inner join professors prof on av.professor_id = prof.id
-inner join aluno_turma atu on av.aluno_id = atu.aluno_id
+inner join aluno_turma atu on av.aluno_id = atu.aluno_id and tur.id = atu.turma_id
 left  join users us on av.user_id = us.id
 group by av.id);

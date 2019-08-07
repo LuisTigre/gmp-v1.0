@@ -20,7 +20,7 @@ class Aluno extends Model
    }
    public function turmas()
    {
-    return $this->belongsToMany('App\turma')->withPivot('numero','cargo','repetente','status');
+    return $this->belongsToMany('App\turma')->withPivot('numero','cargo','repetente','provenienca','status');
    }
 
    public function avaliacaos()
@@ -72,30 +72,34 @@ class Aluno extends Model
    }
 
   public function migrarNotasAnteriores(){    
+               
       $user = auth()->user();      
       $turmas = $this->turmas()->get();     
       $turma_actual = $this->turmas()->get()->last(); 
-      $turma_anterior_da_classe_actual = $turmas->where('ano_lectivo','<',$turma_actual->ano_lectivo)->where('modulo_id',
-      $turma_actual->modulo_id);
-            
+      $turma_anterior_da_classe_actual = $this->buscarTurmaAnterior($turma_actual); 
       /*SE O ALUNO FOR REPETENTE*/
-      if($turma_anterior_da_classe_actual->isNotEmpty()){
+      if(!is_null($turma_anterior_da_classe_actual)){              
 
           $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
+          $modulo = Modulo::find($turma_actual->modulo_id);
+          $modulo_nome = explode(" ", $modulo->nome);                 
+          $mn = $modulo_nome[1];     
+
+                    $discsss= Collect([]);
+                    $moduloss= Collect([]);
 
           foreach ($avaliacaoAnual as $avaliacao) {
-            /*SE AS NOTAS REALMENTE APROVOU*/
+            /*SE A COTACAO ANUAL RESULTA EM APROVACAO*/
+            
             if(isset($avaliacao['result']) 
-            && ($avaliacao['result'] == 'Tran.' 
-            || $avaliacao['result'] == 'Continua')){
-
-              $modulos = ['10ª','11ª','12ª','13ª'];
-
-                foreach ($modulos as $mn) {
-
+            && ($avaliacao['result'] == 'Trans.' 
+            || $avaliacao['result'] == 'Continua')){     
+              
+                  $moduloss->push($avaliacao['avaliacao_id_' . $mn]);   
                  if($avaliacao['avaliacao_id_' . $mn] != ''){
+                     $discsss->push($avaliacao);   
                       $avaliacaoNew = Avaliacao::find($avaliacao['avaliacao_id_' . $mn]);
-                      if(!is_null($avaliacaoNew)){                                
+                      if(!is_null($avaliacaoNew)){
                         $newAvaliacao = new Avaliacao([         
                           'professor_id' => $avaliacaoNew->professor_id,
                           'user_id' => $turma_actual->user_id,
@@ -110,20 +114,23 @@ class Aluno extends Model
                           'p22' => $avaliacaoNew['p22'],                                     
                           'mac3' => $avaliacaoNew['mac3'],
                           'p31' => $avaliacaoNew['p31'],
-                          'p32' => $avaliacaoNew['p32']                                    
+                          'exame1' => $avaliacaoNew['exame1'],                                    
+                          'exame2' => $avaliacaoNew['exame2'],                                    
+                          'p32' => $avaliacaoNew['p32'],                                    
+                          'status' => 'bloqueado'                                    
                        ]);                          
                           $newAvaliacao->save();                         
                      }     
                  }     
-            }     
+             
           
           }
         }
-            $this->anularNotasAnteriores($turma_anterior_da_classe_actual);
+        
+            $this->anularNotasAnteriores($turma_anterior_da_classe_actual,$turma_actual);
 
        /*SE O ALUNO NAO FOR REPETENTE*/
       }else{
-
           $mn = explode(' ', $turma_actual->nome);
           $mn_arr = explode('ª', $mn[1]);         
           $classe_ant = $mn_arr[0]-1 . 'ª';
@@ -131,6 +138,7 @@ class Aluno extends Model
           /*SE A CLASSE FOR DIFERENTE DA 10 CLASSE*/
           if($mn_arr[0] > 10){
               $modulo_da_classe_anterior = Modulo::where('nome',  $mn[0] . ' ' . $classe_ant)->get()->last();
+            // dd($modulo_da_classe_anterior); 
                         
               $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
               $recursos = $avaliacaoAnual->where('result','exame2');
@@ -148,16 +156,45 @@ class Aluno extends Model
             
   }
 
-   public function anularNotasAnteriores($turma){
-      $this->avaliacaos()->where('turma_id',$turma->id)->update(['status'=>'anulado']); 
-      $turma->alunos()->updateExistingPivot($this->id,
+   public function buscarTurmaAnterior($turma_actual){
+          $turmas = $this->turmas()->get();
+          $turma_anterior = $turmas->where('ano_lectivo','<',$turma_actual->ano_lectivo)->where('modulo_id',
+            $turma_actual->modulo_id)->last();
+          return $turma_anterior;
+   }
+
+   public function buscarTurmaDaClasseAnterior($turma_actual)
+   {
+
+          $modulo = $turma_actual->modulo->moduloAnterior();
+          $turmas = $this->turmas()->get();          
+          $turma_anterior = $turmas->where('ano_lectivo','<',$turma_actual->ano_lectivo)->where('modulo_id',
+            $modulo->id)->last();
+          return $turma_anterior;
+   }
+
+   public function anularNotasAnteriores($turma,$turma_actual){ 
+      $avaliacoes = $this->avaliacaos()->where('turma_id',$turma->id)->get();
+      foreach ($avaliacoes as $avaliacao) {
+        if(round($avaliacao->exame1,1) >= 10 || round($avaliacao->exame2,1)){
+            $avaliacao->update(['status'=>'anulado']);
+        }
+      }                  
+      // $this->avaliacaos()->where('turma_id',$turma->id)->update(['status'=>'anulado']);
+      $this->turmas()->updateExistingPivot($turma_actual->id,
         [
          'aluno_id'=>$this->id,
-         'turma_id'=>$turma->id,
+         'turma_id'=>$turma_actual->id,
          'repetente'=>'S'
         ]);          
-           
+          
 
+   }
+   public function revalidarNotasAnteriores($turma){ 
+      if(!is_null($turma)){
+        $this->avaliacaos()->where('turma_id',$turma->id)->update(['status'=>null]);
+      }            
+      
    }
    
 }

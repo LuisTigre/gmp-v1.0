@@ -61,6 +61,7 @@ class ModulosController extends Controller
     public function store(Request $request)
     {
         $data = $request->all(); 
+        
         // dd($data);       
         if(!isset($data['disciplina_id'])){
             $epoca = Epoca::where('activo','S')->first();            

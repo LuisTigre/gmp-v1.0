@@ -57,54 +57,40 @@ class Disciplina extends Model
    public function buscarAlunosDaDisciplina($turma)
    {
     
-       $user = auth()->user();
-       $alunos = Turma::listaAlunosRepOuNao($turma->id,100);
-       $alunos_rep = $alunos->where('repetente','S');
+      $user = auth()->user();      
+      $data = Collect([]);
+            
+      /*SE O ALUNO FOR REPETENTE*/
+  $alunos = Turma::listaAlunos($turma->id,100);
+      foreach ($alunos as $key => $aluno) {
+          $aluno_objecto = Aluno::find($aluno->id);
+          $turmas = $aluno_objecto->turmas()->get();         
+          $turma_anterior = $aluno_objecto->buscarTurmaAnterior($turma);
+          if(is_null($turma_anterior)){
+              $data->push($aluno);
+          }else{
+              $modulo = Modulo::find($turma->modulo_id);
+              $classe = Classe::find($modulo->classe_id);
+              $avaliacaoAnual = Turma::avaliacoesDoAluno2($aluno->id,'S'); 
+              $avaliacao = $avaliacaoAnual->where('disciplina_id',$this->id)->last();             
+              
+              if(isset($avaliacao['bloqueado_' . $classe->nome]) 
+              && $avaliacao['bloqueado_' . $classe->nome] == 'S'){            
+                  
+              }else{
+                    $data->push($aluno);            
+              }          
 
-       $alunos_sorted = $alunos->where('repetente','N');       
-       $alunos_sorted_arr = [];       
-       $data = [];    
-
-       foreach ($alunos_sorted as $alunos_sorted) {
-                $data = ["id"=>$alunos_sorted->id,
-              "idmatricula"=>$alunos_sorted->idmatricula,
-              "numero"=>$alunos_sorted->numero,
-              "nome"=>$alunos_sorted->nome,
-              "idade"=>$alunos_sorted->idade,
-              "sexo"=>$alunos_sorted->sexo,
-              "status"=>$alunos_sorted->status,
-              "repetente"=>$alunos_sorted->repetente,
-              "usuario"=>$alunos_sorted->usuario];
-
-              array_push($alunos_sorted_arr, $data);          
-       }
-       foreach ($alunos_rep as $repetente){       
-       
-           $avaliacaoDaDisciplina = Turma::avaliacoesDoAluno2($repetente->id,'S')->where('disciplina_id',$this->id)->first();           
-           if(isset($avaliacaoDaDisciplina['result']) 
-            && ($avaliacaoDaDisciplina['result'] == 'Tran.' 
-            || $avaliacaoDaDisciplina['result'] == 'Continua')){            
-           }else{
-
-             $data = ["id"=>$repetente->id,
-              "idmatricula"=>$repetente->idmatricula,
-              "numero"=>$repetente->numero,
-              "nome"=>$repetente->nome,
-              "idade"=>$repetente->idade,
-              "sexo"=>$repetente->sexo,
-              "status"=>$repetente->status,
-              "repetente"=>$repetente->repetente,
-              "usuario"=>$repetente->usuario];               
-             array_push($alunos_sorted_arr, $data);
-           }
-       }
+          }
       
-       $listaModelo = collect(['data'=>$alunos_sorted_arr]); 
-       // dd($listaModelo); 
-       $listaDisciplinas = Disciplina::orderBy('nome')->get();       
-       $listaProfessores = Professor::orderBy('nome')->get();       
-       $user = auth()->user();
-       return $listaModelo;
-   }
-   
+      }
+       
+        $data2 = Collect(['data'=> $data]);       
+      return  $data2;
+      
+          
+     
+  }
 }
+   
+

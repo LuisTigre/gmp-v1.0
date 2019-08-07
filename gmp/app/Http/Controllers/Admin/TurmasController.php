@@ -27,17 +27,17 @@ class TurmasController extends Controller
     public function index()
     {
        $user = auth()->user();
-       $epoca = Epoca::where('activo','S')->first();             
-       // dd($user);
+       $epoca = Epoca::where('activo','S')->first(); 
        $listaMigalhas = json_encode([
         ["titulo"=>"Admin","url"=>route('admin')],
         ["titulo"=>"Turmas","url"=>""]
     ]);
-       
-       $listaModelo = Turma::listaModelo(30,$epoca->ano_lectivo);           
+       $quantidade_de_turmas = Turma::where('ano_lectivo',$epoca->ano_lectivo)->count();
+       $quantidade_de_turmas = $quantidade_de_turmas <= 5 ? 24 : $quantidade_de_turmas;
+       $listaModelo = Turma::listaModelo($quantidade_de_turmas);           
        $listaDisciplinas = Modulo::listaDisciplinas(1,5);
        // dd($listaDisciplinas);    
-       $listaModulos = Modulo::all();
+       $listaModulos = Modulo::all()->sortBy(['nome']);
        $listaCursos = Curso::all();
        $listaClasses = Classe::all();
        $ano_lectivo = $epoca->ano_lectivo;
@@ -73,9 +73,16 @@ class TurmasController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');        
-        if(!isset($data['aluno_id'])){
+        $data = $request->except('_token');
+        
+        TurmasController::criar_nova_turma($data);
+        return redirect()->back();
+    }
 
+
+    public static function criar_nova_turma($data){
+
+        if(!isset($data['aluno_id'])){            
             $epoca = Epoca::where('activo','S')->first();            
             $alfabet = range('A', 'Z');
             $qtd = Turma::where('modulo_id','=',$data['modulo'])->where('ano_lectivo','=',$epoca->ano_lectivo)->count();            
@@ -84,38 +91,38 @@ class TurmasController extends Controller
             $data['nome'] = $modulo->nome . ' ' . $letter;
 
             $validacao = \Validator::make($data,[                  
-            "modulo" => "required",        
-            "periodo" => "required",        
-            "ano_lectivo" => "required",        
-            "sala_id" => "required"        
+            "modulo" => "required",                
+            "ano_lectivo" => "required"             
             ]);
-            if($validacao->fails()){
+            if($validacao->fails()){ 
                 return redirect()->back()->withErrors($validacao)->withInput();
             } 
                    
             $user = auth()->user();
-            $modulo = Modulo::find($data['modulo']);
-            $disciplinas = $modulo->disciplinas()->get(); 
-            $turma = $modulo->turmas()->create($data);            
+            $modulo = Modulo::find($data['modulo']);            
+            $disciplinas = $modulo->disciplinas()->get();            
+            $turma = $modulo->turmas()->create($data);           
+            // dd($turma);           
             $turma->disciplinas()->saveMany($disciplinas);
-            foreach ($disciplinas as $disciplina) {
-            $qtd = $turma->aulas()->where('disciplina_id',$disciplina->id)->count();                          
-                for ($i=0; $i < intVal($disciplina->pivot->carga); $i++) {
-                    $aula = $turma->aulas()->create(
-                    ['nome'=>'Aula',
-                     'disciplina_id'=>$disciplina->id,
-                     'sala_id'=>$turma->sala_id
-                     ]
-                    );
+            // dd($disciplinas);
+            // foreach ($disciplinas as $disciplina) {
+            // $qtd = $turma->aulas()->where('disciplina_id',$disciplina->id)->count();                          
+            //     for ($i=0; $i < intVal($disciplina->pivot->carga); $i++) {
+            //         $aula = $turma->aulas()->create(
+            //         ['nome'=>'Aula',
+            //          'disciplina_id'=>$disciplina->id,
+            //          'sala_id'=>$turma->sala_id
+            //          ]
+            //         );
                     
-                }
-            }
+            //     }
+            // }
             // dd($turma->disciplinas()->get());
                // foreach ($disciplinas as $disciplina) {
                // }            
 
         }else{
-            // // dd($data);               
+                       
             // $validacao = \Validator::make($data,[
             // "nome" => "required"         
             // ]);
@@ -130,16 +137,8 @@ class TurmasController extends Controller
             $turma = Turma::find($data['turma_id'])->alunos()->attach($data['aluno_id'],$data);
             // $turma->attach($user);
         }
-       
-        return redirect()->back();
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+     
     public function show($id)
     {
        return Turma::find($id);

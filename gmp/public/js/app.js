@@ -1173,7 +1173,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(105);
+module.exports = __webpack_require__(100);
 
 
 /***/ }),
@@ -1224,9 +1224,9 @@ Vue.component('formulario', __webpack_require__(73));
 Vue.component('artigocard', __webpack_require__(76));
 Vue.component('grupo-lista', __webpack_require__(79));
 Vue.component('tabela-pauta', __webpack_require__(82));
-Vue.component('tabela-mini-pauta', __webpack_require__(92));
-Vue.component('tabela-horario', __webpack_require__(97));
-Vue.component('buttonlink', __webpack_require__(102));
+Vue.component('tabela-mini-pauta', __webpack_require__(87));
+Vue.component('tabela-horario', __webpack_require__(92));
+Vue.component('buttonlink', __webpack_require__(97));
 
 var app = new Vue({
   el: '#app',
@@ -44290,19 +44290,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     executaForm: function executaForm(index) {
 
       if (confirm("Deseja eliminar ?")) {
-        if (this.itens_selecionados.length != 0) {
-          for (var i = 0; i < this.itens_selecionados.length; i++) {
-            // console.log(this.deletar+this.itens_selecionados[i]+"/deleteMultiple");
-            axios.delete(this.deletar + this.itens_selecionados[i]).then(function (res) {}).catch(function (err) {
-              console.log(err);
-            });
-          }
-        } else {
-          // document.getElementById(index).submit();
-          alert("Selecione pelo menos um item na lista...");
-        }
+        // if(this.itens_selecionados.length != 0){
+        //     for (let i = 0; i < this.itens_selecionados.length; i++) {   
+        //         // console.log(this.deletar+this.itens_selecionados[i]+"/deleteMultiple");
+        //         axios.delete(this.deletar+this.itens_selecionados[i]).then((res) => {
+        //         }).catch((err) => {
+        //           console.log(err);
+        //         })           
+        //     }
+        // }else{
+        document.getElementById(index).submit();
+        // alert("Selecione pelo menos um item na lista..."); 
+
+        // }         
       }
-      window.location.replace(this.index_url);
+      // window.location.replace(this.index_url);           
     },
     ordenaColuna: function ordenaColuna(coluna) {
       this.ordemAuxCol = coluna;
@@ -45385,6 +45387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.get(req_url).then(function (res) {
         if (url_parts[0] != 'itself') {
           _this.$store.commit('setItem', res.data);
+          console.log(_this.item);
         }
       });
 
@@ -46465,24 +46468,19 @@ if (false) {
 }
 
 /***/ }),
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(93)
+  __webpack_require__(88)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(95)
+var __vue_script__ = __webpack_require__(90)
 /* template */
-var __vue_template__ = __webpack_require__(96)
+var __vue_template__ = __webpack_require__(91)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -46520,13 +46518,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 93 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(94);
+var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -46546,7 +46544,7 @@ if(false) {
 }
 
 /***/ }),
-/* 94 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -46560,7 +46558,7 @@ exports.push([module.i, "\ntable{\n  padding:0px;\n  margin:0px;\n}\nth{\n  text
 
 
 /***/ }),
-/* 95 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46852,7 +46850,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 96 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47331,19 +47329,19 @@ if (false) {
 }
 
 /***/ }),
-/* 97 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(98)
+  __webpack_require__(93)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(100)
+var __vue_script__ = __webpack_require__(95)
 /* template */
-var __vue_template__ = __webpack_require__(101)
+var __vue_template__ = __webpack_require__(96)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -47381,13 +47379,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 98 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(99);
+var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -47407,7 +47405,7 @@ if(false) {
 }
 
 /***/ }),
-/* 99 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -47421,7 +47419,7 @@ exports.push([module.i, "\nbody,html,table{\n    width: 100%;\n    height: 100%;
 
 
 /***/ }),
-/* 100 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47710,7 +47708,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 101 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48387,15 +48385,15 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(103)
+var __vue_script__ = __webpack_require__(98)
 /* template */
-var __vue_template__ = __webpack_require__(104)
+var __vue_template__ = __webpack_require__(99)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -48433,7 +48431,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 103 */
+/* 98 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48477,7 +48475,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 104 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48610,7 +48608,7 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
+/* 100 */
 /***/ (function(module, exports) {
 
 throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Windows 64-bit with Unsupported runtime (64)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.5.3\n    at module.exports (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\binding.js:13:13)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\node-sass\\lib\\index.js:14:35)\n    at Module._compile (internal/modules/cjs/loader.js:776:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)\n    at Module.load (internal/modules/cjs/loader.js:653:32)\n    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)\n    at Function.Module._load (internal/modules/cjs/loader.js:585:3)\n    at Module.require (internal/modules/cjs/loader.js:690:17)\n    at require (internal/modules/cjs/helpers.js:25:18)\n    at Object.<anonymous> (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\sass-loader\\lib\\loader.js:3:14)\n    at Module._compile (internal/modules/cjs/loader.js:776:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)\n    at Module.load (internal/modules/cjs/loader.js:653:32)\n    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)\n    at Function.Module._load (internal/modules/cjs/loader.js:585:3)\n    at Module.require (internal/modules/cjs/loader.js:690:17)\n    at require (internal/modules/cjs/helpers.js:25:18)\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:13:17)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:195:19)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:170:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:27:11)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:165:10)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:173:18\n    at loadLoader (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\loadLoader.js:36:3)\n    at iteratePitchingLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:169:2)\n    at runLoaders (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:362:2)\n    at NormalModule.doBuild (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:182:3)\n    at NormalModule.build (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModule.js:275:15)\n    at Compilation.buildModule (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\Compilation.js:149:10)\n    at moduleFactory.create (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\Compilation.js:447:10)\n    at factory (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:241:5)\n    at applyPluginsAsyncWaterfall (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:94:13)\n    at C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\tapable\\lib\\Tapable.js:268:11\n    at NormalModuleFactory.params.normalModuleFactory.plugin (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\tapable\\lib\\Tapable.js:272:13)\n    at resolver (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:69:10)\n    at process.nextTick (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\webpack\\lib\\NormalModuleFactory.js:194:7)\n    at process._tickCallback (internal/process/next_tick.js:61:11)");

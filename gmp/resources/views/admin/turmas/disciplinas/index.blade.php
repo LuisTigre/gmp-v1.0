@@ -14,12 +14,13 @@
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
      @if($user->admin == 'S')
       <tabela-lista
-      v-bind:titulos="['#','Disciplina','Acrónimo','Professor','Director?','Alterado por',]"
+      v-bind:titulos="['#','Disciplina','Acrónimo','Professor','Director?','Alterado por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"      
       editar="itself/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/"      
       modal="sim"
-      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},{'nome':'Alunos','url':'/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'alunos'}]"
+      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},{'nome':'Alunos','url':'/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'alunos'},
+      {'nome':'Estatística','url':'/admin/{{{json_encode($epoca->id)}}}/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'estatistica'}]"
       ></tabela-lista>
       @else
       <tabela-lista
@@ -27,7 +28,8 @@
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"        
       modal="sim"
-      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'}]"
+      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},{'nome':'Alunos','url':'/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'alunos'},{'nome':'Estatística','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},
+      ]"
       ></tabela-lista>
       @endif
       <div align="center">        

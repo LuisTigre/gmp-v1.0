@@ -15,7 +15,7 @@
       <tabela-lista
       v-bind:titulos="['#','Nome','Curso','Classe','Sala','Ano','Alterado por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
-      ordem="asc" ordemcol="1"      
+      ordem="desc" ordemcol="5"      
       criar="#criar" editar="/admin/turmas/" 
       deletar="/admin/turmas/" token="{{csrf_token()}}"
       modal="sim"
@@ -29,6 +29,9 @@
       {'nome':'Aulas','url':'/admin/turmas/','action':'aulas'}
       ]"
       >
+      <span class="no-print text-danger">          
+          <a href="/admin/salas" class="btn btn-default btn-xs"></i>Salas</a>         
+      </span> 
       </tabela-lista>
       @else
       <tabela-lista

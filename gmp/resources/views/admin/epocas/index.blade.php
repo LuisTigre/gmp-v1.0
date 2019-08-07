@@ -45,7 +45,7 @@
       <div class="form-group">
         <label for="ano_lectivo">Ano Lectivo</label>
         <SELECT type="text" class="form-control" id="ano_lectivo" name="ano_lectivo" value="{{old('ano_lectivo')}}" value="{{old('ano_lectivo')}}">          
-          @for($year = date('Y')+3;$year>=2009;$year--)
+          @for($year = date('Y')+5;$year>=2009;$year--)
           <option value="{{$year}}">{{$year}}</option>
           @endfor          
         </SELECT>

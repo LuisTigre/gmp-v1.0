@@ -140,21 +140,21 @@
         executaForm: function(index){
 
           if (confirm("Deseja eliminar ?")) {
-            if(this.itens_selecionados.length != 0){
-                for (let i = 0; i < this.itens_selecionados.length; i++) {   
-                    // console.log(this.deletar+this.itens_selecionados[i]+"/deleteMultiple");
-                    axios.delete(this.deletar+this.itens_selecionados[i]).then((res) => {
-                    }).catch((err) => {
-                      console.log(err);
-                    })           
-                }
-            }else{
-                // document.getElementById(index).submit();
-                alert("Selecione pelo menos um item na lista..."); 
+            // if(this.itens_selecionados.length != 0){
+            //     for (let i = 0; i < this.itens_selecionados.length; i++) {   
+            //         // console.log(this.deletar+this.itens_selecionados[i]+"/deleteMultiple");
+            //         axios.delete(this.deletar+this.itens_selecionados[i]).then((res) => {
+            //         }).catch((err) => {
+            //           console.log(err);
+            //         })           
+            //     }
+            // }else{
+                document.getElementById(index).submit();
+                // alert("Selecione pelo menos um item na lista..."); 
               
-            }         
+            // }         
           } 
-                window.location.replace(this.index_url);           
+                // window.location.replace(this.index_url);           
         },
         ordenaColuna: function(coluna){
           this.ordemAuxCol = coluna;

@@ -995,7 +995,7 @@ class TurmaPautaController extends Controller
 
          if($disc_terminada_10->isNotEmpty() || $disc_terminada_11->isNotEmpty() || $disc_terminada_12->isNotEmpty()){ 
           $output .="
-          <th scope='col' colspan='1' rowspan='3' class='centro' style='font-size:5px'>$value->acronimo</th>";    
+          <th scope='col' colspan='1' rowspan='3' class='centro' style='font-size:5px'><p class='vtexto' style='margin:0px -15px;font-size:11px;'>$value->acronimo</p></th>";    
          /*DISCIPLINA TERMINAL COM ANTECEDENTE*/
          }else if($disc_terminal->isNotEmpty() && $disc_anterior->isNotEmpty()){          
           if($qtd == 3){            

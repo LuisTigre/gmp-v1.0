@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <pagina tamanho="12">
+  <pagina tamanho="10">
     @if($errors->all())
       <div class="alert alert-danger alert-dismissible text-center" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -15,14 +15,19 @@
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
      
       <tabela-lista
-      v-bind:titulos="['#','Nome','Acr.','Área','Coodenador','Instituição','Director','Alterado por']"
+      v-bind:titulos="['#','Nome','Acr.','Área','Coodenador','Instituição','Director','Alt.Por']"
       v-bind:itens="{{json_encode($listaModelo)}}"
       ordem="desc" ordemcol="1"
-      criar="#criar" detalhe="/admin/cursos/" editar="itself/admin/cursos/" 
+      criar="#criar" editar="itself/admin/cursos/" 
       deletar="/admin/cursos/" token="{{csrf_token()}}"
       modal="sim"
-
-      ></tabela-lista>
+      v-bind:buttons="[{'nome':'Disciplinas','url':'/admin/cursos/' ,'action':'disciplinas'}]"
+      >
+      <span class="no-print text-danger">           
+          <a href="/admin/classes" class="btn btn-default btn-xs"></i>classes</a>    
+          <a href="/admin/areas" class="btn btn-default btn-xs"></i>Areas</a>    
+      </span>        
+      </tabela-lista>
       <div align="center">        
         {{$listaModelo}}
       </div>
