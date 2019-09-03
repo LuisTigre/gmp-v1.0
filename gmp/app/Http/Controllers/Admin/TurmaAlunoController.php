@@ -70,35 +70,55 @@ class TurmaAlunoController extends Controller
 
 
     public static function inscrever_aluno_na_turma($data){      
-
         $newData = $data;
         $turma = Turma::find($data['turma_id']);           
-        $aluno = Aluno::find($data['aluno_id']);
-
-        foreach($data['aluno_id'] as $aluno) {
-            $newData['aluno_id'] = $aluno;              
+       
+        foreach($data['aluno_id'] as $aluno_id) {
+            $aluno = Aluno::find($aluno_id);
+            $newData['aluno_id'] = $aluno_id;              
             $newData['numero'] = Turma::qtdAlunos($data['turma_id']) + 1;
             $newData['provenienca'] = $data['provenienca'];
-            if($turma->alunos()->where('aluno_id',$aluno)->get()->isEmpty()){
-                $turma->alunos()->attach(intVal($aluno),$newData);
-            }                           
+            if($turma->alunos()->where('aluno_id',$aluno_id)->get()->isEmpty()){
+                $turma->alunos()->attach(intVal($aluno_id),$newData);
+            }                    
 
+        $aluno->migrarNotasAnteriores();
         }
-        $alunos_da_turma = $turma->listaAlunos($turma->id,100);            
-       
-        $numero = 0;
-        foreach ($alunos_da_turma as $key => $aluno_info){                
-             $aluno = Aluno::find($aluno_info->id);
+        // TurmaAlunoController::ordenar_numeros_por_nome($turma,0,0);
+
+    }
+    
+    public static function ordenar_numeros_por_nome($turma,$aluno_id,$numero){
+        $alunos_da_turma = $turma->listaAlunos($turma->id,100);       
+        $limite = $numero == 0 ? $alunos_da_turma->count() : $numero;
+
+        if($aluno_id > 0){
+           foreach ($alunos_da_turma as $key => $aluno){              
+               if($aluno->id == $aluno_id){             
+                  unset($alunos_da_turma[$key]);
+                  break;
+               }              
+           }
+        }
+
+        $numero = 0; 
+        foreach ($alunos_da_turma as $key => $aluno){
+             if($numero == $limite-1){                                    
+                continue;
+             }              
              $numero++;
-             $data['numero'] = $numero;                 
-             $aluno_info->numero = $numero;                
-             $turma->alunos()->updateExistingPivot($aluno_info->id,['numero' => $numero]);
-              $aluno->migrarNotasAnteriores();                 
-            } 
+               $data['numero'] = $numero;                 
+               $aluno->numero = $numero;                
+               $turma->alunos()->updateExistingPivot($aluno->id,['numero' => $numero]);
 
-        }
-    
-    
+        } 
+    }
+    public function actualizar_num($id)
+    {
+       $turma = Turma::find($id);
+       TurmaAlunoController::ordenar_numeros_por_nome($turma,0,0);
+        return redirect()->back();
+    }
 
     public function show($id)
     {
@@ -145,6 +165,7 @@ class TurmaAlunoController extends Controller
             $aluno->user()->associate($user);
             $turma->save();
             $aluno->save();
+            // TurmaAlunoController::ordenar_numeros_por_nome($turma,$aluno->id,$data['numero']);
 
         
    
@@ -167,6 +188,7 @@ class TurmaAlunoController extends Controller
            $aluno->revalidarNotasAnteriores($turma_anterior);          
            $aluno->avaliacaos()->where('turma_id',$turma_id)->delete();           
            $turma->alunos()->detach($aluno_id);
+           // TurmaAlunoController::ordenar_numeros_por_nome($turma,0,0);
             return redirect()->back();
             // return 204;                
     }

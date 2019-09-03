@@ -240,9 +240,8 @@ class TurmaPautaController extends Controller
       // $listaModelo = Turma::listaModelo(14);
        // dd($listaModelo);
        // $listaModelo = Turma::cotacaoTrimestral(1,1,1,"I");
-       $listaModelo = Turma::classificaoTrimestrais2($turma_id,$epoca->trimestre);
-                
-        
+       $listaModelo = Turma::classificaoTrimestrais2($turma_id,$epoca->trimestre);               
+      
        $listaCabecalho = ['Nº','Nº Mat','Nome','Idade'];
        $listaCabecalho2 = $turma->listaDisciplinas($turma->id,100);
 

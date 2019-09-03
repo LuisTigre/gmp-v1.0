@@ -74,10 +74,19 @@ class TurmaDisciplinaController extends Controller
             // }
             // dd($data);
             $user = auth()->user();
-            $data['user_id'] = $user->id;  
-            // dd($data);    
-            $turma = Turma::find($data['turma_id'])->disciplinas()->attach($data['professor_id'],$data);
-            return redirect()->back();
+            $data['user_id'] = $user->id; 
+
+            $disciplina = Turma::find($data['turma_id'])->disciplinas()->get()->where('id',$data['disciplina_id'])->first();
+            if(is_null($disciplina)){
+              return redirect()->back()->withErrors("Disciplina não faz parte da turma")->withInput();  
+            }else if(is_null($disciplina->pivot->professor_id)){           
+              // Turma::find($data['turma_id'])->disciplinas()->attach($data['professor_id'],$data);
+              Turma::find($data['turma_id'])->disciplinas()->updateExistingPivot($data['disciplina_id'],$data);
+              return redirect()->back();              
+            }else{
+              $professor = Professor::find($disciplina->pivot->professor_id);
+              return redirect()->back()->withErrors("O professor " . $professor->nome . " já faz parte da referida turma")->withInput();             
+            }
         }
     /**
      * Store a newly created resource in storage.
@@ -122,7 +131,7 @@ class TurmaDisciplinaController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();        
-          // dd($data);
+       
         // dd($data);        
         // $validacao = \Validator::make($data,[
         // "Professor" => "required",        
@@ -135,10 +144,18 @@ class TurmaDisciplinaController extends Controller
         // dd($data);
         $user = auth()->user();
 
-        $disciplina = Disciplina::find($data['disciplina_id']);       
+        $disciplina = Disciplina::find($data['disciplina_id']);
+        if(is_null($disciplina)){
+          $disciplina = Disciplina::where('nome',$data['disciplina'])->first();
+          
+
+        }       
         $data['user_id'] = $user->id; 
             $turma = Turma::find($data['turma_id']);            
             $professor = Professor::where('nome',$data['professor'])->first();
+            if(is_null($professor)){
+              $professor = Professor::find($data['professor_id']);
+            }
             // dd($professor);
             $updated_data = [
                          'disciplina_id'=> $disciplina->id,
@@ -146,8 +163,23 @@ class TurmaDisciplinaController extends Controller
                          'professor_id'=>$professor->id,
                          'director'=>$data['director']
                          
-                        ];  
-            $turma->disciplinas()->updateExistingPivot($data['disciplina_id'],$updated_data);
+                        ];
+
+            if($data['disciplina_id'] != ''){
+
+              $turma->disciplinas()->updateExistingPivot($data['disciplina_id'],$updated_data);
+
+            }else{             
+              $disciplina = Turma::find($data['turma_id'])->disciplinas()->get()->where('id',$disciplina->id)->first();              
+              if(!is_null($disciplina) && is_null($disciplina->pivot->professor_id) || $disciplina->pivot->professor_id == $professor->id){
+                $professor->disciplinas()->updateExistingPivot($data['turma_id'],$updated_data);
+              }else{
+                 $professor = Professor::find($disciplina->pivot->professor_id);
+              return redirect()->back()->withErrors("O professor " . $professor->nome . " já faz parte da referida turma")->withInput();
+              }
+             
+
+            } 
             // $turma->professores()->attach($professor,$updated_data);
             
              // $aulas = $turma->aulas()->where('disciplina_id',$disciplina->id)->get(); 
@@ -167,10 +199,23 @@ class TurmaDisciplinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($turmaId,$professorId)
-    {
-
-       Turma::find($turmaId)->disciplinas()->detach($professorId);
+    public function destroy($turma_id,$disciplina_id)
+    {        
+       
+       // $professor =Turma::find($turma_id)->professores()->where('disciplina_id',$disciplina_id)->get();
+       // dd($professor);
+      $user = auth()->user();
+       
+       $updated_data = [
+                         'turma_id'=> $turma_id,                         
+                         'disciplina_id'=> $disciplina_id,                         
+                         'professor_id'=>null,                      
+                         'user_id'=>$user->id,                      
+                        ];
+           
+          Turma::find($turma_id)->disciplinas()->updateExistingPivot($disciplina_id,$updated_data);
+       //  // Professor::find($professorId)->turmas()->updateExistingPivot($turmaId,$updated_data);
+            
         return redirect()->back();
     }
 
@@ -205,7 +250,32 @@ class TurmaDisciplinaController extends Controller
          .centro {
           text-align:center;
          }
-        #cabecalho,#seccao_topo_grupo,#rodape{
+         .vtexto{
+            -ms-transform: rotate(270deg); /* IE 9 */
+            -webkit-transform: rotate(270deg); /* Safari 3-8 */
+             transform: rotate(270deg);
+             font-weight:bold;
+             font-size:12px;             
+             text-align:center;
+             margin: 15px -10px;
+             
+         }
+         .otexto{
+            -ms-transform: rotate(50deg); /* IE 9 */
+            -webkit-transform: rotate(50deg); /* Safari 3-8 */
+             transform: rotate(50deg);
+             font-weight:bold;
+             font-size:11px;            
+             height:20px;
+             margin-top:-8px;
+             margin-bottom:-40px;
+             margin-left:-10px;
+             margin-right:-4px;
+             word-break: keep-all;
+             
+         }   
+
+        #cabecalho,#seccao_topo_grupo,#rodape{ 
           text-transform: uppercase;
         }
         #cabecalho p>span{
@@ -227,19 +297,19 @@ class TurmaDisciplinaController extends Controller
        #tabela_area{
         background:transparent;
         position:relative;
-        top:80px;
+        top:20px;
       }
       #tabela_area2{
         background:transparent;
         position:relative;
-        top:14%;
+        top:4.5%;
       }
       #professor_area{
         background:transparent;
         position:relative;
-        font-size:12px;
+        font-size:10px;
         font-weight:bold;
-        top:14%;
+        top:4%;
       }
       #mytable>th{
         text-align:center;
@@ -253,7 +323,7 @@ class TurmaDisciplinaController extends Controller
       </head>
       <body onload='atribueCor()'>
 
-      <div id='cabecalho' align='center' style='font-size: 12px;font-weight: bold;'' class='table-responsive text-uppercase'>
+      <div id='cabecalho' align='center' style='font-size:9px;font-weight: bold; class='table-responsive text-uppercase'>
         <p>$instituicao->nome</p>                           
         <p>$instituicao->lema</p>                                       
         <p>ENSINO SECUNDÁRIO TÉCNICO PROFISSIONAL</p>       
@@ -268,11 +338,11 @@ class TurmaDisciplinaController extends Controller
             foreach($turmas as $key => $turma){
                 $output .="
                 <th scope='col' class='centro'>
-                    <p style='text-transform:uppercase;'>$turma->nome</p>
+                    <p class='otexto' style='margin:15px -20px;font-size:9px;text-transform:uppercase;'>$turma->nome</p>
                 </th>";
             }
     $output .="
-        <th style='width:0.1%' scope='col' rowspan='2' class='centro'>TOTAL</th>      
+        <th style='width:0.2%' scope='col' rowspan='2' class='centro'><p class='otexto' style='font-size: 9px;margin:0px -10px;text-transform:uppercase;'>TOTAL</p></th>      
     </tr>
     <tr>";       
     foreach($turmas as $key => $turma){
@@ -280,14 +350,13 @@ class TurmaDisciplinaController extends Controller
         $disciplina = Disciplina::find($disciplina_id);
     $output .="
     <th style='font-size:8px;' scope='col' class='centro'>
-        <p>$disciplina->acronimo</p>
+        <p style='text-transform:uppercase;'>$disciplina->acronimo</p>
     </th>";
       }
        
       $output
        .="</tr>";
 
-    
       foreach($dados['data'] as $key=>$dado){ 
         $output
        .="<tr>";
@@ -295,7 +364,7 @@ class TurmaDisciplinaController extends Controller
         foreach($dado as $key=>$value){
             if($i == 0){
                 $output .="
-                 <th scope='col'><p style='font-size:12px;margin-left:5px;'>$value</p></th>";
+                 <th scope='col'><p style='font-size: 9px;margin-left:5px;'>$value</p></th>";
             }else{
                 $output .="
                 <th scope='col' class='centro'>$value</th>"; 
@@ -315,10 +384,12 @@ class TurmaDisciplinaController extends Controller
         <div id='tabela_area2'>    
             <table>
                 <thead>
-                    <tr>
-                        <th><span style='font-size:12px;margin-left:5px;'>CURSO</span></th></th>
-                        <th><span style='font-size:12px;margin-left:5px;'>ACRÓNIMO</span></th></th>
-                        <th><span style='font-size:12px;margin-left:5px;'>COORDENADOR</span></th></th>                        
+                    <tr style='padding:2px;font-weight:bold;'>
+                        <th><span style='font-size: 9px;margin-left:5px;'>CURSO</span></th></th>
+                        <th><span style='font-size: 9px;margin-left:5px;'>ACRÓNIMO</span></th></th>
+                        <th>
+                          <span style='font-size: 9px;margin-left:5px;'>COORDENADOR</span>
+                        </th>                        
                     </tr>
                 </thead>
                 <tbody>";
@@ -326,7 +397,7 @@ class TurmaDisciplinaController extends Controller
                    $output.="<tr style='text-transform:uppercase;'>"; 
                    foreach ($dado2 as $value) {
                        $output .="                 
-                        <td><span style='font-size:12px;margin-left:5px;'>$value</span></th></td>";
+                        <td><span style='font-size: 9px;margin-left:5px;'>$value</span></th></td>";
                    }
                         $output.="</tr>";
                 }
@@ -337,11 +408,12 @@ class TurmaDisciplinaController extends Controller
 
         
       <div id='professor_area'>
-       <p>NOME DO PROFESSOR: $professor->nome</p>     
+       <p style='text-transform:uppercase;'>NOME DO PROFESSOR: $professor->nome</p>     
        <p>COORDENADOR DO TURNO:</p>     
     </div>    
     </body>
    </html";
+   
 
       return $output;
     }

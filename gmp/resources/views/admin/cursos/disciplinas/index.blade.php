@@ -18,8 +18,7 @@
       v-bind:titulos="['#','Disciplina','Acron.','10ª','11ª','12ª','13ª','Curricular','Categoria']"
       v-bind:itens="{{json_encode($listaModelo)}}"
       ordem="asc" ordemcol="8"
-      criar="#criar" editar="itself/admin/cursos/" 
-      deletar="/admin/cursos/" token="{{csrf_token()}}"
+      criar="#criar" editar="itself/admin/cursos/"      
       modal="sim"      
       >
        <span class="no-print text-danger">  

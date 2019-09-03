@@ -8,7 +8,10 @@ use App\Imports\ProfessorsImport;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Professor;
+use App\Turma;
+use App\Disciplina;
 use App\User;
+use App\Epoca;
 use Illuminate\Validation\Rule;
 
 class ProfessoresController extends Controller
@@ -162,16 +165,39 @@ public function index()
 
    public function turmas($id){
         $professor = Professor::find($id);
-
+        $epoca = Epoca::where('Activo','S')->first();
         $listaMigalhas = json_encode([
         ["titulo"=>"Admin","url"=>route('admin')],
         ["titulo"=>"Lista de Professores","url"=>""]
     ]);
        $user = auth()->user();       
        $listaModelo = $professor->listaTurmas(100);
+       $listaTurmas = Turma::where('ano_lectivo',$epoca->ano_lectivo)->get()->sortBy('nome');
+       $listaDisciplinas = Disciplina::all()->sortBy('nome');
+       $turma = $listaTurmas->first();
+       $disciplina = $listaDisciplinas->first();
 
 
-       return view('admin.professores.turmas.index',compact('listaMigalhas','listaModelo','user','professor'));
+       return view('admin.professores.turmas.index',compact('listaMigalhas','listaModelo','user','professor','listaTurmas','listaDisciplinas','turma','disciplina'));
+
+   }
+   public function remover_turma($professor_id,$turma_id){
+    dd('wtb');
+
+       $user = auth()->user();
+       $turma = Turma::find($turma_id);
+       $disciplina_id = $turma->disciplinas()->where('professor_id',$professor_id)->last();
+       
+       $updated_data = [
+                         'turma_id'=> $turma_id,                         
+                         'disciplina_id'=> $disciplina_id,                         
+                         'professor_id'=>null,                      
+                         'user_id'=>$user->id,                      
+                        ];
+           
+       $turma->disciplinas()->updateExistingPivot($disciplina_id,$updated_data);     
+            
+       return redirect()->back();
 
    }
 }

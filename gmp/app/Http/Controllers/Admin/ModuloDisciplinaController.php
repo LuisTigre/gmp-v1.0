@@ -140,8 +140,7 @@ class ModuloDisciplinaController extends Controller
         $curso = $modulo->curso;
 
         $modulos = $curso->modulos()->get();
-        $disciplina = Disciplina::where('nome','=',$data['disciplina'])->first(); 
-        $curso->decidir_o_ano_terminal_da_disciplina($disciplina->id);
+        $disciplina = Disciplina::where('nome','=',$data['disciplina'])->first();         
         $data['disciplina_id'] = $disciplina->id;       
         $data['user_id'] = $user->id;        
         unset($data['disciplina']);
@@ -178,8 +177,8 @@ class ModuloDisciplinaController extends Controller
                 $this->actualizar_disciplinas_das_turmas_do_modulo($modulo,$disciplina,$new_data);
             }
            
-        }             
-
+        }
+       $curso->decidir_o_ano_terminal_da_disciplina($disciplina->id);
        
         return redirect()->back();
     }

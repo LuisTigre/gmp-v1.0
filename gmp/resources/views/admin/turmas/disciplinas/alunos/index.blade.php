@@ -50,7 +50,7 @@
       </div>
       <div class="form-group">
         <label for="professor">Professor:</label>
-        <select class="form-control" id="professor" name="professor_id">
+        <select class="form-control" id="professor" name="professor_id">                  
             @foreach($listaProfessores as $key => $value)              
               <option {{(old('professor_id') ? 'selected' : '') }} value="{{$value->id}}">{{$value->nome}}</option>     
             @endforeach
@@ -82,7 +82,7 @@
       </div>
       <div class="form-group">
         <label for="professor">Professor:</label>
-        <select class="form-control" id="professor" name="professor" v-model="$store.state.item.professor">
+        <select class="form-control" id="professor" name="professor" v-model="$store.state.item.professor">            
             @foreach($listaProfessores as $key => $value)              
               <option {{(old('professor_id') ? 'selected' : '') }} value="{{$value->nome}}">{{$value->nome}}</option>     
             @endforeach

@@ -103,7 +103,7 @@ class Curso extends Model
 
           $curso_disciplinas = $this->disciplinas(100);
           $curso_disciplina = $curso_disciplinas->where('disciplina_id',$disciplina_id)->first();
-
+          
           $data['terminal'] = 'N';
           $data['disciplina_id'] = $disciplina_id;
           $data['user_id'] = $user->id;          
@@ -118,28 +118,30 @@ class Curso extends Model
           
           $data['modulo_id'] = $modulo_10->id;
           $modulo_10->disciplinas()->updateExistingPivot($disciplina_id,$data);
+
           $data['modulo_id'] = $modulo_11->id;
           $modulo_11->disciplinas()->updateExistingPivot($disciplina_id,$data);
+
           $data['modulo_id'] = $modulo_12->id;
           $modulo_12->disciplinas()->updateExistingPivot($disciplina_id,$data);
           $data['modulo_id'] = $modulo_13->id;
          
-          if($curso_disciplina->carga_13 != '-'){
+          if(isset($curso_disciplina->carga_13) && $curso_disciplina->carga_13 != '-'){
              $data['terminal'] = 'S';             
              $data['modulo_id'] = $modulo_13->id;
              $modulo_13->disciplinas()->updateExistingPivot($disciplina_id,$data);
 
-          }else if($curso_disciplina->carga_12 != '-'){
+          }else if(isset($curso_disciplina->carga_12) && $curso_disciplina->carga_12 != '-'){
              $data['terminal'] = 'S';             
              $data['modulo_id'] = $modulo_12->id;
              $modulo_12->disciplinas()->updateExistingPivot($disciplina_id,$data);
 
-          }else if($curso_disciplina->carga_11 != '-'){
+          }else if(isset($curso_disciplina->carga_11) && $curso_disciplina->carga_11 != '-'){
              $data['terminal'] = 'S';             
              $data['modulo_id'] = $modulo_11->id;
              $modulo_11->disciplinas()->updateExistingPivot($disciplina_id,$data);
 
-          }else{
+          }else if(isset($curso_disciplina->carga_10) && $curso_disciplina->carga_10 != '-'){
              $data['terminal'] = 'S';             
              $data['modulo_id'] = $modulo_10->id;
              $modulo_10->disciplinas()->updateExistingPivot($disciplina_id,$data);

@@ -17,8 +17,7 @@
       <tabela-lista
       v-bind:titulos="['#','Nº','Nome Completo','Devedor','Repetente','Status','Cargo','Proveniença','Alt. por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
-      ordem="asc" ordemcol="1"
-      multiselect="nao"
+      ordem="asc" ordemcol="1"      
       index_url="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/"
       criar="#criar" detalhe="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/" 
       editar="itself/admin/turmas/{{{json_encode($turma->id)}}}/alunos/" 
@@ -27,6 +26,8 @@
         <span class="no-print text-danger">          
           <!-- <a href="" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-file"></i>Ficha de Notas</a> -->
           <!-- <modallink tipo="link" nome="adicionar" titulo="Fichas" css="btn btn-default btn-xs glyphicon glyphicon-file"></modallink>   -->  
+
+          <a href="/admin/turmas/{{{json_encode($turma->id)}}}/alunos/actualizar" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-refresh"></i></a>         
       </span>
       </tabela-lista>
       @else
@@ -81,12 +82,12 @@
 
       <input type="hidden" name="aluno_id" v-model="$store.state.item.id">
 
-      <div class="form-group col-md-12">
+      <div class="form-group col-md-9">
         <label for="aluno">Aluno:</label>
         <input class="form-control" id="aluno" readonly name="nome" v-model="$store.state.item.nome"> 
       </div>
     
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="cargo">Cargo</label>        
         <select class="form-control" id="cargo" name="cargo" v-model="$store.state.item.cargo">          
           <option value=""></option>
@@ -105,10 +106,14 @@
           <option value="Desistido">Desistido</option>
         </select>
       </div> 
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-6">
         <label for="provenienca">Proveniença</label>
         <input type="text" class="form-control" maxlength="18" id="provenienca" name="provenienca" v-model="$store.state.item.provenienca" placeholder="Escola de Proveniença">
-      </div>    
+      </div>
+       <div class="form-group col-md-2">
+        <label for="numero">Número</label>
+        <input type="number" class="form-control" maxlength="2" id="numero" name="numero" v-model="$store.state.item.numero" placeholder="Número">
+      </div>        
     </formulario>
     <span slot="botoes">
       <button form="formEditar" class="btn btn-info">Atualizar</button>

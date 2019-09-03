@@ -17,7 +17,8 @@
       v-bind:titulos="['#','Disciplina','Professor','Alterado por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"
-      criar="#criar" detalhe="/admin/turmas/professors/" editar="'/admin/turmas/'+{{json_encode($turma->id)}}+'/professors/" 
+      criar="#criar" detalhe="/admin/turmas/professors/" 
+      editar="'/admin/turmas/'+{{json_encode($turma->id)}}+'/professors/" 
       v-bind:deletar="'/admin/turmas/'+{{json_encode($turma->id)}}+'/professors/'" token="{{csrf_token()}}"
       modal="sim"
  

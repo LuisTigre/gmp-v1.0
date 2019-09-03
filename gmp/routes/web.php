@@ -65,6 +65,7 @@ Route::get('/admin/turmas/{turma_id}/disciplinas/{disc_id}/Upload', 'admin\Turma
 
 Route::get('/admin/{epoca_id}/turmas/{id}/disciplinas/{disciplina_id}/estatistica', 'admin\turmadisciplinaController@estatistica')->name('professor.estatistica')->middleware('can:professor');
 
+
 // Route::post('fileUpload',[
 // 	'as' => 'image.add',
 // 	'uses' => 'admin\alunosController@fileUpload' 
@@ -91,6 +92,8 @@ Route::get('/admin/aula/{id}/{tempo_id}', 'admin\aulasController@atribuirTempo',
 Route::get('/admin/aulas/{id}/update_tempo_id', 'admin\aulasController@update_tempo_id',['parameters'=>['index'=>'filter']]);
 Route::get('/admin/cursos/{id}/disciplinas', 'admin\cursosController@disciplinas',['parameters'=>['index'=>'filter']]);
 Route::get('/admin/professores/{id}/turmas', 'admin\professoresController@turmas',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+Route::get('/admin/turmas/{id}/alunos/actualizar', 'admin\turmaAlunoController@actualizar_num',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
+Route::get('/admin/apagar/professores/{id}/turmas/{turma_id}', 'admin\ProfessoresController@remover_turma',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 
 
 

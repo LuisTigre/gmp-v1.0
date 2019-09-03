@@ -18,6 +18,7 @@
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"      
       editar="itself/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/"      
+      deletar="/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/" token="{{csrf_token()}}"      
       modal="sim"
       v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},{'nome':'Alunos','url':'/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'alunos'},
       {'nome':'Estatística','url':'/admin/{{{json_encode($epoca->id)}}}/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'estatistica'}]"
@@ -28,7 +29,7 @@
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"        
       modal="sim"
-      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},{'nome':'Alunos','url':'/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'alunos'},{'nome':'Estatística','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},
+      v-bind:buttons="[{'nome':'Avaliações','url':'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/' ,'action':'avaliacaos'},{'nome':'Alunos','url':'/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'alunos'},{'nome':'Estatística','url':'/admin/{{{json_encode($epoca->id)}}}/turmas/{{{json_encode($turma->id)}}}/disciplinas/' ,'action':'estatistica'},
       ]"
       ></tabela-lista>
       @endif
@@ -42,7 +43,7 @@
   <modal nome="adicionar" titulo="Adicionar">
       <formulario id="formAdicionar" css="" action="/admin/turmas/{{{json_encode($turma->id)}}}/disciplinas" method="post" enctype="" token="{{csrf_token()}}">
 
-    <input type="hidden" value="{{$turma->id}}" name="turma_id">    
+    <input type="hidden"  name="turma_id" value="{{$turma->id}}">    
       <div class="form-group">
         <label for="disciplina">Disciplina:</label>
         <select class="form-control" id="disciplina" name="disciplina_id">
@@ -53,7 +54,7 @@
       </div>
       <div class="form-group">
         <label for="professor">Professor:</label>
-        <select class="form-control" id="professor" name="professor_id">
+        <select class="form-control" id="professor" name="professor_id">              
             @foreach($listaProfessores as $key => $value)              
               <option {{(old('professor_id') ? 'selected' : '') }} value="{{$value->id}}">{{$value->nome}}</option>     
             @endforeach
@@ -78,8 +79,9 @@
   <modal nome="editar" titulo="Editar">
     <formulario id="formEditar" v-bind:action="'/admin/turmas/{{json_encode($turma->id)}}/disciplinas/'+$store.state.item.id" method="put" enctype="multipart/form-data" token="{{csrf_token()}}">
       
-      <input type="hidden" value="{{$turma->id}}" name="turma_id">    
+      <input type="hidden" name="turma_id" value="{{$turma->id}}" >    
       <input type="hidden" name="disciplina_id" v-model="$store.state.item.id">    
+      <input type="hidden" name="professor_id" v-model="$store.state.item.id">    
       <div class="form-group">
         <label for="disciplina">Disciplina:</label>
         <input type="text" class="form-control" id="disciplina" name="disciplina" readonly v-model="$store.state.item.disciplina">
@@ -87,6 +89,7 @@
       <div class="form-group">
         <label for="professor">Professor:</label>
         <select class="form-control" id="professor" name="professor" v-model="$store.state.item.professor">
+              <!-- <option  value=""></option>   -->
             @foreach($listaProfessores as $key => $value)              
               <option {{(old('professor_id') ? 'selected' : '') }} value="{{$value->nome}}">{{$value->nome}}</option>     
             @endforeach

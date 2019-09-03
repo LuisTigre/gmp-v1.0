@@ -26,7 +26,7 @@ use App\Instituicao;
 class AlunosController extends Controller
 {    
 
-public function index()
+    public function index()
     {
     $listaMigalhas = json_encode([
         ["titulo"=>"Admin","url"=>route('admin')],
@@ -158,6 +158,8 @@ public function index()
         return redirect()->back();
     }
 
+    
+
 
    //  public static function exportarAlunos()
    // {
@@ -247,7 +249,9 @@ public function index()
        $classe = Classe::find($modulo->classe_id);
        $epoca = Epoca::where('activo','S')->first();   
        $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S');      
-       $aluno_turmas = $aluno->turmas()->get();
+       $aluno_turmas = $aluno->turmas()->get()->sortBy('ano_lectivo');
+       $ultima_classe = $aluno_turmas->last()->modulo->classe;
+
        $area_formaçao = Area::find($curso->area_id); 
        $instituicao = Instituicao::all()->first();             
        
@@ -451,11 +455,12 @@ public function index()
           top:9%;
        }
        #rodape p{
-         margin-top:-11px;
+         margin-top:-10px;
        }
        #rodape > div{
           float:left;
           width:50%;
+          margin-top:-12px;
        }       
        #mytable{
        width:100%;
@@ -670,6 +675,10 @@ public function index()
             }else if($avaliacoesDoAluno['Result_10'] == 'n/Trans.'){
                 $result_10 = 'NÃO TRANSITA';
                 $cor = 'red';
+                if($ultima_classe->nome == '11ª'){
+                   $result_10 = 'TRANSITA';
+                   $cor = 'black';
+                }
             }else{
                 $result_10 = '';
             }
@@ -682,6 +691,10 @@ public function index()
             }else if($avaliacoesDoAluno['Result_11'] == 'n/Trans.'){
                 $result_11 = 'NÃO TRANSITA';
                 $cor = 'red';
+                if($ultima_classe->nome == '12ª'){
+                   $result_10 = 'TRANSITA';
+                   $cor = 'black';
+                }
             }else{
                 $result_11 = '';
             }
@@ -694,7 +707,7 @@ public function index()
                 $cor = 'black';
             }else if($avaliacoesDoAluno['Result_12'] == 'n/Trans.'){
                 $result_12 = 'NÃO TRANSITA';
-                $cor = 'red';
+                $cor = 'red';                
             }else{
                 $result_12 = '';
             }
@@ -741,7 +754,7 @@ public function index()
 
        $user = auth()->user();       
        $aluno = Aluno::find($aluno_id);
-       $aluno_turmas = $aluno->turmas()->get();
+       $aluno_turmas = $aluno->turmas()->get()->sortBy('ano_lectivo');
        $turma = $aluno_turmas->last();
        $disciplina = Disciplina::find(1);       
        $modulo = $turma->modulo()->first();

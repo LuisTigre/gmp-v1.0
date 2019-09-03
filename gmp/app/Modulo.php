@@ -90,6 +90,19 @@ class Modulo extends Model
           
        return $modulo;
    }
+
+    public  function moduloDaClasse($classe)
+   {
+    
+          $mn = explode(' ', $this->nome);
+          $mn_arr = explode('ª', $mn[1]);         
+          $classe_ant = $mn_arr[0]-1 . 'ª';
+          $mn_arr_arr = explode(' ', $this->nome);
+          $modulo_ant = $mn_arr_arr[0] . ' ' . $classe . ' ';
+          $modulo = Modulo::where('nome', $modulo_ant)->get()->first();         
+          
+       return $modulo;
+   }
    
 
    

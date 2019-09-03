@@ -75,8 +75,7 @@
               <span v-if="token && !deletar">
 
               <div class="dropdown" v-if="buttons && modal">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                   
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     <a v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
@@ -90,22 +89,24 @@
               <modallink v-if="editar && modal" tipo="link" v-bind:item="item" v-bind:url="editar" nome="editar" titulo="Editar " css=""></modallink>
 
                              
-                <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;">
-                  <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   <i class="glyphicon glyphicon-option-vertical"></i>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <a class="list-group-item" v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
-                  </div>
-                </span>
+                   <span class="dropdown dropleft" v-if="buttons && modal" style="position:absolute;margin-top:-8px;left:95%;">
+                    <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="glyphicon glyphicon-option-vertical"></i>
+                    </a>                  
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                      <a class="list-group-item btn-xs" v-if="buttons && modal" v-for="button in buttons" v-bind:href="button.url +item.id+'/' + button.action">{{button.nome}} </a>
+                    </div>
+                  </span>   
               </span>
                         
                        
             </td>
           </tr>
         </tbody>
-
       </table>
+  </div>
+  <div>
+   <label>{{this.itens.data.length}} itens...</label>    
   </div>
   </div>
    

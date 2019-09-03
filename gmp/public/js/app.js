@@ -44269,6 +44269,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'index_url', 'buttons', 'multiselect', 'token', 'modal', 'tamanho'],
@@ -44806,25 +44807,17 @@ var render = function() {
                               [
                                 _vm.buttons && _vm.modal
                                   ? _c("div", { staticClass: "dropdown" }, [
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-secondary dropdown-toggle",
-                                          attrs: {
-                                            type: "button",
-                                            id: "dropdownMenu2",
-                                            "data-toggle": "dropdown",
-                                            "aria-haspopup": "true",
-                                            "aria-expanded": "false"
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                  Dropdown\n                "
-                                          )
-                                        ]
-                                      ),
+                                      _c("button", {
+                                        staticClass:
+                                          "btn btn-secondary dropdown-toggle",
+                                        attrs: {
+                                          type: "button",
+                                          id: "dropdownMenu2",
+                                          "data-toggle": "dropdown",
+                                          "aria-haspopup": "true",
+                                          "aria-expanded": "false"
+                                        }
+                                      }),
                                       _vm._v(" "),
                                       _c(
                                         "div",
@@ -44902,7 +44895,11 @@ var render = function() {
                                       "span",
                                       {
                                         staticClass: "dropdown dropleft",
-                                        staticStyle: { position: "absolute" }
+                                        staticStyle: {
+                                          position: "absolute",
+                                          "margin-top": "-8px",
+                                          left: "95%"
+                                        }
                                       },
                                       [
                                         _vm._m(3, true),
@@ -44910,7 +44907,8 @@ var render = function() {
                                         _c(
                                           "div",
                                           {
-                                            staticClass: "dropdown-menu",
+                                            staticClass:
+                                              "dropdown-menu dropdown-menu-right",
                                             attrs: {
                                               "aria-labelledby": "dropdownMenu2"
                                             }
@@ -44921,7 +44919,7 @@ var render = function() {
                                                   "a",
                                                   {
                                                     staticClass:
-                                                      "list-group-item",
+                                                      "list-group-item btn-xs",
                                                     attrs: {
                                                       href:
                                                         button.url +
@@ -44955,6 +44953,10 @@ var render = function() {
           )
         ]
       )
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c("label", [_vm._v(_vm._s(this.itens.data.length) + " itens...")])
     ])
   ])
 }
@@ -46027,9 +46029,17 @@ if(false) {
 
 /***/ }),
 /* 84 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: CssSyntaxError: C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\resources\\assets\\js\\components\\TabelaPauta.vue:71:3: Unknown word\n    at Input.error (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\input.js:113:22)\n    at Parser.unknownWord (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:488:26)\n    at Parser.other (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:171:18)\n    at Parser.parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parser.js:84:26)\n    at parse (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\parse.js:24:16)\n    at new LazyResult (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\lazy-result.js:66:24)\n    at Processor.process (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\postcss\\lib\\processor.js:117:12)\n    at loadPostcssConfig.then.config (C:\\xampp\\htdocs\\gmp-v1.0\\gmp\\node_modules\\vue-loader\\lib\\style-compiler\\index.js:57:8)");
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\ntable{\n  padding:0px;\n  margin:0px;\n}\nth.ct1{\n  background: #fafafa;\n}\n.fundo{\n  background: #fafafa;\n}\n.desistido{\n  background:rgb(255,212,227);\n}\n\n", ""]);
+
+// exports
+
 
 /***/ }),
 /* 85 */
@@ -46724,6 +46734,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['titulos', 'itens', 'ordem', 'ordemcol', 'criar', 'detalhe', 'editar', 'deletar', 'token', 'modal', 'tamanho'],
@@ -46939,19 +46957,11 @@ var render = function() {
                   _vm._v(" "),
                   _c("th", { attrs: { scope: "col" } }, [_vm._v("P2")]),
                   _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("CF2")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("CT1")]),
-                  _vm._v(" "),
                   _c("th", { attrs: { scope: "col" } }, [_vm._v("CT2")]),
                   _vm._v(" "),
                   _c("th", { attrs: { scope: "col" } }, [_vm._v("Mac")]),
                   _vm._v(" "),
                   _c("th", { attrs: { scope: "col" } }, [_vm._v("P1")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("CF3")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("CT2")]),
                   _vm._v(" "),
                   _c("th", { attrs: { scope: "col" } }, [_vm._v("CT3")]),
                   _vm._v(" "),
@@ -46971,6 +46981,12 @@ var render = function() {
                     },
                     [_vm._v("60% + 40%")]
                   ),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("10ª")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("11ª")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("12ª")]),
                   _vm._v(" "),
                   _vm.detalhe || _vm.editar || _vm.deletar
                     ? _c("th", { staticStyle: { width: "4%" } }, [
@@ -47031,14 +47047,6 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
-                      _c("span", [_vm._v(_vm._s(item.cf2))])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "centro nota" }, [
-                      _c("span", [_vm._v(_vm._s(item.ct1))])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "centro nota" }, [
                       _c("span", [_vm._v(_vm._s(item.ct2))])
                     ]),
                     _vm._v(" "),
@@ -47052,14 +47060,6 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
                       _c("span", [_vm._v(_vm._s(item.p31))])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "centro nota" }, [
-                      _c("span", [_vm._v(_vm._s(item.cf3))])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "centro nota" }, [
-                      _c("span", [_vm._v(_vm._s(item.ct2))])
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
@@ -47084,6 +47084,20 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", { staticClass: "centro nota" }, [
                       _c("span", [_vm._v(_vm._s(item.notafinal))])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1, true),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "centro nota" }, [
+                      _c("span", [_vm._v(_vm._s(item.ca_10))])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "centro nota" }, [
+                      _c("span", [_vm._v(_vm._s(item.ca_11))])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "centro nota" }, [
+                      _c("span", [_vm._v(_vm._s(item.ca_12))])
                     ]),
                     _vm._v(" "),
                     _vm.detalhe || _vm.editar || _vm.deletar
@@ -47303,20 +47317,32 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", { attrs: { scope: "col", rowspan: "2" } }, [_vm._v("F")]),
       _vm._v(" "),
-      _c("th", { attrs: { scope: "col", colspan: "6" } }, [
+      _c("th", { attrs: { scope: "col", colspan: "4" } }, [
         _vm._v("II TRIMESTRE")
       ]),
       _vm._v(" "),
       _c("th", { attrs: { scope: "col", rowspan: "2" } }, [_vm._v("F")]),
       _vm._v(" "),
-      _c("th", { attrs: { scope: "col", colspan: "5" } }, [
+      _c("th", { attrs: { scope: "col", colspan: "3" } }, [
         _vm._v("III TRIMESTRE")
       ]),
       _vm._v(" "),
-      _c("th", { attrs: { scope: "col", colspan: "6" } }, [
+      _c("th", { attrs: { scope: "col", colspan: "5" } }, [
         _vm._v("Classificação Anual")
+      ]),
+      _vm._v(" "),
+      _c("th", { attrs: { scope: "col", rowspan: "2" } }),
+      _vm._v(" "),
+      _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+        _vm._v("COTAÇÕES ANUAIS")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "centro nota" }, [_c("span")])
   }
 ]
 render._withStripped = true

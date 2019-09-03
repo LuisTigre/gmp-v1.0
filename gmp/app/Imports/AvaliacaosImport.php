@@ -35,11 +35,11 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
 
     public function model(array $row){
         // dd($row);
-        set_time_limit(120);
+        set_time_limit(3600);
         $user = auth()->user();       
         if(isset($row['pauta'])){
             $this->importar_avaliacoes_via_pauta_anual($row,$user);          
-        }else if(isset($row['migrado'])){
+        }else if(isset($row['migrado'])){       
             $this->importar_avaliacoes_da_disciplina_via_pauta_anual($row,$user);          
         }else if(isset($row['transferido'])){
             $this->importar_avaliacoes_via_ficha_de_aproveitamento($row,$user);
@@ -49,30 +49,75 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
    }
     
 
-    public function importar_avaliacoes_da_disciplina_via_pauta_anual($row,$user){        
+    public function importar_avaliacoes_da_disciplina_via_pauta_anual($row,$user){
+            if(isset($row['turma']) && isset($row['nome_completo']) && isset($row['disciplina'])){
+                            
+                $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$row['ano_lectivo'])->last();  
 
-            if(isset($row['turma']) && isset($row['nome_completo']) && isset($row['idmatricula']) && isset($row['disciplina'])){
-                $turma = Turma::where('nome',$row['turma'])->get()->where('ano_lectivo',$row['ano_lectivo'])->last();      
-                $aluno = Aluno::where('nome',$row['nome_completo'])->get()->where('idmatricula',$row['idmatricula'])->first();
-                $disciplina = Disciplina::where('acronimo',$row['disciplina'])->first();
+                $aluno = Aluno::where('nome',$row['nome_completo'])->get()->first();
+                  
+                  if(!is_null($aluno) && !is_null($turma)){                    
+                    $disciplina = Disciplina::where('acronimo',$row['disciplina'])->first();
 
-                $this->cadastrar_turma_do_ano_anterior($turma,$aluno,$user); 
-                $modulo = $turma->modulo;
-                $classe = $modulo->classe;   
-
-                if($classe->nome == '12ª'){                       
-                    $turma_11 = $turma->buscar_turma_equivalente_ao_ano_anterior();
-
-                    $this->cadastrar_turma_do_ano_anterior($turma_11,$aluno,$user,$aluno);
-                    $turma_10 = $turma_11->buscar_turma_equivalente_ao_ano_anterior();                   
-                    $this->cadastrar_as_notas('10a',$row,$turma_10,$disciplina,$user,$aluno);
-                    $this->cadastrar_as_notas('11a',$row,$turma_11,$disciplina,$user,$aluno);
+                    $modulo = $turma->modulo;
+                    $classe = $modulo->classe;
 
                     
-                }else{
-                    $turma_10 = $turma->buscar_turma_equivalente_ao_ano_anterior();
-                    $this->cadastrar_as_notas('10a',$row,$turma_10,$disciplina,$user,$aluno);
-                }
+                    $turma_10 = $this->cadastrar_turma_do_ano_anterior($turma,$aluno,$user,'10ª');
+
+                    if((!is_null($turma_10) && $turma_10->ano_lectivo == $turma->ano_lectivo) && !is_null($disciplina)){
+                    $new_classe = $turma_10->modulo->classe;
+                                          
+                        if($classe->nome == '13ª' && $new_classe->nome == '12ª'){                
+                                                                        
+                            if(round(floatval($row['12a'])) >= 10){                              
+                               $avaliacao_12 = $this->cadastrar_as_notas('12a',$row,$turma_10,$disciplina,$user,$aluno);
+                               $avaliacao_12->status = 'bloqueado';
+                               $avaliacao_12->save();              
+                            }else{
+
+                            }
+                        }
+                        if($classe->nome == '12ª' && ($new_classe->nome == '11ª' || $new_classe->nome == '12ª')){
+                            if($new_classe->nome == '12ª'){
+                                $turma_10 = $this->cadastrar_turma_do_ano_anterior($turma_10,$aluno,$user,'11ª');        
+
+                            }                         
+                            if(round(floatval($row['11a'])) >= 10){                              
+                               $avaliacao_11 = $this->cadastrar_as_notas('11a',$row,$turma_10,$disciplina,$user,$aluno);
+                               $avaliacao_11->status = 'bloqueado';
+                               $avaliacao_11->save();              
+                            }else{
+
+                            }
+                        }
+                        if(round($row['10a']) >= 10 && ($new_classe->nome == '10ª' || $new_classe->nome == '11ª' || $new_classe->nome == '12ª')){
+                            if($new_classe->nome == '11ª' || $new_classe->nome == '12ª'){
+                                $turma_10 = $this->cadastrar_turma_do_ano_anterior($turma_10,$aluno,$user,'10ª');       
+
+                            }
+                            $avaliacao_10 = $this->cadastrar_as_notas('10a',$row,$turma_10,$disciplina,$user,$aluno);
+                            $avaliacao_10->status = 'bloqueado';
+                            $avaliacao_10->save();
+                        }
+
+                    }else if(!is_null($disciplina)){ 
+                    
+                        $this->cadastrar_as_notas('10a',$row,$turma_10,$disciplina,$user,$aluno);
+
+                        if($classe->nome == '12ª'){                       
+                            $turma_11 = $this->cadastrar_turma_do_ano_anterior($turma,$aluno,$user,'11ª'); 
+                            $this->cadastrar_as_notas('11a',$row,$turma_11,$disciplina,$user,$aluno);              
+                        }
+                        if($classe->nome == '13ª'){                       
+                            $turma_12 = $this->cadastrar_turma_do_ano_anterior($turma,$aluno,$user,'12ª'); 
+                            $this->cadastrar_as_notas('12a',$row,$turma_12,$disciplina,$user,$aluno);              
+                        }
+
+
+                    }
+                    
+                  }
             }
     }
 
@@ -312,21 +357,24 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                 $director_turma = $turma->professores()->where('director','s')->first();         
                 $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
 
-                $aluno = $alunos->where('nome',$row['nome_completo'])->first();            
-                if($aluno->turmas()->where('id',$turma->id)->get()->isEmpty()){
-                            dd("ALUNO INEXISTENTE EM TURMA REFERIDA !!!
-                                CERTIFIQUE-SE DE QUE O ALUNO FAZ PARTE DA REFERIDA TURMA
-                                PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
-                       }
+                $aluno = $alunos->where('nome',$row['nome_completo'])->first();
+                if(!is_null($aluno)){                    
+                    if($aluno->turmas()->where('id',$turma->id)->get()->isEmpty()){
+                        dd("ALUNO INEXISTENTE EM TURMA REFERIDA !!!
+                            CERTIFIQUE-SE DE QUE O ALUNO FAZ PARTE DA REFERIDA TURMA
+                            PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+                    }
+                }            
                 if($professor != null && $aluno != null){
 
                 if($user->admin == 'S' 
                 // || $user->email == $director_turma->email 
-                || $user->email == $professor->email){ 
-                    $avaliacao = Avaliacao::where('turma_id',2)->where('disciplina_id',9)->where('aluno_id',1)->get();                
-                    $avaliacao = Avaliacao::where('turma_id',$turma->id)->where('disciplina_id',$disciplina->id)->where('aluno_id',$aluno->id)->get();
+                || $user->email == $professor->email){                                   
+                    
+                    $avaliacao = Avaliacao::where('turma_id',$turma->id)->where('disciplina_id',$disciplina->id)->where('aluno_id',$aluno->id)->get();    
                                                  
-                if(($avaliacao->isNotEmpty() && $avaliacao->isNotEmpty()->status !='bloqueado') || ($avaliacao->isNotEmpty() && $user->admin == 'S')){
+                if(($avaliacao->isNotEmpty() && $avaliacao->first()->status !='bloqueado') || ($avaliacao->isNotEmpty() && $user->admin == 'S')){
+                
                 $avaliacao = $avaliacao->first();
                 $data = [
                 'professor_id' => $professor->id,
@@ -351,7 +399,7 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
 
                 }else{
                  
-                 return new Avaliacao([         
+                 $avaliacao =  new Avaliacao([         
                 'professor_id' => $professor->id,
                 'user_id' => $user->id,
                 'turma_id' => $turma->id,
@@ -369,7 +417,11 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                 'p31' => $row['p31'],
                 'p32' => $row['pg'],
                 'fnj3' => $row['faltas3']                        
-            ]);         
+                ]);                 
+                 $avaliacao->save();
+
+                 return $avaliacao;
+
                 }            
               }
                 }else{
@@ -382,30 +434,70 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
     }
 
      
-    public function cadastrar_turma_do_ano_anterior($turma,$aluno,$user){
-                   
+    public function cadastrar_turma_do_ano_anterior($turma,$aluno,$user,$classe){
+
                     if(!is_null($turma)){ 
-
-                        $turmas = $aluno->turmas()->where('id',$turma->id)->get();
+                        $turmas = $aluno->turmas()->get();
                         $modulo = $turma->modulo;
-                       if($turmas->isEmpty()){
-                            dd("ALUNO INEXISTENTE EM TURMA REFERIDA !!!
-                                CERTIFIQUE-SE DE QUE O ALUNO FAZ PARTE DA REFERIDA TURMA
-                                PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
-                       }
-                        $turma_anterior = $aluno->buscarTurmaDaClasseAnterior($turma);
+                        $curso = $modulo->curso;
+                        $classe_actual = $modulo->classe;
+                        $nao_faz_parte = $turmas->where('id',$turma->id)->isEmpty();
 
-                        if(is_null($turma_anterior)){
-                        
-                            $turma_anterior = $turma->buscar_turma_equivalente_ao_ano_anterior();
+                       if($nao_faz_parte){                                                  
+                            $turma_actual =  $aluno->buscarTurmaActualDaClasse($turma);                       
+                            if(!is_null($turma_actual)){                                
+
+                                $turma_actual->alunos()->updateExistingPivot($aluno->id,['repetente'=>'S']);
+                                $turma_actual->save();
+                                return $turma_actual;
+                            }else{
+                                $turmas = $modulo->turmas()->get()->where('ano_lectivo',$turma->ano_lectivo);
+                                foreach ($turmas as $turma) {
+                                   $faz_parte = $turma->alunos()->get()->where('id',$aluno->id)->isNotEmpty();                   
+                                   if($faz_parte){
+                                        $turma_anterior = $aluno->buscarTurmaDaClasse($turma,$classe);                           
+                                        $desconto = 0;
+                                        break;
+                                   }
+                                }
+                                if(!is_null($faz_parte) && $faz_parte == false){
+                                    dd("ALUNO $aluno->nome INEXISTENTE EM TURMA REFERIDA !!!
+                                        CERTIFIQUE-SE DE QUE O ALUNO FAZ PARTE DA REFERIDA TURMA
+                                        PARA VOLTAR AO MENU PRINCIPAL CLIQUE EM SETA 'Voltar' <--- ");
+
+                                }
+
+                            }
+                       }else{                        
+                            $turma_anterior = $aluno->buscarTurmaDaClasse($turma,$classe);
+                            $desconto = 0;
+                       }
+
+
+                        if($classe_actual->nome == '12ª' && $classe == '11ª'){
+                            $desconto = 1;
+                        }else if($classe_actual->nome == '12ª' && $classe == '10ª'){
+                            $desconto = 2;
+                        }else if($classe_actual->nome == '11ª' && $classe == '10ª'){
+                            $desconto = 1;                      
+                        }else if($classe_actual->nome == '13ª' && $classe == '10ª'){
+                            $desconto = 3;
+                        }else if($classe_actual->nome == '13ª' && $classe == '11ª'){
+                            $desconto = 2;
+                        }else if($classe_actual->nome == '13ª' && $classe == '12ª'){
+                            $desconto = 1;
+                        }
+                        if(!isset($turma_anterior) || is_null($turma_anterior)){                      
+                          
+                            $turma_anterior = $turma->buscar_turma_equivalente_a_classe($classe);                           
                             if(is_null($turma_anterior)){                               
                                 $sala = Sala::all()->first();
-                                $modulo_anterior = $modulo->moduloAnterior(); 
+                                $modulo_anterior = $modulo->moduloDaClasse($classe); 
                                 $newTurma = new Turma([
                                 "modulo_id" => $modulo_anterior->id,
                                 "user_id" => $user->id,
-                                "nome" => $turma->buscar_nome_da_turma_equivalente_ao_ano_anterior(),
-                                "ano_lectivo" => $turma->ano_lectivo - 1 ,                               
+                                "nome" => $turma->buscar_nome_da_turma_equivalente_a_classe($classe),
+                                "ano_lectivo" => $turma->ano_lectivo - $desconto,                               
                                 "sala_id" => $sala->id                                
                                 ]);                         
                                 $newTurma->save();                               
@@ -423,10 +515,9 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                                 ];
 
                                 TurmaAlunoController::inscrever_aluno_na_turma($data);
-                                // $newTurma->inscrever_aluno_na_turma($data);
-
+                                return $newTurma;
                             }else{
-
+                           
                                 $data = [
                                  "turma_id" => $turma_anterior->id,
                                   "aluno_id" => [
@@ -439,11 +530,13 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                                 ];
 
                                 TurmaAlunoController::inscrever_aluno_na_turma($data);
-                                
                             }
+                               return $turma_anterior; 
 
-
+                        }else{
+                            return $turma_anterior; 
                         }                
+                        
                         
                     }else{
                         return null;
@@ -452,7 +545,7 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
 
     }
     public function cadastrar_as_notas($opcao,$row,$turma,$disc,$user,$aluno){
-        $ca = floatval($row[strtolower($opcao)]);
+        $ca = round(floatval($row[strtolower($opcao)]),1);
 
                     $newAvaliacao = Avaliacao::where('disciplina_id',$disc->id)->get()->where('aluno_id',$aluno->id)->where('turma_id',$turma->id)->last();
 
@@ -464,13 +557,14 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
 
                      $newAvaliacao = Avaliacao::where('disciplina_id',$disc->id)->get()->where('aluno_id',$aluno->id)->where('turma_id',$turma->id)->last();
                                 
-                                if(!is_null($newAvaliacao) && $newAvaliacao->status !='bloqueado'){
+                                if(!is_null($newAvaliacao)){                                        
                                     if(isset($row[strtolower($opcao)])){      
-                                        $ca = floatval($row[strtolower($opcao)]);
+                                        $ca = round(floatval($row[strtolower($opcao)]),1);                                        
                                         $p2 = $ca;
                                         if($turma->ano_lectivo >= 2019){
                                             $p2 = null;
                                         }
+                                        
                                         $newAvaliacao->update([     
                                             'user_id' => $user->id,
                                             'turma_id' => $turma->id,
@@ -486,11 +580,11 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                                             'p31' => $ca,
                                             'p32' => $ca                             
                                         ]);   
-                                        // $newAvaliacao->save();      
+                                        $newAvaliacao->save();      
                                     }
                                 }else{
                                     if(isset($row[strtolower($opcao)])){      
-                                        $ca = floatval($row[strtolower($opcao)]);
+                                        $ca = round(floatval($row[strtolower($opcao)]),1    );                                       
                                         $p2 = $ca;
                                         if($turma->ano_lectivo >= 2019){
                                             $p2 = null;

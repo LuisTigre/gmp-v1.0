@@ -50,7 +50,7 @@ class AdminController extends Controller
         $totalModulos = Modulo::count();
         $totalProfessores = Professor::count();
         $totalDevedores = Aluno::where('devedor','S')->count();
-        $totalTurmas = Turma::count();
+        $totalTurmas = Turma::all()->where('ano_lectivo',$epoca->ano_lectivo)->count();
         if($user->professor == 'S'){
             $professor = Professor::where('email',$user->email)->first();
             $professor_turmas = $professor->turmas()->where('ano_lectivo',$epoca->ano_lectivo)->get();

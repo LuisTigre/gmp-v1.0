@@ -36,8 +36,7 @@ class Aluno extends Model
    public static function listaAlunos($paginate)
    {
     
-       $user = auth()->user();
-       if($user->admin == "S"){
+       
            $listaAlunos = DB::table('alunos')
                         ->join('modulos','modulos.id','=','alunos.modulo_id')            
                         ->leftjoin('users','users.id','=','alunos.user_id')            
@@ -48,15 +47,7 @@ class Aluno extends Model
                         ->orderBy('alunos.nome','ASC')
                         ->paginate($paginate);
                       
-       }else{
-
-       $listaAlunos = DB::table('alunos')
-                       ->join('users','users.id','=','alunos.user_id')
-                       ->select('alunos.id','alunos.titulo','alunos.descricao','users.name','alunos.data')  
-                       ->where('alunos.user_id','=',$user->id)
-                       ->orderBy('alunos.id','DESC')
-                       ->paginate($paginate);
-       }
+       
        return $listaAlunos;
    }
    
@@ -75,7 +66,7 @@ class Aluno extends Model
                
       $user = auth()->user();      
       $turmas = $this->turmas()->get();     
-      $turma_actual = $this->turmas()->get()->last(); 
+      $turma_actual = $this->turmas()->get()->sortBy('ano_lectivo')->last(); 
       $turma_anterior_da_classe_actual = $this->buscarTurmaAnterior($turma_actual); 
       /*SE O ALUNO FOR REPETENTE*/
       if(!is_null($turma_anterior_da_classe_actual)){              
@@ -138,8 +129,8 @@ class Aluno extends Model
           /*SE A CLASSE FOR DIFERENTE DA 10 CLASSE*/
           if($mn_arr[0] > 10){
               $modulo_da_classe_anterior = Modulo::where('nome',  $mn[0] . ' ' . $classe_ant)->get()->last();
-            // dd($modulo_da_classe_anterior); 
-                        
+              // dd($modulo_da_classe_anterior); 
+
               $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
               $recursos = $avaliacaoAnual->where('result','exame2');
               
@@ -148,9 +139,7 @@ class Aluno extends Model
                 $this->id)->last();            
                 $avaliacao->update(['exame1'=>null]);                      
               } 
-          }
-          
-               
+          }              
              
       }
             
@@ -172,6 +161,31 @@ class Aluno extends Model
             $modulo->id)->last();
           return $turma_anterior;
    }
+   public function buscarTurmaDaClasse($turma_actual,$classe)
+   {
+          
+          $modulo = $turma_actual->modulo;
+          $curso = $modulo->curso;          
+          $modulo_anterior = Modulo::all()->where('nome',$curso->acronimo . ' ' . $classe)->first();          
+          $turmas = $this->turmas()->get();          
+          $turma_anterior = $turmas->where('ano_lectivo','<',$turma_actual->ano_lectivo)->where('modulo_id',
+            $modulo_anterior->id)->last();
+          return $turma_anterior;
+   }
+   public function buscarTurmaActualDaClasse($turma_actual)
+   {         
+          $modulo = $turma_actual->modulo;
+          $curso = $modulo->curso;          
+          $modulo_anterior = $modulo->moduloAnterior(); 
+          $turmas = $this->turmas()->get();                  
+          // if($this->id == 445){
+          //   dd($turmas);
+          // }  
+          $turma_actual = $turmas->where('modulo_id',$modulo_anterior->id)->where('ano_lectivo',$turma_actual->ano_lectivo)->last();
+          return $turma_actual;
+   }
+   
+   
 
    public function anularNotasAnteriores($turma,$turma_actual){ 
       $avaliacoes = $this->avaliacaos()->where('turma_id',$turma->id)->get();
@@ -186,10 +200,10 @@ class Aluno extends Model
          'aluno_id'=>$this->id,
          'turma_id'=>$turma_actual->id,
          'repetente'=>'S'
-        ]);          
-          
+        ]);     
 
    }
+
    public function revalidarNotasAnteriores($turma){ 
       if(!is_null($turma)){
         $this->avaliacaos()->where('turma_id',$turma->id)->update(['status'=>null]);

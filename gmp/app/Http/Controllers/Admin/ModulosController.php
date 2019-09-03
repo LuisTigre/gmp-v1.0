@@ -26,7 +26,7 @@ class ModulosController extends Controller
         ["titulo"=>"Modulos","url"=>""]
     ]);
        
-       $listaModelo = Modulo::listaModelo(15);      
+       $listaModelo = Modulo::listaModelo(30);      
        $listaDisciplinas = Modulo::listaDisciplinas(1,5);
        // dd($listaDisciplinas);    
        $listaCursos = Curso::all();

@@ -30,11 +30,12 @@ class TurmaAvaliacaoController extends Controller
      */
     public function index($turma_id,$disciplina_id)
     {    
-         // dd($disciplina_id);
+       set_time_limit(120);
        $user = auth()->user();       
        $turma = Turma::find($turma_id);
        $disciplina = Disciplina::find($disciplina_id);
        $modulo = $turma->modulo()->get();
+       $curso = Curso::find($modulo->first()->curso_id);
        $epoca = Epoca::where('activo','S')->first();
        // dd($epoca); 
        // $disciplinas = $modulo->withPivot()->get();       
@@ -43,15 +44,43 @@ class TurmaAvaliacaoController extends Controller
         ["titulo"=>"Disciplinas","url"=>route('turmas.disciplinas.index',[$turma->id])],       
         ["titulo"=>"Professores","url"=>""]
     ]);             
-       $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);        
-       $listaCabecalho2 = $turma->disciplinas()->get();           
+       
+       $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);
+
+       foreach ($listaModelo as $key => $avaliacao) {
+        // dd($avaliacao);
+         $aluno = Aluno::where('nome', $avaliacao->nome)->first();        
+         $avaliacoes_do_aluno = Turma::avaliacoesDoAluno($aluno->id);
+
+         $avaliacoes_do_aluno = $avaliacoes_do_aluno->where('disciplina_id',$disciplina->id)->sortBy('ano_lectivo');
+         
+
+         $ca_10 = $avaliacoes_do_aluno->where('modulo',$curso->acronimo . ' ' . '10ª')->last();
+         $ca_11 = $avaliacoes_do_aluno->where('modulo',$curso->acronimo . ' ' . '11ª')->last();
+         $ca_12 = $avaliacoes_do_aluno->where('modulo',$curso->acronimo . ' ' . '12ª')->last();
+
+
+         if(!is_null($ca_10)){
+         // dd($ca_10->exame2 != null ?  $ca_10->exame2 : ($ca_10->exame1 != null ?  $ca_10->exame1 : $ca_10->notafinal));
+              $avaliacao->ca_10 = floatVal($ca_10->exame2 != null ?  $ca_10->exame2 : ($ca_10->exame1 != null ?  $ca_10->exame1 : $ca_10->notafinal));
+         }
+         if(!is_null($ca_11)){
+              $avaliacao->ca_11 = floatVal($ca_11->exame2 != null ?  $ca_11->exame2 : ($ca_11->exame1 != null ?  $ca_11->exame1 : $ca_11->notafinal));          
+         }
+         if(!is_null($ca_12)){
+              $avaliacao->ca_12 = floatVal($ca_12->exame2 != null ?  $ca_12->exame2 : ($ca_12->exame1 != null ?  $ca_12->exame1 : $ca_12->notafinal));  
+          }       
+         
+       }
+
+       $listaCabecalho2 = collect([]);        
        $avaliacoes = $turma->avaliacaos()->where('disciplina_id',$disciplina->id)->get();
        $alunos_da_turma = $disciplina->buscarAlunosDaDisciplina($turma)->first();
        $listaAlunosNaoAvaliados = collect([]);      
        foreach ($alunos_da_turma as $aluno) {
                if($aluno->status == 'Activo'){
                    $aluno = Aluno::find($aluno->id);               
-                   $aluno_avaliacoes = $aluno->avaliacaos()->where('disciplina_id',$disciplina->id)->get()->where('aluno_id',$aluno->id)->where('turma_id',$turma->id);
+                   $aluno_avaliacoes = $aluno->avaliacaos()->where('disciplina_id',$disciplina->id)->get()->where('aluno_id',$aluno->id)->where('turma_id',$turma->id);                   
                   if($aluno_avaliacoes->isEmpty()){
                     $listaAlunosNaoAvaliados->push($aluno);
                   }
@@ -63,7 +92,7 @@ class TurmaAvaliacaoController extends Controller
        $listadisciplinas = Disciplina::orderBy('nome')->get();       
        $listaProfessores = Professor::orderBy('nome')->get();       
        $user = auth()->user();
-       $avaliacaos = $turma->avaliacaos()->where('disciplina_id',$disciplina->id)->get();
+       // $avaliacaos = $turma->avaliacaos()->where('disciplina_id',$disciplina->id)->get();
        
        // dd($listaModelo);
        // $listaModelo = $turma->listaAvaliacoes2($disciplina->id);
@@ -262,32 +291,50 @@ class TurmaAvaliacaoController extends Controller
        $epoca = Epoca::where('activo','S')->first();          
        $listaModelo = Turma::listaAvaliacoes($turma_id,$disciplina_id,100);
        $total_alunos = $listaModelo->count(); 
-       $instituicao = Instituicao::all()->first();
-       
+       $instituicao = Instituicao::all()->first();      
 
        if($epoca->trimestre == 'I'){               
          $aptos = round(($listaModelo->where('ct1','>=',10)->count() * 100)/$total_alunos,1);  
          $naptos = round(($listaModelo->where('ct1','<',10)->count() * 100)/$total_alunos,1);       
+         $desistencia = round(($listaModelo->where('mac1','=',null)->count() * 100)/$total_alunos,1);       
          $notas = $listaModelo->where('ct1','!=',null);
-         $notas = $notas->sortBy('ct1');      
+         $notas = $notas->sortBy('ct1');
          $min = $notas->first()->ct1; 
          $max = $notas->last()->ct1;
+         $valores = collect([]);
+         foreach ($listaModelo as $key => $value) {
+           $valores->push($value->ct1);
+         }
+         $media = $valores->median();
 
        }else if($epoca->trimestre == 'II'){ 
          $aptos = round(($listaModelo->where('ct2','>=',10)->count() * 100)/$total_alunos,1);  
-         $naptos = round(($listaModelo->where('ct2','<',10)->count() * 100)/$total_alunos,1);       
+         $naptos = round(($listaModelo->where('ct2','<',10)->count() * 100)/$total_alunos,1);         
+         $desistencia = round(($listaModelo->where('mac2','=',null)->count() * 100)/$total_alunos,1);       
          $notas = $listaModelo->where('ct2','!=',null);
          $notas = $notas->sortBy('ct2');      
          $min = $notas->first()->ct2; 
          $max = $notas->last()->ct2;
+         $valores = collect([]);
+         foreach ($listaModelo as $key => $value) {
+           $valores->push($value->ct2);
+         }
+         $media = $valores->median();
+
 
        }else{
-         $aptos = round(($listaModelo->where('ct3','>=',10)->count() * 100)/$total_alunos,1);  
-         $naptos = round(($listaModelo->where('ct3','<',10)->count() * 100)/$total_alunos,1);       
-         $notas = $listaModelo->where('ct3','!=',null);
-         $notas = $notas->sortBy('ct3');      
-         $min = $notas->first()->ct3; 
-         $max = $notas->last()->ct3;
+         $aptos = round(($listaModelo->where('notafinal','>=',10)->count() * 100)/$total_alunos,1);  
+         $naptos = round(($listaModelo->where('notafinal','<',10)->count() * 100)/$total_alunos,1);
+         $desistencia = round(($listaModelo->where('notafinal','=',null)->count() * 100)/$total_alunos,1);       
+         $notas = $listaModelo->where('mac3','!=',null);
+         $notas = $notas->sortBy('notafinal');      
+         $min = $notas->first()->notafinal; 
+         $max = $notas->last()->notafinal;
+         $valores = collect([]);
+         foreach ($listaModelo as $key => $value) {
+           $valores->push($value->notafinal);
+         }
+         $media = $valores->median();
 
        } 
 
@@ -311,11 +358,13 @@ class TurmaAvaliacaoController extends Controller
           text-align:center;
          }
          .vtexto{
-            -ms-transform: rotate(60deg); /* IE 9 */
-            -webkit-transform: rotate(90deg); /* Safari 3-8 */
-             transform: rotate(90deg);
+            -ms-transform: rotate(270deg); /* IE 9 */
+            -webkit-transform: rotate(270deg); /* Safari 3-8 */
+             transform: rotate(270deg);
              font-weight:bold;
-             font-size:11px;            
+             font-size:8px;             
+             text-align:center;
+             margin: 15px -10px;
              
          }
         #cabecalho,#seccao_topo_grupo,#rodape{
@@ -337,11 +386,15 @@ class TurmaAvaliacaoController extends Controller
        }
        #seccao_topo_grupo  #seccao_1{
           float:left;
-          width:13%;          
+          width:17%;          
+       }
+       #seccao_topo_grupo  #seccao_2{
+          float:left;
+          width:15%;          
        }
        #seccao_topo_grupo  #seccao_3{
           float:left;
-          width:34%;          
+          width:35%;          
        }
        #seccao_topo_grupo > div{
           float:left;
@@ -349,6 +402,13 @@ class TurmaAvaliacaoController extends Controller
        }
        #seccao_topo_grupo #seccao_1>p,#seccao_topo_grupo #seccao_5>p{
         margin-bottom:-12px;
+        font-size: 10px;
+      }
+      #seccao_3>p{
+        margin-bottom: -6px;
+      }
+      #seccao_3>p>span{
+        margin-right: 5px;
       }
        #rodape{;
           position:relative;          
@@ -388,47 +448,46 @@ class TurmaAvaliacaoController extends Controller
       </head>
       <body onload='atribueCor()'>
   <div style='font-size: 10.5px;'>
-   <div id='cabecalho' align='center' style='font-size: 10.5px;font-weight: bold;' class='table-responsive text-uppercase'>
+   <div id='cabecalho' align='center' style='font-size: 9.5px;font-weight: bold;' class='table-responsive text-uppercase'>
       <p>$instituicao->nome</p>                           
       <p>$instituicao->lema</p>                                       
-      <p>ENSINO SECUNDÁRIO TÉCNICO PROFISSIONAL</p>       
-      <p>PAUTA DE APROVEITAMENTO</p>            
-      <p>ÁREA DE FORMAÇÃO:$area->nome</p>           
-      <p style='color:red;'>REGIME DIURNO ( $turma->periodo )</p> 
+      <p>ENSINO SECUNDÁRIO TÉCNICO PROFISSIONAL</p>                  
+      <p style='color:red;'>MINI-PAUTA</p> 
     </div>
     <div id='seccao_topo_grupo'>    
     <div id='seccao_1' class='col-md-3'>
-       <p>ANO LECTIVO $turma->ano_lectivo</p> 
+        <p>ÁREA DE FORMAÇÃO:$area->nome</p>
+        <p>Curso: $curso->nome</p>      
        <p>$classe->nome CLASSE TURMA: $turma_info[2] </p>         
     </div>
     <div id='seccao_2' align='center' class='col-md-6'>
-       <p>Curso: $curso->nome</p>      
+       <p style='font-size:10px;margin-top:13.5px;'>ANO LECTIVO $turma->ano_lectivo</p> 
     </div>
     <div id='seccao_3' align='center' class='col-md-6'>
-       <p><span style='font-weight: bold;'>DISCIPLINA:</span> <span style='color:red;'>$disciplina->acronimo</span> ($disciplina->nome)</p>     
+       <p><span style='font-weight:bold;font-size:10px;'>DISCIPLINA:</span> <span style='color:red;font-size:10px;' >$disciplina->acronimo</span> <span style='font-size:8px;'>($disciplina->nome)</span></p>     
     </div>
-    <div id='seccao_3' align='center' class='col-md-6'>
-       <p style='font-size: 8px;'>
-        <span style='font-weight: bold;'>Aptos:</span> <span style='font-weight:bold;color:red;'>$aptos%  
-        </span>
-        <span style='font-weight: bold;'>N/Aptos:</span> <span style='font-weight:bold;color:red;'>$naptos%
-        </span>
-        <span style='font-weight: bold;'>Max:</span> <span style='color:red;'>$max
-        </span>
-        <span style='font-weight: bold;'>Min:</span> <span style='color:red;'>$min
-        </span>
-      </p>     
+    <div id='seccao_3' align='right' class='col-md-6' style='margin-top:3.5px;margin-left:-20px;'>
+       <p style='font-size: 9px;'>
+        <span style='font-weight: bold;'>Aptos: $aptos%</span>
+        <span style='font-weight: bold;'>N/Aptos: ".floatVal($naptos-$desistencia). "%</span>
+         <span style='font-weight: bold;'>DESISTÊNCIAS: $desistencia%</span>
+      </p> 
+      <p style='font-size: 9px;'>    
+        <span style='font-weight: bold;'>MÉDIA: $media</span>
+        <span style='font-weight: bold;'>Max: $max</span>
+        <span style='font-weight: bold;'>Min: $min</span>
+      </p>
     </div>     
     </div>
     </div>
      <div id='tabela_area'>
-      <table id='mytable' class='table table-bordered table-xs table-condensed' style='font-size:11px;'>
+      <table id='mytable' class='table table-bordered table-xs table-condensed' style='font-size:8px;'>
       <thead>
       <tr style='font-weight: bold;'>
-      <th scope='col' rowspan='2'>#</th>    
-      <th scope='col' rowspan='2' style='text-align:left;font-size:11;'>Nome completo</th>  
-      <th scope='col' rowspan='2' style='text-orientation:vertical);'>Id</th>
-      <th scope='col' rowspan='2'>F</th>";
+      <th scope='col' rowspan='3'>Nº</th>    
+      <th scope='col' rowspan='3' style='text-align:left;font-size:8;'><span style='margin-left:2px;''>NOME COMPLETO</span></th>  
+      <th scope='col' rowspan='3' style='text-orientation:vertical);'><p class='vtexto' style='margin:17px -5px;font-size:8px;'>IDADE</p></p></th>
+      <th scope='col' rowspan='3'><p class='vtexto' style='margin:17px -8px;font-size:8px;'>FALTAS</p></p></th>";
       if($ano_lectivo < 2019){
           $output .="      
           <th scope='col' colspan='4'>I TRIMESTRE</th>";
@@ -437,7 +496,7 @@ class TurmaAvaliacaoController extends Controller
           <th scope='col' colspan='3'>I TRIMESTRE</th>";
         }
          $output .="
-        <th scope='col' rowspan='2'>F</th>";
+        <th scope='col' rowspan='3'><p class='vtexto' style='margin:17px -8px;font-size:8px;'>FALTAS</p></p></th>";
 
       if($ano_lectivo < 2019){
         $output .="      
@@ -447,40 +506,44 @@ class TurmaAvaliacaoController extends Controller
         <th scope='col' colspan='5'>II TRIMESTRE</th>";
       }
        $output .="
-      <th scope='col' rowspan='2'>F</th>  
+      <th scope='col' rowspan='3'><p class='vtexto' style='margin:17px -8px;font-size:8px;'>FALTAS</p></p></th>  
       <th scope='col' colspan='5'>III TRIMESTRE</th>     
-      <th scope='col' colspan='5'>Classificação Anual</th> 
+      <th scope='col' colspan='5'>CLASSIFICAÇÃO ANUAL</th> 
     </tr>
     <tr>      
-      <th scope='col'>Mac</th>  
-      <th scope='col'>P1</th>";
+      <th scope='col' rowspan='2'>MAC</th>  
+      <th scope='col' rowspan='2'>P1</th>";
       if($ano_lectivo < 2019){
         $output .="      
-        <th scope='col'>P2</th>";
+        <th scope='col' rowspan='2'>P2</th>";
       }
         $output .="      
-      <th scope='col'>CT1</th>  
-      <th scope='col'>Mac</th>  
-      <th scope='col'>P1</th>";
+      <th scope='col' rowspan='2'>CT1</th>";
       if($ano_lectivo < 2019){
         $output .="      
-        <th scope='col'>P2</th>";
+        <th scope='col' rowspan='2'>P2</th>";
       }
         $output .="            
-      <th scope='col'>CF2</th>      
-      <th scope='col'>CT1</th>
-      <th scope='col'>CT2</th>      
-      <th scope='col'>Mac</th>  
-      <th scope='col'>P1</th>      
-      <th scope='col'>CF3</th>      
-      <th scope='col'>CT2</th>      
-      <th scope='col'>CT3</th>  
-      <th scope='col'>MTC</th>      
-      <th scope='col'>60%</th>      
-      <th scope='col'>PG</th>      
-      <th scope='col'>40%</th>      
-      <th scope='col'>60% + 40%</th>
-    </tr>    
+       <th scope='col' colspan='2'>AVALIAÇÕES</th>  
+      <th scope='col' rowspan='2'>CF2</th>      
+      <th scope='col' rowspan='2'>CT1</th>
+      <th scope='col' rowspan='2'>CT2</th>
+      <th scope='col' colspan='2'>AVALIAÇÕES</th>  
+      <th scope='col' rowspan='2'>CF3</th>      
+      <th scope='col' rowspan='2'>CT2</th>      
+      <th scope='col' rowspan='2'>CT3</th>  
+      <th scope='col' rowspan='2'>MTC</th>      
+      <th scope='col' rowspan='2'>60%</th>      
+      <th scope='col' rowspan='2'>PG</th>      
+      <th scope='col' rowspan='2'>40%</th>      
+      <th scope='col' rowspan='2'>60% + 40%</th>
+      </tr>
+      <tr>     
+        <th scope='col'>MAC</th>  
+        <th scope='col'>P1</th>
+        <th scope='col' >MAC</th>  
+        <th scope='col' >P1</th>      
+      </tr>    
   </thead>
   <tbody>";
         $counter = 0;    
@@ -509,7 +572,7 @@ class TurmaAvaliacaoController extends Controller
           // }
         $output .="
         <tr style='font-size: $font_size px;background:$fundo;'>";
-        foreach ($aluno as $key => $value){
+        foreach ($aluno as $key => $value){         
 
          if($value != null && $value !=''){
            $cor = $value < 10 ? 'red':'black';
@@ -528,7 +591,7 @@ class TurmaAvaliacaoController extends Controller
          //   $cor = 'black';
          }
          } 
-        if($counter!=0 && $key != 'status'){          
+        if($counter!=0 && $key != 'status' &&  $key !='ca10' &&  $key !='ca11' &&  $key !='ca12'){          
           if($counter == 2){
           $output .="<td style='background:$fundo'><span style='color:$cor;'>$value</span></td>";
           }else{
@@ -556,7 +619,7 @@ class TurmaAvaliacaoController extends Controller
       <div class='col-md-6'>
        <p>O SUB-DIRECTOR PEDAGÓGICO</p>
        <p>_________________________________</p>  
-       <p>ERNESTO TIGRE ISSAMBO</p>
+       <p>$instituicao->director_pedagogico</p>
       </div>    
     </body>
 </html";

@@ -22,7 +22,14 @@
       deletar="/admin/alunos/" token="{{csrf_token()}}"
       modal="sim"
       v-bind:buttons="[{'nome':'Bolentim','url':'/admin/alunos/' ,'action':'bolentim'},{'nome':'Declaração','url':'/admin/alunos/' ,'action':'dec_com_notas'}]"
-      ></tabela-lista>
+      >
+        <!-- <span>
+          <select class="form-control" id="condicao" name="condicao">
+          <option value="">Todos</option>
+          <option value="Sem Turmas">Sem Turma</option>
+        </select>
+      </span> -->
+      </tabela-lista>
       <div align="center">        
         {{$listaModelo}}
       </div>

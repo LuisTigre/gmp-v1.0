@@ -15,7 +15,7 @@
       <tabela-lista
       v-bind:titulos="['#','Nome','Curso','Classe','Sala','Ano','Alterado por']"
       v-bind:itens="{{json_encode($listaModelo)}}"       
-      ordem="desc" ordemcol="5"      
+      ordem="asc" ordemcol="1"      
       criar="#criar" editar="/admin/turmas/" 
       deletar="/admin/turmas/" token="{{csrf_token()}}"
       modal="sim"
@@ -39,7 +39,11 @@
       v-bind:itens="{{json_encode($listaModelo)}}"       
       ordem="asc" ordemcol="1"     
       modal="sim"
-      v-bind:buttons="[{'nome':'Alunos','url':'/admin/turmas/' ,'action':'alunos'},{'nome':'Pauta','url':'/admin/turmas/','action':'pauta'},{'nome':'Horário','url':'/admin/turmas/','action':'horario'},{'nome':'Disciplinas','url':'/admin/turmas/','action':'disciplinas'},{'nome':'Aulas','url':'/admin/turmas/','action':'aulas'}]"
+      v-bind:buttons="[{'nome':'Alunos','url':'/admin/turmas/' ,'action':'alunos'},
+      {'nome':'Disciplinas','url':'/admin/turmas/','action':'disciplinas'},
+      {'nome':'Pauta','url':'/admin/turmas/','action':'pauta'},
+      {'nome':'Horário','url':'/admin/turmas/','action':'horario'},
+      {'nome':'Aulas','url':'/admin/turmas/','action':'aulas'}]"
       >
       @endif
       </tabela-lista>

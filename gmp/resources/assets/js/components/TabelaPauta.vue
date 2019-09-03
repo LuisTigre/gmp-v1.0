@@ -68,7 +68,7 @@
     background: #fafafa;
   }
   .desistido{
-    background = rgb(255,212,227);
+    background:rgb(255,212,227);
   }
 
 </style>

@@ -13,23 +13,23 @@
 
     <painel titulo="Lista de Professores">
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
-     @if ($user->professor == 'S') 
-      <tabela-lista
-      v-bind:titulos="['#','Nome','Telefone','E-mail']"
-      v-bind:itens="{{json_encode($listaModelo)}}"
-      ordem="asc" ordemcol="1"
-      criar="#criar" detalhe="/admin/professores/" editar="/admin/professores/" 
-      token="{{csrf_token()}}"
-      modal="sim"
-      v-bind:buttons="[{'nome':'Turmas','url':'/admin/professores/' ,'action':'turmas'}]"
-      ></tabela-lista>
-     @elseif($user->admin == 'S') 
+     @if($user->admin == 'S') 
       <tabela-lista
       v-bind:titulos="['#','Nome','Telefone','E-mail']"
       v-bind:itens="{{json_encode($listaModelo)}}"
       ordem="asc" ordemcol="1"
       criar="#criar" detalhe="/admin/professores/" editar="/admin/professores/" 
       deletar="/admin/professores/" token="{{csrf_token()}}"
+      modal="sim"
+      v-bind:buttons="[{'nome':'Turmas','url':'/admin/professores/' ,'action':'turmas'}]"
+      ></tabela-lista>
+     @elseif ($user->professor == 'S') 
+      <tabela-lista
+     v-bind:titulos="['#','Nome','Telefone','E-mail']"
+      v-bind:itens="{{json_encode($listaModelo)}}"
+      ordem="asc" ordemcol="1"
+      editar="/admin/professores/" 
+     
       modal="sim"
       v-bind:buttons="[{'nome':'Turmas','url':'/admin/professores/' ,'action':'turmas'}]"
       ></tabela-lista>
@@ -83,7 +83,7 @@
       </div>      
       <div class="form-group">
         <label for="email2">E-mail</label>
-        <input type="email" class="form-control" id="email2" name="email" v-model="$store.state.item.email" placeholder="E-mail">
+        <input type="email" readonly class="form-control" id="email2" name="email" v-model="$store.state.item.email" placeholder="E-mail">
       </div>
       <input type="hidden" name="professor" value="S">
       <div class="form-group">

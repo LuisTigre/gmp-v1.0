@@ -60,3 +60,41 @@ inner join professors prof on av.professor_id = prof.id
 inner join aluno_turma atu on av.aluno_id = atu.aluno_id and tur.id = atu.turma_id
 left  join users us on av.user_id = us.id
 group by av.id);
+
+
+create view curso_disciplina as
+select dm.modulo_id, 
+dm.disciplina_id, 
+dm.user_id,
+dm.carga,
+dm.terminal, 
+dm.do_curso, 
+dm.curricular, 
+m.nome as modulo, 
+m.curso_id, 
+m.classe_id,
+m.ano,
+disc.nome as disciplina, 
+disc.acronimo as disc_acr,
+disc.categoria, 
+cur.nome as curso, 
+cur.acronimo curso_acr, 
+cur.professor_id as coordenador_id, 
+cur.area_id, 
+cur.nome_instituto_mae, 
+cur.director_instituto_mae, 
+cl.nome as classe,
+cl.por_extenso,
+prof.nome as coordenador, 
+prof.telefone, 
+prof.email, 
+ar.nome as are, 
+ar.acronimo as area_acr
+from disciplina_modulo dm 
+inner join modulos m  on m.id = dm.modulo_id
+inner join disciplinas disc  on disc.id = dm.disciplina_id
+inner join cursos cur  on cur.id = m.curso_id
+inner join classes cl  on cl.id = m.classe_id
+inner join professors prof on  prof.id = cur.professor_id
+inner join areas ar on ar.id = cur.area_id
+order by m.id;

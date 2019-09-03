@@ -21,10 +21,12 @@
           <th scope="col" rowspan="2">F</th>  
           <th scope="col" colspan="4" style="">I TRIMESTRE</th>
           <th scope="col" rowspan="2">F</th>  
-          <th scope="col" colspan="6" style="">II TRIMESTRE</th>
+          <th scope="col" colspan="4" style="">II TRIMESTRE</th>
           <th scope="col" rowspan="2">F</th>  
-          <th scope="col" colspan="5" style="">III TRIMESTRE</th>     
-          <th scope="col" colspan="6" style="">Classificação Anual</th> 
+          <th scope="col" colspan="3" style="">III TRIMESTRE</th>     
+          <th scope="col" colspan="5" style="">Classificação Anual</th>
+          <th scope="col" rowspan="2"></th>   
+          <th scope="col" colspan="4" style="">COTAÇÕES ANUAIS</th> 
         </tr>
       <tr>      
         <th scope="col">Mac</th>  
@@ -34,19 +36,22 @@
         <th scope="col">Mac</th>  
         <th scope="col">P1</th>      
         <th scope="col">P2</th>      
-        <th scope="col">CF2</th>      
-        <th scope="col">CT1</th>
+        <!-- <th scope="col">CF2</th>      
+        <th scope="col">CT1</th> -->
         <th scope="col">CT2</th>      
         <th scope="col">Mac</th>  
         <th scope="col">P1</th>      
-        <th scope="col">CF3</th>      
-        <th scope="col">CT2</th>      
+       <!--  <th scope="col">CF3</th>      
+        <th scope="col">CT2</th>   -->    
         <th scope="col">CT3</th>  
         <th scope="col">MTC</th>      
         <th scope="col">60%</th>      
         <th scope="col">PG</th>      
         <th scope="col">40%</th>      
-        <th style="width:5%;font-size:8px;" scope="col">60% + 40%</th>    
+        <th style="width:5%;font-size:8px;" scope="col">60% + 40%</th>
+        <th scope="col">10ª</th>  
+        <th scope="col">11ª</th>  
+        <th scope="col">12ª</th>          
         <th style="width:4%;" v-if="detalhe || editar || deletar ">Acção</th>   
       </tr>    
     </thead>
@@ -68,15 +73,15 @@
          <td class="centro nota"><span>{{item.mac2}}</span></td>     
          <td class="centro nota"><span>{{item.p21}}</span></td>     
          <td class="centro nota"><span>{{item.p22}}</span></td>     
-         <td class="centro nota"><span>{{item.cf2}}</span></td>     
-         <td class="centro nota"><span>{{item.ct1}}</span></td>    
+        <!--  <td class="centro nota"><span>{{item.cf2}}</span></td>     
+         <td class="centro nota"><span>{{item.ct1}}</span></td>    --> 
          <td class="centro nota"><span>{{item.ct2}}</span></td>           
          <!-- III TRIMESTRE -->
          <td class="centro"><span>{{item.fnj3}}</span></td>  
          <td class="centro nota"><span>{{item.mac3}}</span></td>     
          <td class="centro nota"><span>{{item.p31}}</span></td>     
-         <td class="centro nota"><span>{{item.cf3}}</span></td>     
-         <td class="centro nota"><span>{{item.ct2}}</span></td>     
+         <!-- <td class="centro nota"><span>{{item.cf3}}</span></td>     
+         <td class="centro nota"><span>{{item.ct2}}</span></td>  -->    
          <td class="centro nota"><span>{{item.ct3}}</span></td>    
          <!-- classificacao anual -->
          <td class="centro nota"><span>{{item.mtc}}</span></td>  
@@ -84,8 +89,12 @@
          <td class="centro nota"><span>{{item.p32}}</span></td>     
          <td class="centro">{{item.quarenta}}</td>     
          <td class="centro nota"><span>{{item.notafinal}}</span></td> 
+         <td class="centro nota"><span></span></td> 
+         <td class="centro nota"><span>{{item.ca_10}}</span></td> 
+         <td class="centro nota"><span>{{item.ca_11}}</span></td> 
+         <td class="centro nota"><span>{{item.ca_12}}</span></td>        
          <td v-if="detalhe || editar || deletar">
-              <form v-bind:id="index" v-if="deletar && token" v-bind:action="deletar + item.id" method="post">
+            <form v-bind:id="index" v-if="deletar && token" v-bind:action="deletar + item.id" method="post">
               <input type="hidden" name="_method" value="DELETE">
               <input type="hidden" name="_token" v-bind:value="token">
               
@@ -99,7 +108,7 @@
 
             </form>
               <!-- *************** WITHOUT TOKEN ***************** -->
-              <span v-if="!token">             
+             <span v-if="!token">             
               
               <modallink v-if="detalhe && modal" v-bind:item="item" tipo="link" v-bind:url="detalhe" nome="detalhe" titulo="detalhe " css=""></modallink>
 
@@ -107,18 +116,17 @@
               <modallink v-if="editar && modal" tipo="link" nome="editar" titulo="Editar " v-bind:item="item" v-bind:url="editar" css=""></modallink>
 
               <a v-if="deletar" v-bind:href="deletar">Deletar</a>   
-              </span>
+             </span>
 
               <!-- ******************* WITH TOKEN ************************ -->
-              <span v-if="token && !deletar">              
+             <span v-if="token && !deletar">              
 
               <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe </a>
               <modallink v-if="detalhe && modal" v-bind:item="item" v-bind:url="detalhe" tipo="link" nome="detalhe" titulo="detalhe " css=""></modallink>
               
               <a v-if="editar && !modal" v-bind:href="editar"> Editar</a>
               <modallink v-if="editar && modal" tipo="link" v-bind:item="item" v-bind:url="editar" nome="editar" titulo="Editar " css=""></modallink>
-            </span>            
-          </span>            
+            </span>                  
         </td>     
       </tr>   
    </tbody>
