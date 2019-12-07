@@ -181,6 +181,21 @@ public function index()
        return view('admin.professores.turmas.index',compact('listaMigalhas','listaModelo','user','professor','listaTurmas','listaDisciplinas','turma','disciplina'));
 
    }
+
+   public function estatistica($id){
+        $professor = Professor::find($id);
+        $epoca = Epoca::where('Activo','S')->first(); 
+        $turma = $professor->turmas()->get()->first(); 
+        if(is_null($turma)){
+             return redirect()->back()->withErrors("Professor ".$professor->nome." Nao tem nunhuma turma associada !!")->withInput();
+        }  
+        $disciplina = $turma->disciplinas()->where('professor_id',$professor->id)->first();
+        $turmaDisciplina = new TurmaDisciplinaController();
+        $turmaDisciplina->estatistica($epoca->id,$turma->id,$disciplina->id);
+
+   }
+
+
    public function remover_turma($professor_id,$turma_id){
     dd('wtb');
 

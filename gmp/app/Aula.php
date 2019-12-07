@@ -14,31 +14,31 @@ class Aula extends Model
    
    public function user()
    {
-    return $this->belongsTo('App\user');
+    return $this->belongsTo('App\User');
    }
    public function turma()
    {
-   	return $this->belongsTo('App\turma');
+   	return $this->belongsTo('App\Turma');
    }
    public function professor()
    {
-    return $this->belongsTo('App\professor');
+    return $this->belongsTo('App\Professor');
    }
    public function sala()
    {
-    return $this->belongsTo('App\sala');
+    return $this->belongsTo('App\Sala');
    }
    public function disiciplina()
    {
-    return $this->belongsTo('App\disiciplina');
+    return $this->belongsTo('App\Disciplina');
    }
    public function tempo()
    {
-    return $this->belongsTo('App\tempo');
+    return $this->belongsTo('App\Tempo');
    }
    public function modulo()
    {
-    return $this->belongsTo('App\modulo');
+    return $this->belongsTo('App\Modulo');
    }
    public static function listaModelo($turma,$paginate)
    {

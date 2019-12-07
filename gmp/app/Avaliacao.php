@@ -18,15 +18,15 @@ class Avaliacao extends Model
 
    public function user()
    {
-    return $this->belongsTo('App\user');
+    return $this->belongsTo('App\User');
    }
    public function turma()
    {
-   	return $this->belongsTo('App\turma');
+   	return $this->belongsTo('App\Turma');
    }
     public function professor()
    {
-    return $this->belongsTo('App\professor');
+    return $this->belongsTo('App\Professor');
    }
    public static function listaModelo($paginate)
    {

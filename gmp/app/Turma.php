@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\User;
 use App\Professor;
 use App\Aluno;
@@ -21,43 +22,43 @@ class Turma extends Model
 
    public function user()
    {
-   	return $this->belongsTo('App\user');
+   	return $this->belongsTo('App\User');
    }
    public function alunos()
    {
-    return $this->belongsToMany('App\aluno')->withPivot('numero','cargo','repetente','provenienca','status');
+    return $this->belongsToMany('App\Aluno')->withPivot('numero','cargo','repetente','provenienca','status');
    }
 
    public function professores()
    {
-    return $this->belongsToMany('App\professor','disciplina_turma')->withPivot('director','disciplina_id')->withTimestamps();
+    return $this->belongsToMany('App\Professor','disciplina_turma')->withPivot('director','disciplina_id')->withTimestamps();
    }
    public function disciplinas()
    {
-    return $this->belongsToMany('App\disciplina')->withPivot('director','disciplina_id','professor_id')->withTimestamps();
+    return $this->belongsToMany('App\Disciplina')->withPivot('director','disciplina_id','professor_id')->withTimestamps();
    }
 
    public function curso()
    {
-    return $this->belongsTo('App\curso');
+    return $this->belongsTo('App\Curso');
    }
    public function classe()
    {
-    return $this->belongsTo('App\classe');
+    return $this->belongsTo('App\Classe');
    }
    public function modulo()
    {
-    return $this->belongsTo('App\modulo');
+    return $this->belongsTo('App\Modulo');
    }
 
 
     public function avaliacaos()
    {
-    return $this->hasMany('App\avaliacao');
+    return $this->hasMany('App\Avaliacao');
    }
    public function aulas()
    {
-    return $this->hasMany('App\aula');
+    return $this->hasMany('App\Aula');
    }
     
     public static function classificaoTrimestrais2($turma_id,$trimestre){
@@ -640,6 +641,9 @@ class Turma extends Model
                       } 
                     }else if($aluno_result == 'N/D'){
                       $aluno_result = $aluno->status;
+                    }else if($aluno->status == 'Desistido'){
+                      $aluno_result = $aluno->status;
+
                     }
 
                 // }else{
@@ -693,7 +697,12 @@ class Turma extends Model
 
    /*FUNCAO QUE CALCULA OS DADOS PARA PAUTAS FINAIS*/
    public static function avaliacoesDoAluno2($aluno_id,$curricular){ 
-                      
+
+         // if (Cache::has($aluno_id . '_avaliacoes')){          
+         //     return Cache::get($aluno_id . '_avaliacoes');
+         // }
+           
+
          $user = auth()->user();       
          $aluno = Aluno::find($aluno_id);               
          $aluno = Aluno::find($aluno_id);               
@@ -734,7 +743,8 @@ class Turma extends Model
         Turma::avaliar_a_condicao_de_transicao(12,$disciplinas_frequentadas_12,$curso,$avaliacoesDoAluno,$output);    
         Turma::avaliar_a_condicao_de_transicao(13,$disciplinas_frequentadas_13,$curso,$avaliacoesDoAluno,$output);
       
-         // dd($output);
+        // Cache::put($aluno_id . '_avaliacoes', $output, 5); 
+        // cache([$aluno_id . '_avaliacoes' => $output], now()->addSeconds(120));      
           return $output;
 
    }
@@ -1182,6 +1192,8 @@ class Turma extends Model
             $mac = $trimestre == 'I' ? 'mac1' :  ($trimestre == 'II' ? 'mac2' : 'mac3');
             $p1 = $trimestre == 'I' ? 'p11' :  ($trimestre == 'II' ? 'p21' : 'p31');
             $p2 = $trimestre == 'I' ? 'p12' :  ($trimestre == 'II' ? 'p22' : 'p32');
+            $fj = $trimestre == 'I' ? 'fj1' :  ($trimestre == 'II' ? 'fj2' : 'fj3');
+            $fnj = $trimestre == 'I' ? 'fnj1' :  ($trimestre == 'II' ? 'fnj2' : 'fnj3');
         
           $listaModelo = DB::table('avaliacoes_view')
                         ->select('avaliacoes_view.aluno_id',
@@ -1191,7 +1203,9 @@ class Turma extends Model
                                  'avaliacoes_view.' .$mac . ' as mac',
                                  'avaliacoes_view.' .$p1 . ' as p1',
                                  'avaliacoes_view.' .$p2 . ' as p2',
-                                 'avaliacoes_view.' .$ct . ' as ct'
+                                 'avaliacoes_view.' .$ct . ' as ct',
+                                 'avaliacoes_view.' .$fj . ' as fj',
+                                 'avaliacoes_view.' .$fnj . ' as fnj'
                                )
                          ->where([['avaliacoes_view.turma_id',$turma->id]])
                          ->orderBy('avaliacoes_view.disciplina_id','ASC')
@@ -1418,7 +1432,8 @@ class Turma extends Model
       
     /*BUSCA TODAS AS AVALIACOES DO ALUNO EM APENAS UMA TURMA E DISCIPLINA*/
    public static function listaAvaliacoes($turma_id,$disciplina_id,$paginate)
-   {          
+   {        
+          set_time_limit(60*2);
                          
           $turma = Turma::find($turma_id);                       
           
@@ -1454,7 +1469,7 @@ class Turma extends Model
                                 DB::raw('round((avaliacaos.mac3 + avaliacaos.p31)/2,1) as cf3'),
                                 DB::raw('round(((avaliacaos.mac1 + avaliacaos.p11 + avaliacaos.p12)/3 + (avaliacaos.mac2 + avaliacaos.p21 + avaliacaos.p22)/3)/2,1) as ct2copy'),
                                 DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11 + avaliacaos.p12)/3 + (avaliacaos.mac2 + avaliacaos.p21 + avaliacaos.p22)/3)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2,1) as ct3'),
-                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11 + avaliacaos.p12)/3 + (avaliacaos.mac2 + avaliacaos.p21 + avaliacaos.p22)/3)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2,1) as mtc'),
+                                DB::raw('round((((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0) + IFNULL(avaliacaos.p12,0))/3 + (IFNULL(avaliacaos.mac2,0) + IFNULL(avaliacaos.p21,0) + IFNULL(avaliacaos.p22,0))/3)/2 + (IFNULL(avaliacaos.mac3,0) + IFNULL(avaliacaos.p31,0))/2)/2,1) as mtc'),
                                 DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11 + avaliacaos.p12)/3 + (avaliacaos.mac2 + avaliacaos.p21 + avaliacaos.p22)/3)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2 * 0.6,1) as sessenta'),
                                   'avaliacaos.p32',
                                 DB::raw('round(avaliacaos.p32 * 0.4,1) as quarenta' ),
@@ -1486,24 +1501,24 @@ class Turma extends Model
                                 'avaliacaos.fnj1',
                                 'avaliacaos.mac1',
                                 'avaliacaos.p11',                                
-                                DB::raw('round((avaliacaos.mac1 + avaliacaos.p11)/2,1) as ct1'),
+                                DB::raw('round((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0))/2,1) as ct1'),
                                 'avaliacaos.fnj2',
                                 'avaliacaos.mac2',
                                 'avaliacaos.p21',                                
-                                DB::raw('round((avaliacaos.mac2 + avaliacaos.p21)/2,1) as cf2'),
-                                DB::raw('round((avaliacaos.mac1 + avaliacaos.p11)/2,1) as ct1copy'),
-                                  DB::raw('round(((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2,1) as ct2'),
+                                DB::raw('round((IFNULL(avaliacaos.mac2,0) + IFNULL(avaliacaos.p21,0))/2,1) as cf2'),
+                                DB::raw('round((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0))/2,1) as ct1copy'),
+                                  DB::raw('round(((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0))/2 + (IFNULL(avaliacaos.mac2,0) + IFNULL(avaliacaos.p21,0))/2)/2,1) as ct2'),
                                 'avaliacaos.fnj3',                                
                                 'avaliacaos.mac3',
                                 'avaliacaos.p31',                                
-                                DB::raw('round((avaliacaos.mac3 + avaliacaos.p31)/2,1) as cf3'),
-                                DB::raw('round(((avaliacaos.mac1 + avaliacaos.p11 + avaliacaos.p12)/3 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2,1) as ct2copy'),
-                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2,1) as ct3'),
+                                DB::raw('round((IFNULL(avaliacaos.mac3,0) + IFNULL(avaliacaos.p31,0))/2,1) as cf3'),
+                                DB::raw('round(((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0) + IFNULL(avaliacaos.p12,0))/3 + (IFNULL(avaliacaos.mac2,0) + IFNULL(avaliacaos.p21,0))/2)/2,1) as ct2copy'),
+                                DB::raw('round((((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0))/2 + (IFNULL(avaliacaos.mac2,0) + IFNULL(avaliacaos.p21,0))/2)/2 + (IFNULL(avaliacaos.mac3,0) + IFNULL(avaliacaos.p31,0))/2)/2,1) as ct3'),
                                 DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2,1) as mtc'),
                                 DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2 * 0.6,1) as sessenta'),
                                   'avaliacaos.p32',
                                 DB::raw('round(avaliacaos.p32 * 0.4,1) as quarenta' ),
-                                DB::raw('round((((avaliacaos.mac1 + avaliacaos.p11)/2 + (avaliacaos.mac2 + avaliacaos.p21)/2)/2 + (avaliacaos.mac3 + avaliacaos.p31)/2)/2 * 0.6 + avaliacaos.p32 * 0.4,1) as notafinal'),
+                                DB::raw('round((((IFNULL(avaliacaos.mac1,0) + IFNULL(avaliacaos.p11,0))/2 + (IFNULL(avaliacaos.mac2,0) + IFNULL(avaliacaos.p21,0))/2)/2 + (IFNULL(avaliacaos.mac3,0) + IFNULL(avaliacaos.p31,0))/2)/2 * 0.6 + IFNULL(avaliacaos.p32,0) * 0.4,1) as notafinal'),
                                   'aluno_turma.status',
                                   'avaliacaos.p22 as ca10',
                                   'avaliacaos.p22 as ca11',
@@ -1531,11 +1546,11 @@ class Turma extends Model
                        ->join('modulos','modulos.id','=','turmas.modulo_id')
                        ->join('cursos','cursos.id','=','modulos.curso_id')
                        ->join('classes','classes.id','=','modulos.classe_id')
-                       ->leftjoin('Salas','salas.id','=','turmas.sala_id')                       
+                       ->leftjoin('salas','salas.id','=','turmas.sala_id')                       
                        ->select('turmas.id','turmas.nome','cursos.nome as curso',
                         'classes.nome as classe','salas.nome as sala','turmas.ano_lectivo',
                         'users.name as usuario')
-                       ->orderBy('turmas.ano_lectivo','desc')                       
+                       ->orderBy('turmas.ano_lectivo','turmas.nome','cursos.nome','classes.nome','asc')                       
                        ->paginate($paginate);
                        
               
@@ -1551,8 +1566,8 @@ class Turma extends Model
                        ->join('modulos','modulos.id','=','turmas.modulo_id')
                        ->join('cursos','cursos.id','=','modulos.curso_id')
                        ->join('classes','classes.id','=','modulos.classe_id') 
-                       ->join('Salas','salas.id','=','turmas.sala_id')
-                       ->select('turmas.id','turmas.nome','cursos.nome as curso','classes.nome as classe','Salas.nome as sala','turmas.ano_lectivo','users.name as usuario')
+                       ->join('salas','salas.id','=','turmas.sala_id')
+                       ->select('turmas.id','turmas.nome','cursos.nome as curso','classes.nome as classe','salas.nome as sala','turmas.ano_lectivo','users.name as usuario')
                        ->orderBy('turmas.nome','desc')                      
                        ->where('disciplina_turma.professor_id','=',$professor->id)
                        ->where('turmas.ano_lectivo','=',$epoca->ano_lectivo) 
@@ -1736,9 +1751,9 @@ class Turma extends Model
 
     }
 
-    public function buscar_turma_equivalente_a_classe($classe){   
-        $turma_ant = $this->buscar_nome_da_turma_equivalente_a_classe($classe);        
-        $turma_ant = Turma::where('nome',$turma_ant)->get()->where('ano_lectivo','<',$this->ano_lectivo)->last();
+    public function buscar_turma_equivalente_a_classe($classe,$ano_lectivo){   
+        $turma_ant = $this->buscar_nome_da_turma_equivalente_a_classe($classe);              
+        $turma_ant = Turma::where('nome',$turma_ant)->get()->where('ano_lectivo',$ano_lectivo)->last();
 
         return $turma_ant;
 

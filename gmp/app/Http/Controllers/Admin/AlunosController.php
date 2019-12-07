@@ -751,7 +751,7 @@ class AlunosController extends Controller
 
 
    function convert_declaracao_com_notas_html($aluno_id){
-
+       set_time_limit(2*60);
        $user = auth()->user();       
        $aluno = Aluno::find($aluno_id);
        $aluno_turmas = $aluno->turmas()->get()->sortBy('ano_lectivo');
@@ -803,7 +803,10 @@ class AlunosController extends Controller
        $disciplinas_sociocultural = $disciplinas->where('categoria',$categorias[0]); 
        $disciplinas_cientifica = $disciplinas->where('categoria',$categorias[1]); 
        $disciplinas_pratica = $disciplinas->where('categoria',$categorias[2]);       
-       $listaModelo = collect([]);        
+       $listaModelo = collect([]); 
+       // dd($aluno->nome);  
+       $breaker ="=";
+       $breaker_max = 85;    
        
        foreach($categorias as $categoria){
                $avaliacaoCat = collect([]);
@@ -932,10 +935,16 @@ class AlunosController extends Controller
       #mytable>th{
         text-align:center;
       }
-      th{
+      #mytable.th{
         text-align:center;
       }
-      th,td{
+      #mytable th,#mytable td{
+        border:1px solid;
+        padding: 2px;
+        padding-left: 1px;
+        margin:-300px;        
+      }
+      thx,tdx{
         border:1px solid;
         padding: 2px;
         padding-left: 1px;
@@ -943,7 +952,7 @@ class AlunosController extends Controller
       }
       </style>
       </head>
-      <body onload='atribueCor()'>
+      <body onload='console.log('Hello')'>
           <div tamanho='12'>
            <div id='cabecalho' align='center' style='font-size: 12px;font-weight: bold;class='table-responsive'>
 
@@ -956,24 +965,51 @@ class AlunosController extends Controller
             </div>
 
             <div id='dec_bio_info'>    
-              
-                <p style='text-align:justify'>============================= 
-                <span style='color:red;text-transform:uppercase;font-weight:bold;'>$curso->director_instituto_mae</span>, 
-                DIRECTORA DO INSTITUTO POLITÉCNICO DE<br/> CABINDA. 
-                =============================================================================<br/>
-            =====Declara, em cumprimento do despacho exarado no requerimento 
-            que fica arquivado na Secretaria deste Instituto que, 
-            <span style='color:red;font-weight:bold;'>$aluno->nome</span>.
-            ======================================================<br/> natural de
-             <span style='font-weight:bold;'>$aluno->naturalidade</span>, nascido(a)  
-             aos <span style='font-weight:bold;'>$aluno->data_de_nascimento</span> 
-             filho(a) de <span style='font-weight:bold;'>$aluno->pai</span> e de 
-             <span style='font-weight:bold;'>$aluno->mae</span>, portador(a) do Bilhete de Identidade 
-             nº <span style='font-weight:bold;'>$aluno->doc_numero</span>, passado pelo 
-             <span style='font-weight:bold;'>$aluno->doc_local_emissao</span> aos 
-             <span style='font-weight:bold;'>$aluno->doc_data_emissao</span>, 
-             frequentou com aproveitamento, a <span style='color:red;font-weight:bold;'>$classes</span> classes, curso médio de <span style='color:red;font-weight:bold;'>$curso->nome</span>, no ano lectivo <span style='color:red;font-weight:bold;'>$anos</span> sob número de processo 
-             <span style='font-weight:bold;'>$aluno->idmatricula</span> turma – <span style='font-weight:bold;'>$aluno_ultima_turma_nome</span>, nº <span style='font-weight:bold;'>$aluno_ultimo_numero</span>,  turno <span style='font-weight:bold;'>$aluno_ultima_turma->periodo</span> tendo obtido as seguintes classificações Anuais:</p>                
+            <table>
+              <tr>
+                <td>
+                 <p style='text-align:justify;'>
+                  ===
+                   <span style='color:red;text-transform:uppercase;font-weight:bold;'>$curso->director_instituto_mae</span>,                   
+                  DIRECTOR(A) DO <span style='color:black;text-transform:uppercase;'>$curso->nome_instituto_mae.</span>";
+                    $wordslength = $breaker_max-14-8-strlen($curso->director_instituto_mae)-strlen($curso->nome_instituto_mae);          
+                    $x = 0;
+                  for ($i = $wordslength; $i > 0; $i--) {
+                      $output .= $breaker;                      
+                  }
+                  if(strlen($curso->director_instituto_mae) >= 26){
+                    $wordslength = $breaker_max + $breaker_max-strlen($curso->nome_instituto_mae)+8-strlen($curso->director_instituto_mae)-strlen($curso->nome_instituto_mae);          
+
+                  for ($i = $wordslength; $i > 0; $i--) {
+                      $output .= $breaker;
+                  }
+
+                  }
+                   $output .="
+                    ======== Declara, em cumprimento do despacho exarado no requerimento 
+                    que fica arquivado na Secretaria deste Instituto que,<span style='color:red;font-weight:bold;'>$aluno->nome</span>.
+                    ";
+                    $wordslength = $breaker_max-8-strlen($aluno->nome);                    
+
+                  for ($i = $wordslength; $i > 0; $i--) {
+                      $output .= $breaker;
+                  }
+                  $output .="                  
+                     natural de <span style='font-weight:bold;'>$aluno->naturalidade</span>, nascido(a)  
+                     aos <span style='font-weight:bold;'>$aluno->data_de_nascimento</span> 
+                     filho(a) de <span style='font-weight:bold;'>$aluno->pai</span> e de 
+                     <span style='font-weight:bold;'>$aluno->mae</span>, portador(a) do Bilhete de Identidade 
+                     nº <span style='font-weight:bold;'>$aluno->doc_numero</span>, passado pelo 
+                     <span style='font-weight:bold;'>$aluno->doc_local_emissao</span> aos 
+                     <span style='font-weight:bold;'>$aluno->doc_data_emissao</span>, 
+                     frequentou com aproveitamento, a <span style='color:red;font-weight:bold;'>$classes</span> classes, curso médio de <span style='color:red;font-weight:bold;'>$curso->nome</span>, no ano lectivo <span style='color:red;font-weight:bold;'>$anos</span> sob número de processo 
+                     <span style='font-weight:bold;'>$aluno->idmatricula</span> turma – <span style='font-weight:bold;'>$aluno_ultima_turma_nome</span>, nº <span style='font-weight:bold;'>$aluno_ultimo_numero</span>,  turno <span style='font-weight:bold;'>$aluno_ultima_turma->periodo</span> tendo obtido as seguintes classificações Anuais:</p>
+                
+                  </p>
+                </td>
+              </tr>
+            </table>
+                          
             </div>
             <div id='tabela_area'>
               <table id='mytable' class='table table-bordered table-xs table-condensed' style='font-size:12px;padding:15px;'>
@@ -1047,6 +1083,13 @@ class AlunosController extends Controller
       </div>    
     </body>
 </html";
+
+ $output .= "
+      <script>
+        alert('Hello');
+      <script>
+
+ ";
 
       return $output;
        

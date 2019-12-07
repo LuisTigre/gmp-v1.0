@@ -14,15 +14,15 @@ class Atividade extends Model
 
    public function user()
    {
-    return $this->belongsTo('App\user');
+    return $this->belongsTo('App\User');
    }
    public function epoca()
    {
-    return $this->belongsTo('App\epoca');
+    return $this->belongsTo('App\Epoca');
    }
    public function grupo()
    {
-   	return $this->belongsTo('App\atividadeGrupo');
+   	return $this->belongsTo('App\AtividadeGrupo');
    }
    public static function listaModelo($paginate)
    {

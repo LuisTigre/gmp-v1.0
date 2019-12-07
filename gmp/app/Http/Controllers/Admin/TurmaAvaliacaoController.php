@@ -19,6 +19,8 @@ use App\Epoca;
 use App\Curso;
 use App\Area;
 use App\Instituicao;
+use App\Events\AvaliacaoChanged;
+
 
 
 class TurmaAvaliacaoController extends Controller
@@ -141,6 +143,7 @@ class TurmaAvaliacaoController extends Controller
                     $avaliacao = Avaliacao::create($data);
                     $avaliacao->turma()->associate($turma);
                     $avaliacao->save();
+                    event(new AvaliacaoChanged($professor));
                   return redirect()->back();    
                 }
            
@@ -237,6 +240,11 @@ class TurmaAvaliacaoController extends Controller
                 
 
                 // $turma->attach($user);
+                $professor = $avaliacao->professor;
+                // ProcessPodcast::dispatch($podcast);
+                
+                event(new AvaliacaoChanged($professor));
+                
             
        
             return redirect()->back();

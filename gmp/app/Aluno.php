@@ -16,21 +16,21 @@ class Aluno extends Model
 
    public function user()
    {
-   	return $this->belongsTo('App\user');
+   	return $this->belongsTo('App\User');
    }
    public function turmas()
    {
-    return $this->belongsToMany('App\turma')->withPivot('numero','cargo','repetente','provenienca','status');
+    return $this->belongsToMany('App\Turma')->withPivot('numero','cargo','repetente','provenienca','status');
    }
 
    public function avaliacaos()
    {
-    return $this->hasMany('App\avaliacao');
+    return $this->hasMany('App\Avaliacao');
    }
 
    public function disciplinas()
    {
-    return $this->belongsToMany('App\disciplina')->withPivot('turma_id','repetente');
+    return $this->belongsToMany('App\Disciplina')->withPivot('turma_id','repetente');
    }
    
    public static function listaAlunos($paginate)
@@ -161,21 +161,20 @@ class Aluno extends Model
             $modulo->id)->last();
           return $turma_anterior;
    }
-   public function buscarTurmaDaClasse($turma_actual,$classe)
+   public function buscarTurmaDaClasse($turma_actual,$classe,$ano_lectivo)
    {
           
           $modulo = $turma_actual->modulo;
           $curso = $modulo->curso;          
-          $modulo_anterior = Modulo::all()->where('nome',$curso->acronimo . ' ' . $classe)->first();          
+          $modulo_anterior = Modulo::where('nome',$curso->acronimo . ' ' . $classe)->first();
           $turmas = $this->turmas()->get();          
-          $turma_anterior = $turmas->where('ano_lectivo','<',$turma_actual->ano_lectivo)->where('modulo_id',
+          $turma_anterior = $turmas->where('ano_lectivo',$ano_lectivo)->where('modulo_id',
             $modulo_anterior->id)->last();
           return $turma_anterior;
    }
    public function buscarTurmaActualDaClasse($turma_actual)
    {         
-          $modulo = $turma_actual->modulo;
-          $curso = $modulo->curso;          
+          $modulo = $turma_actual->modulo;                    
           $modulo_anterior = $modulo->moduloAnterior(); 
           $turmas = $this->turmas()->get();                  
           // if($this->id == 445){

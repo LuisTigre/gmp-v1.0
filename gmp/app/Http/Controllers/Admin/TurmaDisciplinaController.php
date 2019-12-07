@@ -219,6 +219,15 @@ class TurmaDisciplinaController extends Controller
         return redirect()->back();
     }
 
+    // public function estatistica($epoca_id,$turma_id,$disciplina_id){
+    //   $disciplina = Disciplina::find($disciplina_id);
+    //   $turma = Turma::find($turma_id);
+    //   $professor = 
+    //   Disciplina::find($disciplina_id)->estatistica($turma_id);
+
+    // }
+
+
     public function estatistica($epoca_id,$turma_id,$disciplina_id)
     {
       set_time_limit(1000);
@@ -229,13 +238,14 @@ class TurmaDisciplinaController extends Controller
       $pdf->render();
       return $pdf->stream('dompdf_out.pdf',array('Attachment' => false));
     }
+
     function estatistica_html($epoca_id,$turma_id,$disciplina_id){
       $user = auth()->user();
        $turma = Turma::find($turma_id);  
        $ano_lectivo = $turma->ano_lectivo;     
        $professor = $turma->professores()->where('disciplina_id',$disciplina_id)->first();
-      
-       $dados = $professor->estatistica($epoca_id); 
+       $dados = $professor->estatistica($epoca_id);
+       $apreciacao = $dados['result']; 
        // dd($dados);             
        $turmas = $professor->turmas()->where('ano_lectivo',$ano_lectivo)->get();
        $instituicao = Instituicao::all()->first(); 
@@ -285,7 +295,7 @@ class TurmaDisciplinaController extends Controller
           margin-top:-50px;         
         }
         #cabecalho p{
-          margin-bottom:-12px;
+          margin-bottom:-10px;
        }       
        
        table{
@@ -309,7 +319,8 @@ class TurmaDisciplinaController extends Controller
         position:relative;
         font-size:10px;
         font-weight:bold;
-        top:4%;
+        top:2%;
+        width:50%;
       }
       #mytable>th{
         text-align:center;
@@ -334,7 +345,7 @@ class TurmaDisciplinaController extends Controller
     <table id='mytable'>
     <thead border:1px solid;>
     <tr style='font-weight: bold;'>
-        <th class='centro' scope='col' rowspan='2' ></th>";
+        <th class='centro' scope='col' style='width:18%;' rowspan='2' ></th>";
             foreach($turmas as $key => $turma){
                 $output .="
                 <th scope='col' class='centro'>
@@ -342,7 +353,7 @@ class TurmaDisciplinaController extends Controller
                 </th>";
             }
     $output .="
-        <th style='width:0.2%' scope='col' rowspan='2' class='centro'><p class='otexto' style='font-size: 9px;margin:0px -10px;text-transform:uppercase;'>TOTAL</p></th>      
+        <th style='width:4%' scope='col' rowspan='2' class='centro'><p class='otexto' style='font-size: 9px;margin:0px -10px;text-transform:uppercase;'>TOTAL</p></th>      
     </tr>
     <tr>";       
     foreach($turmas as $key => $turma){
@@ -380,37 +391,14 @@ class TurmaDisciplinaController extends Controller
   $output .="</tbody>
 </table>
 </div>
-<div>
-        <div id='tabela_area2'>    
-            <table>
-                <thead>
-                    <tr style='padding:2px;font-weight:bold;'>
-                        <th><span style='font-size: 9px;margin-left:5px;'>CURSO</span></th></th>
-                        <th><span style='font-size: 9px;margin-left:5px;'>ACRÓNIMO</span></th></th>
-                        <th>
-                          <span style='font-size: 9px;margin-left:5px;'>COORDENADOR</span>
-                        </th>                        
-                    </tr>
-                </thead>
-                <tbody>";
-                foreach ($dados['data2'] as $dado2) {
-                   $output.="<tr style='text-transform:uppercase;'>"; 
-                   foreach ($dado2 as $value) {
-                       $output .="                 
-                        <td><span style='font-size: 9px;margin-left:5px;'>$value</span></th></td>";
-                   }
-                        $output.="</tr>";
-                }
-             $output.="   
-                </tbody>
-            </table>
-        </div>
-
-        
-      <div id='professor_area'>
+                
+    <div id='professor_area'>
        <p style='text-transform:uppercase;'>NOME DO PROFESSOR: $professor->nome</p>     
-       <p>COORDENADOR DO TURNO:</p>     
-    </div>    
+       <p style='text-transform:uppercase;margin-top:-6px;'>APRECIACAO: $apreciacao</p>    
+    </div>
+    <div id='data_area' style='float:right;margin-top:-35px;'background:yellow;'>
+       <p style=''>Cabinda, ".date('d'). " de ".date('M') . " de ".date('Y')."</p>    
+    </div>     
     </body>
    </html";
    

@@ -15,12 +15,12 @@ class Classe extends Model{
 
    public function user()
    {
-   	return $this->belongsTo('App\user');
+   	return $this->belongsTo('App\User');
    }
 
    public function modulos()
    {
-    return $this->hasMany('App\modulo');
+    return $this->hasMany('App\Modulo');
    }
    
    public static function listaModelo($paginate)

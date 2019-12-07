@@ -22,7 +22,7 @@ class TurmasController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsfe
      */
     public function index()
     {

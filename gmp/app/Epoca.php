@@ -14,11 +14,11 @@ class Epoca extends Model
 
    public function user()
    {
-    return $this->belongsTo('App\user');
+    return $this->belongsTo('App\User');
    }
    public function atividades()
    {
-   	return $this->belongsTo('App\atividade');
+   	return $this->belongsTo('App\Atividade');
    }
    public static function listaModelo($paginate)
    {

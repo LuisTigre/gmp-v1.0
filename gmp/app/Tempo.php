@@ -14,12 +14,12 @@ class Tempo extends Model
 
    public function user()
    {
-    return $this->belongsTo('App\user');
+    return $this->belongsTo('App\User');
    }
    
    public function aulas()
    {
-    return $this->hasMany('App\aula');
+    return $this->hasMany('App\Aula');
    }
    public static function listaModelo($paginate)
    {

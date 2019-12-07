@@ -17,25 +17,25 @@ class Modulo extends Model
 
    public function user()
    {
-   	return $this->belongsTo('App\user');
+   	return $this->belongsTo('App\User');
    }
 
    public function curso()
    {
-    return $this->belongsTo('App\curso');
+    return $this->belongsTo('App\Curso');
    }
    public function classe()
    {
-    return $this->belongsTo('App\classe');
+    return $this->belongsTo('App\Classe');
    }
    public function turmas()
    {
-    return $this->hasMany('App\turma');
+    return $this->hasMany('App\Turma');
    }
 
    public function disciplinas()
    {
-    return $this->belongsToMany('App\disciplina')->withPivot('carga','terminal','curricular');
+    return $this->belongsToMany('App\Disciplina')->withPivot('carga','terminal','curricular');
    }
 
    public static function listaModelo($paginate)

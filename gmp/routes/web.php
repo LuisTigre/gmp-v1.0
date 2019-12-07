@@ -50,50 +50,53 @@ Route::get('/pdf', function(){
 	return $pdf->stream();
 });
 
-Route::get('/admin/turmas/{id}/horario', 'admin\turmasController@horario')->name('turmas.horario')->middleware('can:professor');
-Route::get('/admin/turmas/{id}/horarioPDF', 'admin\turmasController@horarioPDF')->name('turmas.horarioPDF')->middleware('can:professor');
+Route::get('/admin/turmas/{id}/horario', 'Admin\TurmasController@horario')->name('turmas.horario')->middleware('can:professor');
+Route::get('/admin/turmas/{id}/horarioPDF', 'Admin\TurmasController@horarioPDF')->name('turmas.horarioPDF')->middleware('can:professor');
 
-Route::get('/admin/turmas/{id}/pauta', 'admin\turmaPautaController@pdf')->name('turmas.pauta')->middleware('can:professor');
+Route::get('/admin/turmas/{id}/pauta', 'Admin\TurmaPautaController@pdf')->name('turmas.pauta')->middleware('can:professor');
 
-Route::get('/admin/alunos/fileUpload', 'admin\alunosController@fileUpload')->name('alunos.upload')->middleware('can:professor');
+Route::get('/admin/alunos/fileUpload', 'Admin\AlunosController@fileUpload')->name('alunos.upload')->middleware('can:professor');
 
-Route::get('/admin/professors/fileUpload', 'admin\professoresController@fileUpload')->name('professors.upload')->middleware('can:eAdmin');
+Route::get('/admin/professors/fileUpload', 'Admin\ProfessoresController@fileUpload')->name('professors.upload')->middleware('can:eAdmin');
 
-Route::get('/admin/disciplinas/fileUpload', 'admin\disciplinasController@fileUpload')->name('disciplinas.upload')->middleware('can:eAdmin');
+Route::get('/admin/disciplinas/fileUpload', 'Admin\DisciplinasController@fileUpload')->name('disciplinas.upload')->middleware('can:eAdmin');
 
-Route::get('/admin/turmas/{turma_id}/disciplinas/{disc_id}/Upload', 'admin\TurmaAvaliacaoController@fileUpload')->name('avaliacoes.upload')->middleware('can:professor');
+Route::get('/admin/turmas/{turma_id}/disciplinas/{disc_id}/Upload', 'Admin\TurmaAvaliacaoController@fileUpload')->name('avaliacoes.upload')->middleware('can:professor');
 
-Route::get('/admin/{epoca_id}/turmas/{id}/disciplinas/{disciplina_id}/estatistica', 'admin\turmadisciplinaController@estatistica')->name('professor.estatistica')->middleware('can:professor');
+Route::get('/admin/{epoca_id}/turmas/{id}/disciplinas/{disciplina_id}/estatistica', 'Admin\TurmaDisciplinaController@estatistica')->name('professor.estatistica')->middleware('can:professor');
+
+Route::get('/admin/professores/{id}/estatistica', 'Admin\ProfessoresController@estatistica')->name('professor.estatistica')->middleware('can:professor');
+
 
 
 // Route::post('fileUpload',[
 // 	'as' => 'image.add',
-// 	'uses' => 'admin\alunosController@fileUpload' 
+// 	'uses' => 'Admin\AlunosController@fileUpload' 
 // ]);
-Route::get('/exportAlunos','admin\alunosController@export');
-Route::get('/exportInvoices','admin\usuariosController@export');
+Route::get('/exportAlunos','Admin\AlunosController@export');
+Route::get('/exportInvoices','Admin\usuariosController@export');
 
-Route::get('admin/alunos/importAlunos','admin\alunosController@import')->name('alunos.import');
+Route::get('admin/alunos/importAlunos','Admin\AlunosController@import')->name('alunos.import');
 	
 
-Route::get('/dynamic_pdf/pdf/{id}', 'admin\turmaPautaController@pdf',['parameters'=>['index'=>'filter']]);
+Route::get('/dynamic_pdf/pdf/{id}', 'Admin\TurmaPautaController@pdf',['parameters'=>['index'=>'filter']]);
 
-Route::get('admin/turmas/{id}/pautafinal', 'admin\turmaPautaController@pautafinalpdf',['parameters'=>['index'=>'filter']]);
-Route::get('admin/turmas/{id}/pautafinalexcel', 'admin\turmaPautaController@pautafinalexcel',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/pautafinal', 'Admin\TurmaPautaController@pautafinalpdf',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/pautafinalexcel', 'Admin\TurmaPautaController@pautafinalexcel',['parameters'=>['index'=>'filter']]);
 
-Route::get('admin/turmas/{id}/ficha_apr', 'admin\turmaPautaController@ficha_de_aproveitamento',['parameters'=>['index'=>'filter']]);
-Route::get('admin/alunos/{id}/bolentim', 'admin\alunosController@bolentim',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/ficha_apr', 'Admin\TurmaPautaController@ficha_de_aproveitamento',['parameters'=>['index'=>'filter']]);
+Route::get('admin/alunos/{id}/bolentim', 'Admin\AlunosController@bolentim',['parameters'=>['index'=>'filter']]);
 
-Route::get('admin/alunos/{id}/dec_com_notas', 'admin\alunosController@dec_com_notas',['parameters'=>['index'=>'filter']]);
+Route::get('admin/alunos/{id}/dec_com_notas', 'Admin\AlunosController@dec_com_notas',['parameters'=>['index'=>'filter']]);
 
-Route::get('/dynamic_pdf/minipauta/{turma}/{disc}', 'admin\turmaavaliacaoController@pdf',['parameters'=>['index'=>'filter']]);
+Route::get('/dynamic_pdf/minipauta/{turma}/{disc}', 'Admin\TurmaAvaliacaoController@pdf',['parameters'=>['index'=>'filter']]);
 
-Route::get('/admin/aula/{id}/{tempo_id}', 'admin\aulasController@atribuirTempo',['parameters'=>['index'=>'filter']]);
-Route::get('/admin/aulas/{id}/update_tempo_id', 'admin\aulasController@update_tempo_id',['parameters'=>['index'=>'filter']]);
-Route::get('/admin/cursos/{id}/disciplinas', 'admin\cursosController@disciplinas',['parameters'=>['index'=>'filter']]);
-Route::get('/admin/professores/{id}/turmas', 'admin\professoresController@turmas',['parameters'=>['index'=>'filter']])->middleware('can:professor');
-Route::get('/admin/turmas/{id}/alunos/actualizar', 'admin\turmaAlunoController@actualizar_num',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
-Route::get('/admin/apagar/professores/{id}/turmas/{turma_id}', 'admin\ProfessoresController@remover_turma',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+Route::get('/admin/aula/{id}/{tempo_id}', 'Admin\AulasController@atribuirTempo',['parameters'=>['index'=>'filter']]);
+Route::get('/admin/aulas/{id}/update_tempo_id', 'Admin\AulasController@update_tempo_id',['parameters'=>['index'=>'filter']]);
+Route::get('/admin/cursos/{id}/disciplinas', 'Admin\CursosController@disciplinas',['parameters'=>['index'=>'filter']]);
+Route::get('/admin/professores/{id}/turmas', 'Admin\ProfessoresController@turmas',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+Route::get('/admin/turmas/{id}/alunos/actualizar', 'Admin\TurmaAlunoController@actualizar_num',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
+Route::get('/admin/apagar/professores/{id}/turmas/{turma_id}', 'Admin\ProfessoresController@remover_turma',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 
 
 
@@ -105,40 +108,40 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
 	Route::resource('devedores','DevedoresController')->middleware('can:professor');
 	Route::resource('adm','AdminController')->middleware('can:eAdmin');
 	// Route::resource('horarios','HorariosController')->middleware('can:eAdmin');
-	Route::resource('cursos','cursosController')->middleware('can:eAdmin');
-	Route::resource('areas','areasController')->middleware('can:eAdmin');
-	Route::resource('disciplinas','disciplinasController')->middleware('can:eAdmin');
-	Route::resource('recursos','recursosController')->middleware('can:eAdmin');
-	Route::resource('turmas','turmasController')->middleware('can:professor');
-	Route::resource('classes','classesController')->middleware('can:eAdmin');
-	Route::resource('alunos','alunosController')->middleware('can:eAdmin');
-	Route::resource('instituicaos','instituicaosController')->middleware('can:eAdmin');
-	Route::resource('alunos.upload','alunosController')->middleware('can:eAdmin');
-	Route::resource('professores','professoresController')->middleware('can:professor');
-	Route::resource('modulos','modulosController')->middleware('can:eAdmin');
-	Route::resource('modulos.disciplinas','modulodisciplinaController',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
-	Route::resource('turmas.alunos','turmaalunoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
-	Route::resource('turmas.professors','turmaprofessorController',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
-	Route::resource('turmas.disciplinas.alunos','alunodisciplinaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
-	Route::resource('turmas.disciplinas','turmadisciplinaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	Route::resource('cursos','CursosController')->middleware('can:eAdmin');
+	Route::resource('areas','AreasController')->middleware('can:eAdmin');
+	Route::resource('disciplinas','DisciplinasController')->middleware('can:eAdmin');
+	Route::resource('recursos','RecursosController')->middleware('can:eAdmin');
+	Route::resource('turmas','TurmasController')->middleware('can:professor');
+	Route::resource('classes','ClassesController')->middleware('can:eAdmin');
+	Route::resource('alunos','AlunosController')->middleware('can:eAdmin');
+	Route::resource('instituicaos','InstituicaosController')->middleware('can:eAdmin');
+	Route::resource('alunos.upload','AlunosController')->middleware('can:eAdmin');
+	Route::resource('professores','ProfessoresController')->middleware('can:professor');
+	Route::resource('modulos','ModulosController')->middleware('can:eAdmin');
+	Route::resource('modulos.disciplinas','ModuloDisciplinaController',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
+	Route::resource('turmas.alunos','TurmaAlunoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	Route::resource('turmas.professors','TurmaProfessorController',['parameters'=>['index'=>'filter']])->middleware('can:eAdmin');
+	Route::resource('turmas.disciplinas.alunos','AlunoDisciplinaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	Route::resource('turmas.disciplinas','TurmaDisciplinaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 	Route::resource('turmas.aulas','AulasController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 	Route::resource('aulas','AulasController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
-	Route::resource('turmas.disciplinas.avaliacaos','turmaavaliacaoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	Route::resource('turmas.disciplinas.avaliacaos','TurmaAvaliacaoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 	// Route::resource('turmas.disciplinas.avaliacaosPDF','turmaavaliacaoPDFController',['parameters'=>['index'=>'filter']])->middleware('can:professor');	
-	Route::resource('avaliacaos','turmaavaliacaoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
-	Route::resource('turmas.pautaPDF','turmaPautaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	Route::resource('avaliacaos','TurmaAvaliacaoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	Route::resource('turmas.pautaPDF','TurmaPautaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 	
-	Route::resource('atividades','atividadesController')->middleware('can:eAdmin');
-	Route::resource('grupos','atividadesGruposController')->middleware('can:eAdmin');
-	Route::resource('epocas','epocasController')->middleware('can:eAdmin');	
-	Route::resource('salas','salasController')->middleware('can:eAdmin');	
+	Route::resource('atividades','AtividadesController')->middleware('can:eAdmin');
+	Route::resource('grupos','AtividadesGruposController')->middleware('can:eAdmin');
+	Route::resource('epocas','EpocasController')->middleware('can:eAdmin');	
+	Route::resource('salas','SalasController')->middleware('can:eAdmin');	
 });
 
 
       /*FUNCOES PARA  O AJAX*/
-Route::get('/admin/turmas/{id}/alunos_idx', 'admin\turmaalunoController@listaModelo')->name('turmas.alunos_idx')->middleware('can:professor');
+Route::get('/admin/turmas/{id}/alunos_idx', 'Admin\TurmaAlunoController@listaModelo')->name('turmas.alunos_idx')->middleware('can:professor');
 
-Route::get('/admin/turmas/{id}/alunos/{id2}/deleteMultiple', 'admin\turmaalunoController@deleteMultiple')->name('turmas.alunos_delete_multiple')->middleware('can:eAdmin');
+Route::get('/admin/turmas/{id}/alunos/{id2}/deleteMultiple', 'Admin\TurmaAlunoController@deleteMultiple')->name('turmas.alunos_delete_multiple')->middleware('can:eAdmin');
 
 
 

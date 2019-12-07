@@ -15,19 +15,19 @@ class Curso extends Model
 
    public function user()
    {
-   	return $this->belongsTo('App\user');
+   	return $this->belongsTo('App\User');
    }
    public function modulos()
    {
-    return $this->hasMany('App\modulo');
+    return $this->hasMany('App\Modulo');
    }
    public function professor()
    {
-    return $this->belongsTo('App\professor');
+    return $this->belongsTo('App\Professor');
    }
    public function area()
    {
-    return $this->belongsTo('App\area');
+    return $this->belongsTo('App\Area');
    }
 
    public static function listaModelo($paginate)

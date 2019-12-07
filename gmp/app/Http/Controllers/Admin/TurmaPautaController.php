@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 use App\Modulo;
 use App\Disciplina;
 use App\Classe;
-use App\curso;
+use App\Curso;
 use App\Professor;
 use App\Turma;
 use App\Aluno;
@@ -1385,7 +1386,7 @@ class TurmaPautaController extends Controller
 
 
 function ficha_de_aproveitamento($turma_id){
-      set_time_limit(1000);
+      set_time_limit(60*60);
       $turma = Turma::find($turma_id);
       $director_turma = $turma->professores()->where('director','s')->first();
       $pdf = \App::make('dompdf.wrapper');

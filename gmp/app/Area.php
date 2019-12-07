@@ -15,11 +15,11 @@ class Area extends Model
 
    public function user()
    {
-   	return $this->belongsTo('App\user');
+   	return $this->belongsTo('App\User');
    }   
    public function cursos()
    {
-    return $this->hasMany('App\curso');
+    return $this->hasMany('App\Curso');
    }
    public static function listaModelo($paginate)
    {

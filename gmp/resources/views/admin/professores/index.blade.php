@@ -15,7 +15,7 @@
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>
      @if($user->admin == 'S') 
       <tabela-lista
-      v-bind:titulos="['#','Nome','Telefone','E-mail']"
+      v-bind:titulos="['#','Nome','Telefone','E-mail','A.E.F.']"
       v-bind:itens="{{json_encode($listaModelo)}}"
       ordem="asc" ordemcol="1"
       criar="#criar" detalhe="/admin/professores/" editar="/admin/professores/" 

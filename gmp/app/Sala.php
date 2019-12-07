@@ -14,23 +14,23 @@ class Sala extends Model
 
    public function user()
    {
-    return $this->belongsTo('App\user');
+    return $this->belongsTo('App\User');
    }
    public function turmas()
    {
-   	return $this->hasMany('App\turma');
+   	return $this->hasMany('App\Turma');
    }
    public function professors()
    {
-    return $this->hasMany('App\professor');
+    return $this->hasMany('App\Professor');
    }   
    public function aulas()
    {
-    return $this->hasMany('App\aula');
+    return $this->hasMany('App\Aula');
    }
    public function tempos()
    {
-    return $this->hasMany('App\tempo');
+    return $this->hasMany('App\Tempo');
    }
    public static function listaModelo($paginate)
    {
