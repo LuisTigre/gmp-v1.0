@@ -35,11 +35,11 @@ class CacheEstatisticaDoProfessor implements ShouldQueue
 
        // if (!Cache::has($event->professor->id . '_percentagem_de_nao_avaliados')){          
                       
-          $estatistica = $event->professor->estatistica($epoca->id);        
+          $estatistica = $event->professor->estatistica($epoca->id);
           $nao_avaliados = $estatistica['data'][6]['total_NOTAS EM FALTA'];        
           
+          // \Artisan::call('cache:clear');  
           cache([$event->professor->id . '_percentagem_de_nao_avaliados' => $nao_avaliados], now()->addSeconds(60*60*5));
-            
              // dd(Cache::get(31 . '_percentagem_de_nao_avaliados'));
         // }
     }

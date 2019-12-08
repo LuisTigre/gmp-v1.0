@@ -11,7 +11,7 @@
       </div>
     @endif
 
-    <painel titulo=".    Mini-Pauta / {{$disciplina->nome}} - {{$disciplina->acronimo}} / {{$turma->nome}} ">
+    <painel titulo=".    Mini-Pauta - {{$turma->nome}} - {{$disciplina->acronimo}} -     {{$disciplina->nome}}">
       <migalhas v-bind:lista="{{$listaMigalhas}}"></migalhas>      
     <tabela-mini-pauta
      v-bind:titulos="{{json_encode($listaCabecalho2)}}"

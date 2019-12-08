@@ -75,7 +75,7 @@ class TurmaPautaController extends Controller
           'data' => $newdata
         ]);             
        
-       $listaCabecalho = $turma->listaDisciplinas($turma->id,100); 
+       $listaCabecalho = $turma->listaDisciplinas($turma->id,100,'N'); 
 
        $listadisciplinas = Disciplina::orderBy('nome')->get();       
        $listaProfessores = Professor::orderBy('nome')->get();       

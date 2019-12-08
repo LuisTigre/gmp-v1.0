@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Importar  mini pauta a partir de um arquivo Excel</div>
+                    <div class="panel-heading">Importar  mini pauta a partir de um arquivo Excel para {{$turma->nome}}  - {{$disciplina->acronimo}}</div>
 
                     <div class="panel-body">
                         <form class="form-horizontal" method="POST" action="{{route('avaliacaos.store') }}" enctype="multipart/form-data">
@@ -23,8 +23,8 @@
                                         @endif
                                 </div>
 
-                                <input type="hidden" name="turma" value="{{$turma}}">
-                                <input type="hidden" name="disciplina" value="{{$disciplina}}">
+                                <input type="hidden" name="turma" value="{{$turma->id}}">
+                                <input type="hidden" name="disciplina" value="{{$disciplina->id}}">
                             </div>
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-5">

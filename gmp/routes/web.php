@@ -15,6 +15,12 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::get('command', function () {
+	
+	/* php artisan migrate */
+    // \Artisan::call('migrate');
+    // dd("Done");
+// });
 
 Route::get('/', function (Request $req) {
 	// dd($req->busca);

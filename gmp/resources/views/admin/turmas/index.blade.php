@@ -41,7 +41,7 @@
       modal="sim"
       v-bind:buttons="[{'nome':'Alunos','url':'/admin/turmas/' ,'action':'alunos'},
       {'nome':'Disciplinas','url':'/admin/turmas/','action':'disciplinas'},
-      {'nome':'Pauta','url':'/admin/turmas/','action':'pauta'},
+      {'nome':'Pauta Trimestral','url':'/admin/turmas/','action':'pauta'},
       {'nome':'Horário','url':'/admin/turmas/','action':'horario'},
       {'nome':'Aulas','url':'/admin/turmas/','action':'aulas'}]"
       >

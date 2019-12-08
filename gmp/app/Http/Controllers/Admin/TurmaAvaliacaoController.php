@@ -137,6 +137,9 @@ class TurmaAvaliacaoController extends Controller
                 if(is_null($professor)){
                     $erro = "Erro: Nenhum professor associado a disciplina !!!";
                     return redirect()->back()->withErrors($erro)->withInput();
+                }else if($user->admin == 'N' && $user->email != $professor->email){
+                    $erro = "Erro: Nao tem permicao para fazer alteracoes !!!";
+                    return redirect()->back()->withErrors($erro)->withInput();
                 }else{             
                     $data['professor_id'] = $professor->id; 
                     // dd($data);                       
@@ -222,12 +225,15 @@ class TurmaAvaliacaoController extends Controller
             // if($validacao->fails()){
             //     return redirect()->back()->withErrors($validacao)->withInput();
             // }
-            
+               
                 $disciplina = Disciplina::find($avaliacao->disciplina_id);
                 $turma = Turma::find($avaliacao->turma_id);
                 $professor = $turma->professores()->where('disciplina_id',$disciplina->id)->first();
                 if(is_null($professor)){
                     $erro = "Erro: Nenhum professor associado a disciplina !!!";
+                    return redirect()->back()->withErrors($erro)->withInput();
+                }else if($user->admin == 'N' && $user->email != $professor->email){
+                    $erro = "Erro: Nao tem permicao para fazer alteracoes !!!";
                     return redirect()->back()->withErrors($erro)->withInput();
                 }else{
                     $avaliacao->user()->associate($user);
@@ -273,7 +279,9 @@ class TurmaAvaliacaoController extends Controller
         return redirect()->back();
     }
 
-    public function fileUpload($turma,$disciplina){        
+    public function fileUpload($turma_id,$disciplina_id){ 
+      $turma = Turma::find($turma_id);       
+      $disciplina = Disciplina::find($disciplina_id);       
         return view('admin.turmas.disciplinas.avaliacaos.upload',compact('turma','disciplina'));
    }
 

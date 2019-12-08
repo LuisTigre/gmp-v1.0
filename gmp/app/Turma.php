@@ -1251,7 +1251,7 @@ class Turma extends Model
                          ->orderBy('avaliacoes_view.disciplina_id','ASC')
                          ->groupBy('avaliacoes_view.id')->get();
 
-        }
+        }        
         
         return $listaModelo;
 
@@ -1594,9 +1594,13 @@ class Turma extends Model
     public static function listaDisciplinas($turma_id,$paginate)
    {
       $user = auth()->user();
-      $professor = Professor::where('email',$user->email)->first();
+      $professor = Professor::where('email',$user->email)->first(); 
+      if(!is_null($professor)){
+        $turma = $professor->turmas()->get()->where('id',$turma_id)->first();
 
-       if($user->admin == "S"){
+       }      
+
+       if($user->admin == "S" || (isset($turma) && !is_null($turma) && $turma->pivot->director == 'S')){
        
        $lista = DB::table('disciplina_turma')
                    ->join('users','users.id','=','disciplina_turma.user_id')

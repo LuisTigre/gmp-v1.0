@@ -33,7 +33,7 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
     //         'modulo'  => 'C1'
     //     ];
     // }
-    $professor_global;
+    
 
     public function model(array $row){
         // dd($row);
@@ -45,9 +45,13 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
             $this->importar_avaliacoes_da_disciplina_via_pauta_anual($row,$user);          
         }else if(isset($row['transferido'])){
             $this->importar_avaliacoes_via_ficha_de_aproveitamento($row,$user);
-        }else{            
-            $this->importar_avaliacoes_via_pauta_trimestral($row,$user);
-            event(new AvaliacaoChanged($professor_global));
+        }else{  
+            $avaliacao = $this->importar_avaliacoes_via_pauta_trimestral($row,$user);
+            if(!is_null($avaliacao)){
+                $professor = Professor::find($avaliacao->professor_id);                          
+                event(new AvaliacaoChanged($professor));              
+
+            }
         }           
    }
     
@@ -411,7 +415,6 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                 'p32' => $row['pg'],
                 'fnj3' => $row['faltas3']];
                 $avaliacao->update($data);                
-                $professor_global = $professor;
                 return $avaliacao;              
 
                 }else{
@@ -435,8 +438,7 @@ class AvaliacaosImport implements WithHeadingRow, ToModel
                 'p32' => $row['pg'],
                 'fnj3' => $row['faltas3']                        
                 ]);                 
-                 $avaliacao->save();
-                 $professor_global = $professor;                 
+                 $avaliacao->save();                 
                  return $avaliacao;
 
                 }            

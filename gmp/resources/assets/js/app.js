@@ -4,11 +4,27 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import Vue from 'vue'
+import Topo from './components/Topo.vue'
+import Painel from './components/Painel.vue'
+import Caixa from './components/Caixa.vue'
+import Pagina from './components/Pagina.vue'
+import TabelaLista from './components/TabelaLista.vue'
+import Migalhas from './components/Migalhas.vue'
+import Modal from './components/modal/Modal.vue'
+import ModalLink from './components/modal/ModalLink.vue'
+import Formulario from './components/Formulario.vue'
+import ArtigoCard from './components/ArtigoCard.vue'
+import GrupoLista from './components/GrupoLista.vue'
+import TabelaPauta from './components/TabelaPauta.vue'
+import TabelaMiniPauta from './components/TabelaMiniPauta.vue'
+import TabelaHorario from './components/TabelaHorario.vue'
+import ButtonLink from './components/ButtonLink.vue'
 
 require('./bootstrap');
 
 window.Vue = require('vue');
-import Vuex from 'Vuex';
+import Vuex from 'vuex';
 Vue.use(Vuex);
 
 /**
@@ -27,21 +43,23 @@ Vue.use(Vuex);
  	}
  });
 
-Vue.component('painel', require('./components/Painel.vue'));
-Vue.component('topo', require('./components/Topo.vue'));
-Vue.component('caixa', require('./components/Caixa.vue'));
-Vue.component('pagina', require('./components/Pagina.vue'));
-Vue.component('tabela-lista', require('./components/TabelaLista.vue'));
-Vue.component('migalhas', require('./components/migalhas.vue'));
-Vue.component('modal', require('./components/modal/Modal.vue'));
-Vue.component('modallink', require('./components/modal/ModalLink.vue'));
-Vue.component('formulario', require('./components/Formulario.vue'));
-Vue.component('artigocard', require('./components/artigocard.vue'));
-Vue.component('grupo-lista', require('./components/GrupoLista.vue'));
-Vue.component('tabela-pauta', require('./components/TabelaPauta.vue'));
-Vue.component('tabela-mini-pauta', require('./components/TabelaMiniPauta.vue'));
-Vue.component('tabela-horario', require('./components/TabelaHorario.vue'));
-Vue.component('buttonlink', require('./components/ButtonLink.vue'));
+window.Vue.component('topo', Topo)
+
+window.Vue.component('painel',Painel);
+// window.Vue.component('topo',Topo);
+window.Vue.component('caixa',Caixa);
+window.Vue.component('pagina',Pagina);
+window.Vue.component('tabela-lista',TabelaLista);
+window.Vue.component('migalhas',Migalhas);
+window.Vue.component('modal',Modal);
+window.Vue.component('modallink',ModalLink);
+window.Vue.component('formulario',Formulario);
+window.Vue.component('artigocard',ArtigoCard);
+window.Vue.component('grupo-lista',GrupoLista);
+window.Vue.component('tabela-pauta',TabelaPauta);
+window.Vue.component('tabela-mini-pauta',TabelaMiniPauta);
+window.Vue.component('tabela-horario',TabelaHorario);
+window.Vue.component('buttonlink',ButtonLink);
 
 const app = new Vue({
     el: '#app',

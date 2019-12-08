@@ -23,7 +23,7 @@ class AvaliacaoChanged
     public $professor;
 
     public function __construct(Professor $professor)
-    {        
+    {              
         $this->professor = $professor;
     }
 
