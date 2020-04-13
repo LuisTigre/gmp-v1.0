@@ -28,6 +28,10 @@ class Avaliacao extends Model
    {
     return $this->belongsTo('App\Professor');
    }
+    public function disciplina()
+   {
+    return $this->belongsTo('App\Disciplina');
+   }
    public static function listaModelo($paginate)
    {
     

@@ -110,7 +110,7 @@
           <input type="text" class="form-control" id="p1" name="p31" value="{{old('p31')}}">
         </div>
         <div class="col-xs-2">
-          <label for="p32">P2</label>
+          <label for="p32">PG</label>
           <input type="text" class="form-control" id="p32" name="p32" value="{{old('p32')}}">
         </div>
         <div class="col-xs-3">
@@ -205,10 +205,10 @@
           <input type="text" class="form-control" id="p1" name="p31" v-model=$store.state.item.p31>
         </div>
         <div class="col-xs-2">
-          <label for="p32">P2</label>
+          <label for="p32">PG</label>
           <input type="text" class="form-control" id="p32" name="p32" v-model=$store.state.item.p32>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-3">
           <label for="fnj3">Faltas</label>
           <input type="text" class="form-control" id="fnj3" placeholder="Injustificadas" name="fnj3" v-model=$store.state.item.fnj3>
         </div>

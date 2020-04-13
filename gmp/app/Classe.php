@@ -44,6 +44,18 @@ class Classe extends Model{
        }
        return $listaModelo;
    }
+
+
+   public static function getClasseNumer($classe_name){
+      $number = explode('', $classe_name);
+
+      if (isset($numer[1])) {
+        return $number[0];
+      }else{
+        return false;
+      }
+
+   }
    /*public static function $listaModeloSite($paginate,$busca = null)
    {
       if($busca){

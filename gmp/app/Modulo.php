@@ -77,7 +77,9 @@ class Modulo extends Model
                        ->paginate($paginate);
           
        return $lista;
-   } 
+   }
+
+    
    public  function moduloAnterior()
    {
     
@@ -102,6 +104,16 @@ class Modulo extends Model
           $modulo = Modulo::where('nome', $modulo_ant)->get()->first();         
           
        return $modulo;
+   }
+
+   public function disciplinas_terminadas(){
+        $modulo_anterior = $this->moduloAnterior();
+        if(!is_null($modulo_anterior)){
+          $disciplinas = $modulo_anterior->disciplinas()->get()->where('terminal',"S");
+          return $disciplinas;
+        }else{
+          return false;
+        }
    }
    
 

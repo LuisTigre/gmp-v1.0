@@ -22,7 +22,11 @@ class ClassesController extends Controller
         ["titulo"=>"Classes","url"=>""]
     ]);
        
+       // $listaModelo = Classe::listaModelo(5);
        $listaModelo = Classe::listaModelo(5);
+        // $item = json_encode("[0=>{'id':'1','nome':'catorze'},1=>{'id':'1','nome':'catorze'}]");
+        // $listaModelo = json_encode("{data:$item}");
+        // // dd($listaModelo);
 
        return view('admin.classes.index',compact('listaMigalhas','listaModelo','user'));
 

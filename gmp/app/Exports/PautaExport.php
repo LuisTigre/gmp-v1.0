@@ -5,7 +5,7 @@ use App\User;
 use App\Modulo;
 use App\Disciplina;
 use App\Classe;
-use App\curso;
+use App\Curso;
 use App\Professor;
 use App\Turma;
 use App\Aluno;

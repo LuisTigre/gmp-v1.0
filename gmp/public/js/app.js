@@ -3145,6 +3145,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var lista = this.itens.data;
+      console.log(this.itens.data);
       var ordem = this.ordemAux || "asc";
       var ordemcol = this.ordemcolAux || 0;
       ordem.toLowerCase();
@@ -37701,7 +37702,7 @@ var render = function() {
                   staticClass: "btn btn-default",
                   attrs: { type: "button", "data-dismiss": "modal" }
                 },
-                [_vm._v("Close")]
+                [_vm._v("Fechar")]
               )
             ],
             2

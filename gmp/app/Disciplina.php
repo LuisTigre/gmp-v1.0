@@ -53,6 +53,7 @@ class Disciplina extends Model
        return $listaModelo;
    }
 
+
    public function estatistica($turma_id)
    {
       $turma = Turma::find($turma_id);
@@ -149,6 +150,8 @@ class Disciplina extends Model
      
       $alunos = Turma::listaAlunos($turma->id,100);
       $alunos = $alunos->where('status','Activo');
+      $curso = $turma->modulo->curso;
+      $disciplinas_frequentadas_em_cada_classe  = Turma::disciplinas_frequentadas_em_cada_classe($curso,'agrupar');
 
       foreach ($alunos as $key => $aluno) {
           $aluno_objecto = Aluno::find($aluno->id);                
@@ -160,7 +163,7 @@ class Disciplina extends Model
           }else{
               $modulo = Modulo::find($turma->modulo_id);
               $classe = Classe::find($modulo->classe_id);
-              $avaliacaoAnual = Turma::avaliacoesDoAluno2($aluno->id,'S'); 
+              $avaliacaoAnual = Turma::avaliacoesDoAluno2($aluno->id,'S',$disciplinas_frequentadas_em_cada_classe); 
               $avaliacao = $avaliacaoAnual->where('disciplina_id',$this->id)->last();             
                /*SE O ALUNO NAO ESTIVER A REPETIR A DISCIPLINA*/
               if(isset($avaliacao['bloqueado_' . $classe->nome]) 

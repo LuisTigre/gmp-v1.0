@@ -59,7 +59,7 @@ Route::get('/pdf', function(){
 Route::get('/admin/turmas/{id}/horario', 'Admin\TurmasController@horario')->name('turmas.horario')->middleware('can:professor');
 Route::get('/admin/turmas/{id}/horarioPDF', 'Admin\TurmasController@horarioPDF')->name('turmas.horarioPDF')->middleware('can:professor');
 
-Route::get('/admin/turmas/{id}/pauta', 'Admin\TurmaPautaController@pdf')->name('turmas.pauta')->middleware('can:professor');
+Route::get('/admin/turmas/{id}/pauta', 'Admin\RelatoriosController@pautaTrimestral')->name('turmas.pauta')->middleware('can:professor');
 
 Route::get('/admin/alunos/fileUpload', 'Admin\AlunosController@fileUpload')->name('alunos.upload')->middleware('can:professor');
 
@@ -85,17 +85,18 @@ Route::get('/exportInvoices','Admin\usuariosController@export');
 Route::get('admin/alunos/importAlunos','Admin\AlunosController@import')->name('alunos.import');
 	
 
-Route::get('/dynamic_pdf/pdf/{id}', 'Admin\TurmaPautaController@pdf',['parameters'=>['index'=>'filter']]);
+Route::get('/dynamic_pdf/pdf/{id}', 'Admin\RelatoriosController@minipauta',['parameters'=>['index'=>'filter']]);
 
-Route::get('admin/turmas/{id}/pautafinal', 'Admin\TurmaPautaController@pautafinalpdf',['parameters'=>['index'=>'filter']]);
-Route::get('admin/turmas/{id}/pautafinalexcel', 'Admin\TurmaPautaController@pautafinalexcel',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/pautafinal', 'Admin\RelatoriosController@pautaAnual',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/pautafinalhtml', 'Admin\RelatoriosController@pautaAnualhtml',['parameters'=>['index'=>'filter']]);
 
-Route::get('admin/turmas/{id}/ficha_apr', 'Admin\TurmaPautaController@ficha_de_aproveitamento',['parameters'=>['index'=>'filter']]);
+Route::get('admin/turmas/{id}/ficha_apr', 'Admin\RelatoriosController@ficha_de_aproveitamento',['parameters'=>['index'=>'filter']]);
 Route::get('admin/alunos/{id}/bolentim', 'Admin\AlunosController@bolentim',['parameters'=>['index'=>'filter']]);
 
 Route::get('admin/alunos/{id}/dec_com_notas', 'Admin\AlunosController@dec_com_notas',['parameters'=>['index'=>'filter']]);
 
-Route::get('/dynamic_pdf/minipauta/{turma}/{disc}', 'Admin\TurmaAvaliacaoController@pdf',['parameters'=>['index'=>'filter']]);
+Route::get('/dynamic_pdf/minipauta/{turma}/{disc}', 'Admin\RelatoriosController@minipauta',['parameters'=>['index'=>'filter']]);
+Route::get('/pdf/minipauta/{turma}/{disc}', 'Admin\TurmaAvaliacaoController@myPdfMethod',['parameters'=>['index'=>'filter']]);
 
 Route::get('/admin/aula/{id}/{tempo_id}', 'Admin\AulasController@atribuirTempo',['parameters'=>['index'=>'filter']]);
 Route::get('/admin/aulas/{id}/update_tempo_id', 'Admin\AulasController@update_tempo_id',['parameters'=>['index'=>'filter']]);
@@ -135,7 +136,7 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
 	Route::resource('turmas.disciplinas.avaliacaos','TurmaAvaliacaoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
 	// Route::resource('turmas.disciplinas.avaliacaosPDF','turmaavaliacaoPDFController',['parameters'=>['index'=>'filter']])->middleware('can:professor');	
 	Route::resource('avaliacaos','TurmaAvaliacaoController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
-	Route::resource('turmas.pautaPDF','TurmaPautaController',['parameters'=>['index'=>'filter']])->middleware('can:professor');
+	
 	
 	Route::resource('atividades','AtividadesController')->middleware('can:eAdmin');
 	Route::resource('grupos','AtividadesGruposController')->middleware('can:eAdmin');

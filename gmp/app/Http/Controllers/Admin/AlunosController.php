@@ -246,9 +246,10 @@ class AlunosController extends Controller
        // $disciplina = Disciplina::find(1);       
        $modulo = $turma->modulo()->first();
        $curso = Curso::find($modulo->curso_id);
+       $disciplinas_frequentadas_em_cada_classe  = Turma::disciplinas_frequentadas_em_cada_classe($curso,'agrupar');
        $classe = Classe::find($modulo->classe_id);
        $epoca = Epoca::where('activo','S')->first();   
-       $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S');      
+       $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S',$disciplinas_frequentadas_em_cada_classe);      
        $aluno_turmas = $aluno->turmas()->get()->sortBy('ano_lectivo');
        $ultima_classe = $aluno_turmas->last()->modulo->classe;
 
@@ -761,9 +762,10 @@ class AlunosController extends Controller
        $instituicao = Instituicao::all()->first();
 
        $curso = Curso::find($modulo->curso_id);
+       $disciplinas_frequentadas_em_cada_classe = Turma::disciplinas_frequentadas_em_cada_classe($curso,'agrupar');
        $classe = Classe::find($modulo->classe_id);
        $epoca = Epoca::where('activo','S')->first();   
-       $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S');       
+       $avaliacoesDoAluno = Turma::avaliacoesDoAluno2($aluno_id,'S',$disciplinas_frequentadas_em_cada_classe);       
        $turma_info = explode(' ', $turma->nome);
         $classes ="";
         $anos ="";

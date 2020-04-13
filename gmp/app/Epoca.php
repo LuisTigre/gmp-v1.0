@@ -41,6 +41,11 @@ class Epoca extends Model
                        ->paginate($paginate);
        }
        return $listaModelo;
+   }
+
+   public static function activo(){
+        return Epoca::where('activo','S')->first();
+
    }   
    
 }

@@ -236,6 +236,7 @@
     computed:{
         lista:function(){       
           let lista = this.itens.data;
+          console.log(this.itens.data);
           let ordem = this.ordemAux || "asc";
           let ordemcol = this.ordemcolAux || 0;
           ordem.toLowerCase();

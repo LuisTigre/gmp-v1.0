@@ -147,7 +147,53 @@ class Curso extends Model
              $modulo_10->disciplinas()->updateExistingPivot($disciplina_id,$data);
           }
         
-    }    
+    }
+
+
+    public function disciplinas_do_curso(){
+
+      $modulo_10 = Modulo::where('nome',$this->acronimo . ' ' . '10ª')->first();
+      $modulo_11 = Modulo::where('nome',$this->acronimo . ' ' . '11ª')->first();
+      $modulo_12 = Modulo::where('nome',$this->acronimo . ' ' . '12ª')->first();
+      $modulo_13 = Modulo::where('nome',$this->acronimo . ' ' . '13ª')->first();
+
+      $disciplinas_10 = $modulo_10->disciplinas()->get();        
+      $disciplinas_11 = $modulo_11->disciplinas()->get();       
+      $disciplinas_12 = $modulo_12->disciplinas()->get();
+      $disciplinas_13 = $modulo_13->disciplinas()->get();
+
+      $disciplinas_do_curso = collect([]);
+      $disciplinas_do_curso->put('10ª',$disciplinas_10);
+      $disciplinas_do_curso->put('11ª',$disciplinas_11);
+      $disciplinas_do_curso->put('12ª',$disciplinas_12);
+      $disciplinas_do_curso->put('13ª',$disciplinas_13);
+
+      return $disciplinas_do_curso;
+
+
+    }
+     public function disciplinas_terminais_do_curso(){
+      
+      $modulo_10 = Modulo::where('nome',$this->acronimo . ' ' . '10ª')->first();
+      $modulo_11 = Modulo::where('nome',$this->acronimo . ' ' . '11ª')->first();
+      $modulo_12 = Modulo::where('nome',$this->acronimo . ' ' . '12ª')->first();
+      $modulo_13 = Modulo::where('nome',$this->acronimo . ' ' . '13ª')->first();
+
+      $disciplinas_10 = $modulo_10->disciplinas()->where('curricular','S')->where('terminal','S')->get();        
+      $disciplinas_11 = $modulo_11->disciplinas()->where('curricular','S')->where('terminal','S')->get();       
+      $disciplinas_12 = $modulo_12->disciplinas()->where('curricular','S')->where('terminal','S')->get();
+      $disciplinas_13 = $modulo_13->disciplinas()->where('curricular','S')->where('terminal','S')->get();
+
+      $disciplinas_do_curso = collect([]);
+      $disciplinas_do_curso->put('10ª',$disciplinas_10);
+      $disciplinas_do_curso->put('11ª',$disciplinas_11);
+      $disciplinas_do_curso->put('12ª',$disciplinas_12);
+      $disciplinas_do_curso->put('13ª',$disciplinas_13);
+
+      return $disciplinas_do_curso;
+
+
+    }        
 
     
 

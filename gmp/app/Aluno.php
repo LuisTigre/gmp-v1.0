@@ -69,9 +69,10 @@ class Aluno extends Model
       $turma_actual = $this->turmas()->get()->sortBy('ano_lectivo')->last(); 
       $turma_anterior_da_classe_actual = $this->buscarTurmaAnterior($turma_actual); 
       /*SE O ALUNO FOR REPETENTE*/
-      if(!is_null($turma_anterior_da_classe_actual)){              
+      if(!is_null($turma_anterior_da_classe_actual)){
+          $disciplinas_frequentadas_em_cada_classe  = Turma::disciplinas_frequentadas_em_cada_classe($curso,'agrupar');           
 
-          $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S');
+          $avaliacaoAnual = Turma::avaliacoesDoAluno2($this->id,'S',$disciplinas_frequentadas_em_cada_classe);
           $modulo = Modulo::find($turma_actual->modulo_id);
           $modulo_nome = explode(" ", $modulo->nome);                 
           $mn = $modulo_nome[1];     
